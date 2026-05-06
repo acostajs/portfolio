@@ -1,4 +1,5 @@
 import logging
+import random
 import time
 from contextlib import asynccontextmanager
 from typing import List, Optional
@@ -11,6 +12,7 @@ from sqlmodel import Session
 from config import settings
 from database import create_db_and_tables, engine
 from models import VisitorSession, ChatMessage
+from responses import about, experience, projects, contact, fallback
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -127,17 +129,19 @@ async def health():
 
 @app.post("/api/v1/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
-    # Mock AI logic
     user_message = request.message.lower()
 
-    if "skill" in user_message or "tech" in user_message:
-        reply = "Juan is proficient in TypeScript, React, Bun, FastAPI, and Python. He loves building full-stack applications!"
-    elif "experience" in user_message or "work" in user_message:
-        reply = "Juan has experience as a Full-Stack Developer, working on AI-driven portfolios and high-performance web apps."
-    elif "contact" in user_message or "email" in user_message:
-        reply = "You can contact Juan at acosta.juan@icloud.com or through the contact form on this site."
+    # Determine response based on triggers
+    if any(t in user_message for t in about.data["triggers"]):
+        reply = random.choice(about.data["answers"])
+    elif any(t in user_message for t in experience.data["triggers"]):
+        reply = random.choice(experience.data["answers"])
+    elif any(t in user_message for t in projects.data["triggers"]):
+        reply = random.choice(projects.data["answers"])
+    elif any(t in user_message for t in contact.data["triggers"]):
+        reply = random.choice(contact.data["answers"])
     else:
-        reply = "That's an interesting question about Juan! Currently, I'm a mock assistant, but I can tell you that he's a passionate developer based in Montréal."
+        reply = random.choice(fallback.data["answers"])
 
     # Save to history in background
     background_tasks.add_task(save_chat_interaction, request.message, reply)
