@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContext";
-import { Menu, Moon, Sun, Languages } from "lucide-react";
+import { Menu, Languages, Moon, Sun } from "lucide-react";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -9,10 +9,10 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { t, locale, setLocale } = useTranslation();
-  const { theme, setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 h-16 bg-bg/80 backdrop-blur-md border-b border-border px-4 lg:px-8">
+    <header className="sticky top-0 z-40 h-16 bg-bg/80 backdrop-blur-md border-b border-border px-4 lg:px-8 w-full">
       <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
         {/* Left Section: Mobile Menu Toggle & Logo */}
         <div className="flex items-center">
@@ -24,31 +24,38 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             <Menu className="w-6 h-6" />
           </button>
 
-          <div className="flex items-center lg:hidden">
-            <img
-              src="/avatar.jpeg"
-              alt={t.common.name}
-              className="w-8 h-8 rounded-full mr-2 border border-accent"
-            />
-            <span className="font-bold text-text-header hidden sm:inline">
-              {t.common.name}
-            </span>
+          <div className="flex items-center">
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent mr-3">
+              <img
+                src="/avatar.jpeg"
+                alt={t.common.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col">
+              <h1 className="text-base font-bold text-text-header leading-tight">
+                {t.header.title}
+              </h1>
+              <p className="text-xs text-text opacity-70">
+                {t.header.subtitle}
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Right Section: Toggles */}
         <div className="flex items-center space-x-2">
           {/* Language Toggle */}
-          <div className="flex items-center bg-accent-bg/30 rounded-lg p-1">
-            <Languages className="w-4 h-4 text-accent mx-2 hidden sm:block" />
+          <div className="flex items-center bg-white/5 border border-border rounded-lg p-0.5">
+            <Languages className="w-3 h-3 text-text opacity-50 mx-2 hidden sm:block" />
             {(["en", "fr", "es"] as const).map((l) => (
               <button
                 key={l}
                 onClick={() => setLocale(l)}
-                className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
+                className={`px-2 py-1 rounded-md text-[10px] font-bold transition-all ${
                   locale === l
-                    ? "bg-accent text-white shadow-sm"
-                    : "text-text hover:text-accent"
+                    ? "bg-accent text-white shadow-lg"
+                    : "text-text hover:text-text-header"
                 }`}
               >
                 {l.toUpperCase()}
@@ -58,14 +65,16 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
           {/* Theme Toggle */}
           <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 text-text hover:bg-accent-bg rounded-lg transition-colors"
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
+            className="p-2.5 border border-border rounded-xl transition-all text-text hover:bg-white/5 hover:text-accent group"
             aria-label={t.header.toggleTheme}
           >
-            {theme === "dark" ? (
-              <Sun className="w-5 h-5 text-accent" />
+            {resolvedTheme === "dark" ? (
+              <Moon className="w-5 h-5 transition-colors" />
             ) : (
-              <Moon className="w-5 h-5 text-accent" />
+              <Sun className="w-5 h-5 transition-colors" />
             )}
           </button>
         </div>

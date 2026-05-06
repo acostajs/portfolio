@@ -13,15 +13,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
-    <div className="flex min-h-screen bg-bg transition-colors duration-300">
+    <div className="flex h-screen bg-bg transition-colors duration-300 overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
-      <div className="flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col flex-1 min-w-0 h-full relative">
         <Header onMenuClick={toggleSidebar} />
 
-        <main className="flex-1 mt-16 p-4 md:p-8 lg:p-12 overflow-x-hidden">
-          <div className="max-w-5xl mx-auto h-full">{children}</div>
-        </main>
+        <main className="flex-1 overflow-hidden flex flex-col">{children}</main>
       </div>
     </div>
   );
