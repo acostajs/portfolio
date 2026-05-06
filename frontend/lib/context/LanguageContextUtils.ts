@@ -1,6 +1,8 @@
 import { createContext, useContext } from "react";
 import { locales, type LocaleKey, type TranslationType } from "../locales";
 
+export type { LocaleKey, TranslationType };
+
 export interface LanguageContextType {
   locale: LocaleKey;
   t: TranslationType;
