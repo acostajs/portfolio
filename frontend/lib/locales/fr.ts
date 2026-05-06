@@ -1,9 +1,11 @@
-import { TranslationType } from "./en";
+import type { TranslationType } from "./en";
 
 export const fr: TranslationType = {
   common: {
     name: "Juan",
-    role: "Développeur Full Stack",
+    role: "Développeur Full-Stack",
+    location: "Montréal",
+    availability: "Ouvert aux opportunités à temps plein",
   },
   nav: {
     home: "Accueil",
@@ -16,5 +18,10 @@ export const fr: TranslationType = {
     welcome: "Salut, je suis Juan. Comment puis-je vous aider aujourd'hui ?",
     chatbotPlaceholder:
       "Posez-moi des questions sur mon expérience, mes compétences ou mes projets...",
+  },
+  header: {
+    toggleSidebar: "Basculer la barre latérale",
+    toggleTheme: "Changer le thème",
+    language: "Langue",
   },
 };
