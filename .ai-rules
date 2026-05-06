@@ -1,0 +1,46 @@
+# AI Rules & Coding Standards
+
+## Semantic Architecture & HTML
+
+- **Tech Stack:** React (TypeScript), Bun, Tailwind CSS (Frontend) | Python 3.11+, FastAPI (Backend).
+- **Semantic HTML:** Strict use of `<main>`, `<section>`, `<aside>`, `<nav>`, `<header>`, and `<footer>`.
+- **Minimalist Divs:** Use `<div>` only for layout/styling wrappers (Flex/Grid). Never use a `<div>` where a semantic tag or `<article>/<section>` is appropriate.
+
+## Styling & Theming
+
+- **Design Tokens:** Define semantic naming in `globals.css` (e.g., `--color-sidebar-bg`, `--color-accent`) and map in `tailwind.config.js`.
+- **System Theme:** Support System default (Dark/Light) via the `.dark` class strategy. No hardcoded hex codes in components; use Tailwind classes or CSS variables.
+
+## Internationalization (i18n)
+
+- **ZERO Static Text:** All strings MUST reside in `frontend/lib/locales/` as typed objects (EN, FR, ES).
+- **Access Pattern:** Use `t.home.welcomeMessage`. Components must import text via a translation hook or utility.
+
+## Data & Folder Conventions
+
+- **Contract-First:** Use typed mock data in `frontend/lib/mocks.ts` before implementing API calls.
+- **Folder Semantics:**
+  - Pages: `frontend/src/pages/`
+  - Components: `frontend/src/components/`
+  - Logic/Translations: `frontend/lib/`
+  - Assets: `public/`
+
+## Deployment & Environment
+
+- **Monorepo:** Assume Frontend in `/frontend`, Backend in `/backend`.
+- **Frontend Env:** Use `import.meta.env.VITE_...`. All shared vars must have the `VITE_` prefix.
+- **Backend Env:** Use `pydantic-settings` or `os.getenv`.
+- **CORS:** Backend must allow `localhost:5173` (dev) and `process.env.FRONTEND_URL` (prod).
+
+## Backend Analytics & Integration
+
+- **Silent Tracking:** Use FastAPI `BackgroundTasks` for telemetry (IP, Agent, Path) to ensure zero latency for the visitor.
+- **Chat Logging:** Log all chatbot prompts, AI responses, and user feedback signals.
+- **Contact:** Use Web3Forms with the public access key via client-side fetch.
+
+## Commit Guidelines
+
+- Use Conventional Commits format.
+- Body must explain the 'Why': e.g., "Switched to <aside> for sidebar to improve accessibility per CONTEXT.md."
+- Always link the specific Phase from TODO.md (e.g., 'Phase 2: Layout').
+- Scopes: [frontend], [backend], [monorepo], [infra], [i18n].

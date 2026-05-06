@@ -1,0 +1,35 @@
+{
+  "name": "portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev:frontend": "bun --cwd frontend run dev",
+    "dev:backend": "cd backend && uv run uvicorn main:app --reload",
+    "lint": "bun run lint:frontend && bun run lint:backend",
+    "lint:frontend": "bun --cwd frontend run lint",
+    "lint:backend": "cd backend && uv run ruff check .",
+    "format": "bun --cwd frontend run format && cd backend && uv run ruff format .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+      "bun --cwd frontend run lint",
+      "prettier --write"
+    ],
+    "backend/**/*.py": [
+      "cd backend && uv run ruff check --fix .",
+      "cd backend && uv run ruff format ."
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.4.2"
+  }
+}
