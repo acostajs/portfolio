@@ -3,9 +3,9 @@ import React, {
   useContext,
   useState,
   useEffect,
-  ReactNode,
+  type ReactNode,
 } from "react";
-import { locales, LocaleKey, TranslationType } from "../locales";
+import { locales, type LocaleKey, type TranslationType } from "../locales";
 
 interface LanguageContextType {
   locale: LocaleKey;

@@ -1,9 +1,16 @@
-import { TranslationType } from "./en";
+import type { TranslationType } from "./en";
 
 export const fr: TranslationType = {
   common: {
-    name: "Juan",
-    role: "Développeur Full Stack",
+    name: "Juan Acosta",
+    role: "Développeur Web basé à Montréal",
+    location: "Montréal",
+    availability: "Ouvert aux opportunités de stage",
+    email: "acosta.juan@icloud.com",
+    linkedin: "juan-acosta-pinilla",
+    github: "acostajs",
+    downloadResume: "Télécharger le CV",
+    availabilityTitle: "Disponibilité :",
   },
   nav: {
     home: "Accueil",
@@ -13,8 +20,45 @@ export const fr: TranslationType = {
     contact: "Contact",
   },
   home: {
-    welcome: "Salut, je suis Juan. Comment puis-je vous aider aujourd'hui ?",
+    welcome: "Salut ! Je suis l'assistant du portfolio de Juan Acosta. 👋",
+    subwelcome: "Je peux vous parler de :",
     chatbotPlaceholder:
-      "Posez-moi des questions sur mon expérience, mes compétences ou mes projets...",
+      "Demandez-moi n'importe quoi sur les compétences, les projets ou l'expérience de Juan...",
+    features: [
+      "Compétences et technologies",
+      "Projets et expérience",
+      "Informations de contact",
+    ],
+    closing:
+      "Vous pouvez également explorer des pages spécifiques à l'aide de la barre latérale de navigation. Que aimeriez-vous savoir ?",
+  },
+  header: {
+    title: "Assistant Portfolio",
+    subtitle: "Posez-moi n'importe quoi sur Juan",
+    toggleSidebar: "Basculer la barre latérale",
+    toggleTheme: "Changer le thème",
+    language: "Langue",
+  },
+  about: {
+    title: "À propos de moi",
+    p1: "Je suis un développeur web passionné basé à Montréal, dédié à la création d'applications web propres, efficaces et centrées sur l'utilisateur.",
+    p2: "Mon parcours dans la technologie est guidé par une curiosité pour la résolution de problèmes complexes et un désir de créer des expériences numériques qui font la différence.",
+    skillsTitle: "Compétences clés",
+  },
+  experience: {
+    title: "Expérience professionnelle",
+  },
+  projects: {
+    title: "Projets récents",
+    viewProject: "Voir le projet",
+    viewGithub: "GitHub",
+  },
+  contact: {
+    title: "Contactez-moi",
+    p1: "Vous avez une question ou vous voulez travailler ensemble ? N'hésitez pas à nous contacter !",
+    formName: "Nom",
+    formEmail: "Email",
+    formMessage: "Message",
+    formSend: "Envoyer le message",
   },
 };

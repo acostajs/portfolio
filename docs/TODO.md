@@ -21,12 +21,26 @@
 - [x] Implement ThemeProvider (System/Light/Dark).
 - [x] **DUMMY DATA:** Populate translation objects with placeholder strings for all views.
 
-## Phase 2: Layout & Navigation
+## Phase 2: Layout, Navigation & i18n
 
-- [ ] Create Semantic Sidebar (Bio, Nav, Availability Status).
-- [ ] Implement Fixed Header and Main Content routing (Home as default).
-- [ ] Build "Home" Chatbot Interface shell.
-- [ ] **DUMMY DATA:** Create typed mock objects for "Projects" and "Experience" in `frontend/lib/mocks.ts`.
+- [x] **Infrastructure: Assets & Metadata**
+  - [x] Configure `favicon.ico` and `site.webmanifest` in the HTML head.
+  - [x] Move and link `public/avatar.jpeg` for the Sidebar profile and Header logo.
+- [x] **Core Components: The Shell**
+  - [x] Build **Header**: Include Sidebar toggle, Theme toggle, and Language toggle (EN/FR/ES).
+  - [x] Build **Sidebar (<aside>)**:
+    - [x] Profile: Name, Title (Full-Stack Developer), Location (Montréal).
+    - [x] Links: Home, About, Experience, Projects, Contact.
+    - [x] Status: "Open to full-time opportunities".
+  - [x] Build **Mobile Overlay**: Sidebar should slide over content on small screens.
+- [x] **i18n & Theming Engine**
+  - [x] Implement System-first Theme detection (Default: Dark).
+  - [x] Implement Browser-first Language detection (Default: EN).
+  - [x] Map all UI strings to `frontend/lib/locales/` (Zero Static Text Rule).
+- [x] **Content & Routing**
+  - [x] Setup routing where Main content changes but Header/Sidebar persist.
+  - [x] Create **Home View**: Interactive chatbot shell with welcome message.
+  - [x] **DUMMY DATA**: Populate `frontend/lib/mocks.ts` with your specific tech stack (TypeScript, React, Bun, FastAPI) and past experience.
 
 ## Phase 3: Backend Implementation
 
