@@ -11,28 +11,50 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 
+export type PageId = "home" | "about" | "experience" | "projects" | "contact";
+
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  activePage: PageId;
+  onPageChange: (page: PageId) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
+  onClose,
+  activePage,
+  onPageChange,
+}) => {
   const { t } = useTranslation();
 
   const navLinks = [
-    { name: t.nav.home, href: "#", icon: Home, active: true },
-    { name: t.nav.about, href: "#", icon: User },
-    { name: t.nav.experience, href: "#", icon: Briefcase },
-    { name: t.nav.projects, href: "#", icon: Code },
-    { name: t.nav.contact, href: "#", icon: Mail },
+    { id: "home" as PageId, name: t.nav.home, icon: Home },
+    { id: "about" as PageId, name: t.nav.about, icon: User },
+    { id: "experience" as PageId, name: t.nav.experience, icon: Briefcase },
+    { id: "projects" as PageId, name: t.nav.projects, icon: Code },
+    { id: "contact" as PageId, name: t.nav.contact, icon: Mail },
   ];
 
   const contactInfo = [
     { icon: MapPin, text: t.common.location },
-    { icon: Mail, text: t.common.email },
-    { icon: LinkIcon, text: t.common.linkedin },
-    { icon: LinkIcon, text: t.common.github },
+    { icon: Mail, text: t.common.email, href: `mailto:${t.common.email}` },
+    {
+      icon: LinkIcon,
+      text: t.common.linkedin,
+      href: `https://linkedin.com/in/${t.common.linkedin}`,
+    },
+    {
+      icon: LinkIcon,
+      text: t.common.github,
+      href: `https://github.com/${t.common.github}`,
+    },
   ];
+
+  const handleLinkClick = (id: PageId) => {
+    onPageChange(id);
+    onClose(); // Close sidebar on mobile after clicking
+  };
 
   return (
     <>
@@ -83,20 +105,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <nav className="px-3 mb-4">
             <ul className="space-y-0.5">
               {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className={`flex items-center px-4 py-2.5 rounded-xl transition-all duration-200 group ${
-                      link.active
+                <li key={link.id}>
+                  <button
+                    onClick={() => handleLinkClick(link.id)}
+                    className={`flex items-center w-full px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                      activePage === link.id
                         ? "bg-accent text-white shadow-md shadow-accent/20"
                         : "text-text hover:bg-white/5 hover:text-text-header"
                     }`}
                   >
                     <link.icon
-                      className={`w-4.5 h-4.5 mr-3 transition-transform group-hover:scale-110 ${link.active ? "text-white" : "text-text opacity-70"}`}
+                      className={`w-4.5 h-4.5 mr-3 transition-transform group-hover:scale-110 ${activePage === link.id ? "text-white" : "text-text opacity-70"}`}
                     />
                     <span className="font-semibold text-sm">{link.name}</span>
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -108,15 +130,41 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           {/* Bottom Contact Section */}
           <div className="px-6 space-y-3 mb-6">
-            {contactInfo.map((info, idx) => (
-              <div
-                key={idx}
-                className="flex items-center text-[13px] text-text hover:text-text-header transition-colors group cursor-default"
-              >
-                <info.icon className="w-3.5 h-3.5 mr-3 opacity-60 group-hover:opacity-100 group-hover:text-accent transition-all" />
-                <span className="truncate">{info.text}</span>
-              </div>
-            ))}
+            {contactInfo.map((info, idx) => {
+              const Content = (
+                <>
+                  <info.icon className="w-3.5 h-3.5 mr-3 opacity-60 group-hover:opacity-100 group-hover:text-accent transition-all shrink-0" />
+                  <span className="truncate">{info.text}</span>
+                </>
+              );
+
+              if (info.href) {
+                return (
+                  <a
+                    key={idx}
+                    href={info.href}
+                    target={info.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      info.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    className="flex items-center text-[13px] text-text hover:text-text-header transition-colors group"
+                  >
+                    {Content}
+                  </a>
+                );
+              }
+
+              return (
+                <div
+                  key={idx}
+                  className="flex items-center text-[13px] text-text cursor-default group"
+                >
+                  {Content}
+                </div>
+              );
+            })}
           </div>
 
           {/* Availability Status */}

@@ -37,6 +37,28 @@ export const en = {
     toggleTheme: "Toggle Theme",
     language: "Language",
   },
+  about: {
+    title: "About Me",
+    p1: "I'm a passionate Web Developer based in Montréal, dedicated to building clean, efficient, and user-centric web applications.",
+    p2: "My journey in tech is driven by a curiosity for solving complex problems and a desire to create digital experiences that make a difference.",
+    skillsTitle: "Core Skills",
+  },
+  experience: {
+    title: "Professional Experience",
+  },
+  projects: {
+    title: "Recent Projects",
+    viewProject: "View Project",
+    viewGithub: "GitHub",
+  },
+  contact: {
+    title: "Get in Touch",
+    p1: "Have a question or want to work together? Feel free to reach out!",
+    formName: "Name",
+    formEmail: "Email",
+    formMessage: "Message",
+    formSend: "Send Message",
+  },
 };
 
 export type TranslationType = typeof en;

@@ -39,4 +39,26 @@ export const es: TranslationType = {
     toggleTheme: "Cambiar tema",
     language: "Idioma",
   },
+  about: {
+    title: "Sobre mí",
+    p1: "Soy un apasionado Desarrollador Web con sede en Montréal, dedicado a construir aplicaciones web limpias, eficientes y centradas en el usuario.",
+    p2: "Mi viaje en la tecnología está impulsado por la curiosidad de resolver problemas complejos y el deseo de crear experiencias digitales que marquen la diferencia.",
+    skillsTitle: "Habilidades Principales",
+  },
+  experience: {
+    title: "Experiencia Profesional",
+  },
+  projects: {
+    title: "Proyectos Recientes",
+    viewProject: "Ver Proyecto",
+    viewGithub: "GitHub",
+  },
+  contact: {
+    title: "Ponte en Contacto",
+    p1: "¿Tienes alguna pregunta o quieres trabajar conmigo? ¡No dudes en contactarme!",
+    formName: "Nombre",
+    formEmail: "Correo electrónico",
+    formMessage: "Mensaje",
+    formSend: "Enviar Mensaje",
+  },
 };

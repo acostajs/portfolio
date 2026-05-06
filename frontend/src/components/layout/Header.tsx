@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContext";
-import { Menu, Languages, Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { setTheme, resolvedTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-40 h-16 bg-bg/80 backdrop-blur-md border-b border-border px-4 lg:px-8 w-full">
+    <header className="sticky top-0 z-40 h-16 bg-[var(--header-bg)] backdrop-blur-md border-b border-border px-4 lg:px-8 w-full">
       <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
         {/* Left Section: Mobile Menu Toggle & Logo */}
         <div className="flex items-center">
@@ -47,7 +47,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         <div className="flex items-center space-x-2">
           {/* Language Toggle */}
           <div className="flex items-center bg-white/5 border border-border rounded-lg p-0.5">
-            <Languages className="w-3 h-3 text-text opacity-50 mx-2 hidden sm:block" />
             {(["en", "fr", "es"] as const).map((l) => (
               <button
                 key={l}
@@ -63,20 +62,22 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             ))}
           </div>
 
-          {/* Theme Toggle */}
-          <button
-            onClick={() =>
-              setTheme(resolvedTheme === "dark" ? "light" : "dark")
-            }
-            className="p-2.5 border border-border rounded-xl transition-all text-text hover:bg-white/5 hover:text-accent group"
-            aria-label={t.header.toggleTheme}
-          >
-            {resolvedTheme === "dark" ? (
-              <Moon className="w-5 h-5 transition-colors" />
-            ) : (
-              <Sun className="w-5 h-5 transition-colors" />
-            )}
-          </button>
+          {/* Theme Toggle - Sized to match language buttons */}
+          <div className="flex items-center bg-white/5 border border-border rounded-lg p-0.5">
+            <button
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="px-2 py-1 rounded-md text-[10px] font-bold transition-all text-text hover:text-text-header"
+              aria-label={t.header.toggleTheme}
+            >
+              {resolvedTheme === "dark" ? (
+                <Moon className="w-3.5 h-3.5" />
+              ) : (
+                <Sun className="w-3.5 h-3.5" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </header>
