@@ -44,10 +44,12 @@
 
 ## Phase 3: Backend Implementation
 
-- [ ] Setup FastAPI `BackgroundTasks` for silent visitor tracking.
-- [ ] Create database schema (Visitor Analytics & Chat History).
-- [ ] Build Chatbot logic (LLM integration).
-- [ ] **DUMMY DATA:** Implement mock API response to simulate chatbot interaction.
+- [x] Setup FastAPI `BackgroundTasks` for silent visitor tracking.
+- [x] Create database schema (Visitor Analytics & Chat History).
+- [x] Build Chatbot logic (LLM integration - currently mock).
+- [x] **DUMMY DATA:** Implement mock API response to simulate chatbot interaction.
+- [x] Correct Python version to 3.12.
+- [x] Setup GitHub CI workflows for frontend and backend.
 
 ## Phase 4: Deployment Readiness (Vercel focus)
 

@@ -12,17 +12,23 @@
     "lint": "bun run lint:frontend && bun run lint:backend",
     "lint:frontend": "bun --cwd frontend run lint",
     "lint:backend": "cd backend && uv run ruff check .",
+    "type-check": "bun --cwd frontend run type-check",
     "format": "bun --cwd frontend run format && cd backend && uv run ruff format .",
     "prepare": "husky"
   },
   "lint-staged": {
-    "frontend/**/*.{js,jsx,ts,tsx}": [
+    "frontend/**/*.{ts,tsx}": [
+      "bun --cwd frontend run lint",
+      "bun --cwd frontend run type-check",
+      "prettier --write"
+    ],
+    "frontend/**/*.{js,jsx}": [
       "bun --cwd frontend run lint",
       "prettier --write"
     ],
     "backend/**/*.py": [
-      "cd backend && uv run ruff check --fix .",
-      "cd backend && uv run ruff format ."
+      "cd backend && uv run ruff check --fix",
+      "cd backend && uv run ruff format"
     ]
   },
   "devDependencies": {

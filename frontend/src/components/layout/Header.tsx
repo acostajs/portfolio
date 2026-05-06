@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
-import { useTheme } from "../../../lib/context/ThemeContext";
+import { useTheme } from "../../../lib/context/ThemeContextUtils";
 import { Menu, Moon, Sun } from "lucide-react";
 
 interface HeaderProps {
