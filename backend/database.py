@@ -8,14 +8,17 @@ database_url = settings.DATABASE_URL or sqlite_url
 
 # connect_args={"check_same_thread": False} is required for SQLite
 engine = create_engine(
-    database_url, 
+    database_url,
     echo=True if settings.ENVIRONMENT == "development" else False,
-    connect_args={"check_same_thread": False} if database_url.startswith("sqlite") else {}
+    connect_args={"check_same_thread": False}
+    if database_url.startswith("sqlite")
+    else {},
 )
 
+
 def create_db_and_tables():
-    from models import VisitorSession, ChatMessage
     SQLModel.metadata.create_all(engine)
+
 
 def get_session() -> Generator[Session, None, None]:
     with Session(engine) as session:

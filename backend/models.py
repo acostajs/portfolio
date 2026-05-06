@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
-from sqlmodel import Field, SQLModel, create_engine, Session
+from sqlmodel import Field, SQLModel
+
 
 class VisitorSession(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -9,6 +10,7 @@ class VisitorSession(SQLModel, table=True):
     path: str
     method: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
 
 class ChatMessage(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)

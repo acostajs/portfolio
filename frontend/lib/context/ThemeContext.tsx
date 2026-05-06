@@ -1,46 +1,24 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
-
-type Theme = "light" | "dark" | "system";
-
-interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  resolvedTheme: "light" | "dark";
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+import React, { useState, useEffect, type ReactNode } from "react";
+import { ThemeContext, getInitialTheme, type Theme } from "./ThemeContextUtils";
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [theme, setThemeState] = useState<Theme>("system");
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("dark");
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("portfolio-theme") as Theme;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-    }
-  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;
 
     const applyTheme = (currentTheme: Theme) => {
-      let resolved: "light" | "dark" = "light";
+      let resolved: "light" | "dark";
 
       if (currentTheme === "system") {
         resolved = window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light";
       } else {
-        resolved = currentTheme;
+        resolved = currentTheme === "light" ? "light" : "dark";
       }
 
       setResolvedTheme(resolved);
@@ -72,12 +50,4 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
       {children}
     </ThemeContext.Provider>
   );
-};
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
 };
