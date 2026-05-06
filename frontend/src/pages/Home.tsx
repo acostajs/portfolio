@@ -1,54 +1,137 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
+import BotMessage from "../components/chat/BotMessage";
+
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+  isInitial?: boolean;
+}
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "assistant",
+      content: t.home.welcome,
+      isInitial: true,
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to bottom whenever messages change or loading state changes
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+
+  // Use a MutationObserver to scroll to bottom when the height changes (e.g. during typewriter)
+  useEffect(() => {
+    if (!scrollRef.current) return;
+
+    const observer = new MutationObserver(() => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    });
+
+    observer.observe(scrollRef.current, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput("");
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          history: messages.map((m) => ({ role: m.role, content: m.content })),
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const data = await response.json();
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.reply },
+      ]);
+    } catch (error) {
+      console.error("Chat error:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Sorry, I encountered an error. Please try again later.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Chat Messages Area - This scrolls */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar">
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto custom-scrollbar scroll-smooth"
+      >
         <div className="max-w-5xl mx-auto p-4 md:p-8 space-y-8">
-          {/* Bot Message Example */}
-          <div className="flex items-start max-w-3xl">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-border mr-4 mt-1 shrink-0">
-              <img
-                src="/avatar.jpeg"
-                alt="Assistant"
-                className="w-full h-full object-cover grayscale"
-              />
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`flex ${
+                msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {msg.role === "assistant" ? (
+                <BotMessage
+                  content={msg.content}
+                  isInitial={msg.isInitial}
+                  features={msg.isInitial ? t.home.features : undefined}
+                  subwelcome={msg.isInitial ? t.home.subwelcome : undefined}
+                  closing={msg.isInitial ? t.home.closing : undefined}
+                />
+              ) : (
+                <div className="bg-accent text-white p-4 rounded-2xl rounded-tr-none shadow-lg max-w-2xl animate-slide-in-right">
+                  <p className="leading-relaxed">{msg.content}</p>
+                </div>
+              )}
             </div>
-            <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm">
-              <p className="text-text-header font-medium mb-4 leading-relaxed">
-                {t.home.welcome}
-              </p>
+          ))}
 
-              <div className="space-y-4">
-                <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
-                  {t.home.subwelcome}
-                </p>
-                <ul className="space-y-2">
-                  {t.home.features.map((feature, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-center text-text-header"
-                    >
-                      <span className="w-1.5 h-1.5 bg-accent rounded-full mr-3 shadow-[0_0_8px_rgba(9,105,218,0.8)]"></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+          {isLoading && (
+            <div className="flex justify-start animate-fade-in">
+              <div className="bg-white/5 border border-border p-4 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm flex items-center space-x-2">
+                <Loader2 className="w-4 h-4 animate-spin text-accent" />
+                <span className="text-sm text-text opacity-70">
+                  Thinking...
+                </span>
               </div>
-
-              <p className="text-text mt-8 leading-relaxed italic opacity-80">
-                {t.home.closing}
-              </p>
             </div>
-          </div>
+          )}
 
-          {/* Spacer to allow scrolling past the input bar area if needed, 
-              though flex-col handles it, extra padding helps */}
+          {/* Spacer */}
           <div className="h-4" />
         </div>
       </div>
@@ -56,16 +139,33 @@ const Home: React.FC = () => {
       {/* Chat Input Area - This is fixed at the bottom of the Home component */}
       <div className="p-4 md:p-8 pt-0">
         <div className="max-w-5xl mx-auto">
-          <div className="relative group">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            className="relative group"
+          >
             <input
               type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               placeholder={t.home.chatbotPlaceholder}
-              className="w-full pl-6 pr-14 py-4 md:py-5 bg-white/5 border border-border focus:border-accent rounded-2xl outline-none transition-all shadow-2xl backdrop-blur-md placeholder:text-text/40 text-text-header"
+              disabled={isLoading}
+              className="w-full pl-6 pr-14 py-4 md:py-5 bg-white/5 border border-border focus:border-accent rounded-2xl outline-none transition-all shadow-2xl backdrop-blur-md placeholder:text-text/40 text-text-header disabled:opacity-50"
             />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-white/10 text-text hover:text-white hover:bg-accent rounded-xl transition-all shadow-inner">
-              <Send className="w-5 h-5" />
+            <button
+              type="submit"
+              disabled={!input.trim() || isLoading}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-white/10 text-text hover:text-white hover:bg-accent rounded-xl transition-all shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Send className="w-5 h-5" />
+              )}
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
