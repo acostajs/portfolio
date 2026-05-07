@@ -12,7 +12,7 @@ from sqlmodel import Session
 from config import settings
 from database import create_db_and_tables, engine
 from models import VisitorSession, ChatMessage
-from responses import about, experience, projects, contact, fallback
+from responses import about, experience, projects, contact, fallback, greetings
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -134,7 +134,9 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     lang = request.language if request.language in ["en", "es", "fr"] else "en"
 
     # Determine response based on triggers
-    if any(t in user_message for t in about.data["triggers"]):
+    if any(t in user_message for t in greetings.data["triggers"]):
+        reply = random.choice(greetings.data["answers"][lang])
+    elif any(t in user_message for t in about.data["triggers"]):
         reply = random.choice(about.data["answers"][lang])
     elif any(t in user_message for t in experience.data["triggers"]):
         reply = random.choice(experience.data["answers"][lang])
