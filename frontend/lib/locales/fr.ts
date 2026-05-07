@@ -60,5 +60,10 @@ export const fr: TranslationType = {
     formEmail: "Email",
     formMessage: "Message",
     formSend: "Envoyer le message",
+    successTitle: "Message envoyé !",
+    successMessage: "Merci de m'avoir contacté. Je vous répondrai bientôt.",
+    errorTitle: "Oups !",
+    errorMessage:
+      "Quelque chose s'est mal passé. Veuillez réessayer plus tard.",
   },
 };

@@ -60,5 +60,9 @@ export const es: TranslationType = {
     formEmail: "Correo electrónico",
     formMessage: "Mensaje",
     formSend: "Enviar Mensaje",
+    successTitle: "¡Mensaje Enviado!",
+    successMessage: "Gracias por contactarme. Te responderé pronto.",
+    errorTitle: "¡Ups!",
+    errorMessage: "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
   },
 };

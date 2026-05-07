@@ -58,6 +58,10 @@ export const en = {
     formEmail: "Email",
     formMessage: "Message",
     formSend: "Send Message",
+    successTitle: "Message Sent!",
+    successMessage: "Thank you for reaching out. I'll get back to you soon.",
+    errorTitle: "Oops!",
+    errorMessage: "Something went wrong. Please try again later.",
   },
 };
 

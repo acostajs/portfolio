@@ -92,7 +92,10 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div key={locale} className="flex-1 flex flex-col h-full overflow-hidden">
+    <section
+      key={locale}
+      className="flex-1 flex flex-col h-full overflow-hidden"
+    >
       {/* Chat Messages Area - This scrolls */}
       <div
         ref={scrollRef}
@@ -170,7 +173,7 @@ const Home: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

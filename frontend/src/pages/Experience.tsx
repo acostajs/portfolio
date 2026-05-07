@@ -15,7 +15,7 @@ const Experience: React.FC = () => {
 
         <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-accent/50 before:via-border before:to-transparent">
           {experience.map((exp, idx) => (
-            <div
+            <article
               key={idx}
               className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
             >
@@ -27,13 +27,15 @@ const Experience: React.FC = () => {
               {/* Content Card */}
               <div className="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl bg-white/5 border border-border shadow-xl backdrop-blur-sm group-hover:border-accent/50 transition-colors">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                  <h3 className="font-bold text-text-header text-lg">
-                    {exp.role}
-                  </h3>
-                  <div className="flex items-center text-xs text-text opacity-70">
-                    <Calendar className="w-3.5 h-3.5 mr-1.5" />
-                    {exp.period}
-                  </div>
+                  <header className="flex flex-wrap items-center justify-between w-full">
+                    <h3 className="font-bold text-text-header text-lg">
+                      {exp.role}
+                    </h3>
+                    <div className="flex items-center text-xs text-text opacity-70">
+                      <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                      {exp.period}
+                    </div>
+                  </header>
                 </div>
                 <div className="text-accent font-semibold mb-4">
                   {exp.company}
@@ -43,7 +45,7 @@ const Experience: React.FC = () => {
                     <li key={i}>{item}</li>
                   ))}
                 </ul>
-                <div className="mt-4 flex flex-wrap gap-1.5">
+                <footer className="mt-4 flex flex-wrap gap-1.5">
                   {exp.tech.map((t) => (
                     <span
                       key={t}
@@ -52,9 +54,9 @@ const Experience: React.FC = () => {
                       {t}
                     </span>
                   ))}
-                </div>
+                </footer>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>

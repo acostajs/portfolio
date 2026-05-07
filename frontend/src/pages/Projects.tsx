@@ -15,7 +15,7 @@ const Projects: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, idx) => (
-            <div
+            <article
               key={idx}
               className="group bg-white/5 border border-border rounded-2xl overflow-hidden hover:border-accent/50 transition-all flex flex-col shadow-xl backdrop-blur-sm"
             >
@@ -25,9 +25,11 @@ const Projects: React.FC = () => {
               </div>
 
               <div className="p-6 flex-1 flex flex-col">
-                <h3 className="text-xl font-bold text-text-header mb-2">
-                  {project.title}
-                </h3>
+                <header>
+                  <h3 className="text-xl font-bold text-text-header mb-2">
+                    {project.title}
+                  </h3>
+                </header>
                 <p className="text-text text-sm mb-6 leading-relaxed flex-1">
                   {project.description}
                 </p>
@@ -43,7 +45,7 @@ const Projects: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-4 mt-auto">
+                <footer className="flex items-center gap-4 mt-auto">
                   {project.link && (
                     <a
                       href={project.link}
@@ -66,9 +68,9 @@ const Projects: React.FC = () => {
                       {t.projects.viewGithub}
                     </a>
                   )}
-                </div>
+                </footer>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
