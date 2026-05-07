@@ -7,7 +7,7 @@ const Projects: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+    <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-8">
           {t.projects.title}
@@ -74,7 +74,7 @@ const Projects: React.FC = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

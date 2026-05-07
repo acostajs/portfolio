@@ -44,7 +44,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+    <article className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
       <section className="max-w-3xl mx-auto">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-4">
@@ -140,7 +140,7 @@ const Contact: React.FC = () => {
           </form>
         )}
       </section>
-    </div>
+    </article>
   );
 };
 
