@@ -21,7 +21,7 @@ const Contact: React.FC = () => {
     setStatus("loading");
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "ac899b83-2b9a-4333-afac-7c0048e1782d");
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY || "");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {

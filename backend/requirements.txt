@@ -16,6 +16,8 @@ h11==0.16.0
     # via uvicorn
 idna==3.13
     # via anyio
+psycopg2-binary==2.9.12
+    # via backend (pyproject.toml)
 pydantic==2.13.4
     # via
     #   fastapi
