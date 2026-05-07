@@ -86,10 +86,14 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full py-2 px-4 bg-success text-white rounded-full font-bold text-xs hover:brightness-110 transition-all shadow-md mb-4 group">
+            <a
+              href={t.common.resumePath}
+              download
+              className="flex items-center justify-center w-full py-2 px-4 bg-success text-white rounded-full font-bold text-xs hover:brightness-110 transition-all shadow-md mb-4 group"
+            >
               <Download className="w-3.5 h-3.5 mr-2 group-hover:animate-bounce" />
               {t.common.downloadResume}
-            </button>
+            </a>
 
             <div className="text-center">
               <h2 className="text-xl font-bold text-text-header tracking-tight">

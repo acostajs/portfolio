@@ -60,5 +60,5 @@
 
 ## Phase 5: Contact & Cleanup
 
-- [ ] Connect Contact page to Web3Forms using the public key.
-- [ ] Final audit for semantic HTML and Tailwind consistency.
+- [x] Connect Contact page to Web3Forms using the public key.
+- [x] Final audit for semantic HTML and Tailwind consistency.

@@ -10,6 +10,7 @@ export const es: TranslationType = {
     linkedin: "juan-acosta-pinilla",
     github: "acostajs",
     downloadResume: "Descargar CV",
+    resumePath: "/files/Juan_Acosta_CV_ES.pdf",
     availabilityTitle: "Disponibilidad:",
   },
   nav: {
@@ -60,5 +61,9 @@ export const es: TranslationType = {
     formEmail: "Correo electrónico",
     formMessage: "Mensaje",
     formSend: "Enviar Mensaje",
+    successTitle: "¡Mensaje Enviado!",
+    successMessage: "Gracias por contactarme. Te responderé pronto.",
+    errorTitle: "¡Ups!",
+    errorMessage: "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
   },
 };

@@ -8,6 +8,7 @@ export const en = {
     linkedin: "juan-acosta-pinilla",
     github: "acostajs",
     downloadResume: "Download Resume",
+    resumePath: "/files/Juan_Acosta_CV_EN.pdf",
     availabilityTitle: "Availability:",
   },
   nav: {
@@ -58,6 +59,10 @@ export const en = {
     formEmail: "Email",
     formMessage: "Message",
     formSend: "Send Message",
+    successTitle: "Message Sent!",
+    successMessage: "Thank you for reaching out. I'll get back to you soon.",
+    errorTitle: "Oops!",
+    errorMessage: "Something went wrong. Please try again later.",
   },
 };
 
