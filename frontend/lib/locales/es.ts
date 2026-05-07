@@ -10,6 +10,7 @@ export const es: TranslationType = {
     linkedin: "juan-acosta-pinilla",
     github: "acostajs",
     downloadResume: "Descargar CV",
+    resumePath: "/files/Juan_Acosta_CV_ES.pdf",
     availabilityTitle: "Disponibilidad:",
   },
   nav: {

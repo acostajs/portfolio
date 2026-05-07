@@ -8,6 +8,7 @@ export const en = {
     linkedin: "juan-acosta-pinilla",
     github: "acostajs",
     downloadResume: "Download Resume",
+    resumePath: "/files/Juan_Acosta_CV_EN.pdf",
     availabilityTitle: "Availability:",
   },
   nav: {
