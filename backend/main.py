@@ -1,8 +1,13 @@
 import logging
 import random
 import time
+import sys
+import os
 from contextlib import asynccontextmanager
 from typing import List, Optional
+
+# Add the current directory to sys.path to ensure local imports work on Vercel
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import BackgroundTasks, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
