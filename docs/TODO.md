@@ -62,3 +62,22 @@
 
 - [x] Connect Contact page to Web3Forms using the public key.
 - [x] Final audit for semantic HTML and Tailwind consistency.
+
+## Phase 6: UI Refinement, Audit & Groq AI Integration
+
+- [x] **Audit & Optimization**
+  - [x] Codebase Audit: Perform a deep dive for semantic HTML improvements and Tailwind CSS consistency.
+  - [x] Tree Shaking: Identify and remove unused components, dead types, and redundant Tailwind utility classes.
+  - [x] Security & Stability: Scan for logic bugs and potential security risks in both frontend and backend handlers.
+
+- [x] **UI/UX Improvements**
+  - [x] Sticky Navigation: Fix the Header position to ensure it remains accessible when the chat or page content extends.
+  - [x] Chat Layout: Pin the chatbot input to the bottom of the viewport so it stays visible regardless of message history length.
+  - [x] Typography Refresh: Update global CSS variables to implement new font stacks:
+    - Sans: Space Grotesk, system fonts.
+    - Mono: ui-monospace, SFMono-Regular, and standard fallbacks.
+
+- [ ] **AI Backend & Persona (Trigger-Based Logic)**
+  - [x] Restore trigger-based response modules in `backend/responses/`.
+  - [ ] Refine keyword triggers for better accuracy.
+  - [ ] Expand response dataset for EN, FR, and ES.
