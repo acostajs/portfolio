@@ -10,10 +10,7 @@
     },
     {
       "src": "backend/main.py",
-      "use": "@vercel/python",
-      "config": {
-        "installCommand": "pip install uv && uv pip install -r requirements.txt"
-      }
+      "use": "@vercel/python"
     }
   ],
   "rewrites": [
