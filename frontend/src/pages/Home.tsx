@@ -19,15 +19,6 @@ const Home: React.FC = () => {
     },
   ]);
 
-  // Update initial message when language changes
-  useEffect(() => {
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.isInitial ? { ...msg, content: t.home.welcome } : msg,
-      ),
-    );
-  }, [locale, t.home.welcome]);
-
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -101,7 +92,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full overflow-hidden">
+    <div key={locale} className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Chat Messages Area - This scrolls */}
       <div
         ref={scrollRef}

@@ -1,1 +1,13 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# 1. Run full project linting (includes ruff check & type-check)
+bun run lint
+
+# 2. Run tests (placeholder for now)
+bun run test
+
+# 3. Run lint-staged for surgical formatting and checks on staged files
 bunx lint-staged

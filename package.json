@@ -11,25 +11,28 @@
     "dev:backend": "cd backend && uv run uvicorn main:app --reload",
     "build": "bun --cwd frontend install && bun --cwd frontend run build",
     "lint": "bun run lint:frontend && bun run lint:backend",
-    "lint:frontend": "bun --cwd frontend run lint",
-    "lint:backend": "cd backend && uv run ruff check .",
-    "type-check": "bun --cwd frontend run type-check",
-    "format": "bun --cwd frontend run format && cd backend && uv run ruff format .",
+    "lint:frontend": "cd frontend && bun run lint && bun run type-check",
+    "lint:backend": "cd backend && uv run ruff check . && uv run ruff format --check .",
+    "test": "echo \"No tests configured yet\"",
+    "format": "prettier --write . && cd backend && uv run ruff format .",
     "prepare": "husky"
   },
   "lint-staged": {
     "frontend/**/*.{ts,tsx}": [
-      "bun --cwd frontend run lint",
-      "bun --cwd frontend run type-check",
+      "cd frontend && bun run lint",
+      "cd frontend && bun run type-check",
       "prettier --write"
     ],
     "frontend/**/*.{js,jsx}": [
-      "bun --cwd frontend run lint",
+      "cd frontend && bun run lint",
       "prettier --write"
     ],
     "backend/**/*.py": [
       "cd backend && uv run ruff check --fix",
       "cd backend && uv run ruff format"
+    ],
+    "**/*.{json,md,css}": [
+      "prettier --write"
     ]
   },
   "devDependencies": {

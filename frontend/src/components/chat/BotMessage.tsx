@@ -31,6 +31,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
       <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm">
         <p className="text-text-header font-medium mb-4 leading-relaxed">
           <Typewriter
+            key={content}
             text={content}
             onComplete={() => isInitial && setShowSub(true)}
           />
@@ -40,6 +41,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
           <div className="space-y-4 animate-fade-in">
             <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
               <Typewriter
+                key={subwelcome}
                 text={subwelcome || ""}
                 onComplete={() => setShowFeatures(true)}
               />
@@ -63,7 +65,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
 
         {isInitial && showFeatures && (
           <p className="text-text mt-8 leading-relaxed italic opacity-80 animate-fade-in">
-            <Typewriter text={closing || ""} speed={10} />
+            <Typewriter key={closing} text={closing || ""} speed={10} />
           </p>
         )}
       </div>
