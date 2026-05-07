@@ -18,6 +18,16 @@ const Home: React.FC = () => {
       isInitial: true,
     },
   ]);
+
+  // Update initial message when language changes
+  useEffect(() => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.isInitial ? { ...msg, content: t.home.welcome } : msg,
+      ),
+    );
+  }, [locale, t.home.welcome]);
+
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
