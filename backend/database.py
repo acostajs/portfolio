@@ -7,13 +7,21 @@ sqlite_url = "sqlite:///./portfolio.db"
 database_url = settings.DATABASE_URL or sqlite_url
 
 # connect_args={"check_same_thread": False} is required for SQLite
-engine = create_engine(
-    database_url,
-    echo=True if settings.ENVIRONMENT == "development" else False,
-    connect_args={"check_same_thread": False}
-    if database_url.startswith("sqlite")
-    else {},
-)
+# For Postgres (Production), we don't need it.
+if database_url.startswith("sqlite"):
+    engine = create_engine(
+        database_url,
+        echo=True if settings.ENVIRONMENT == "development" else False,
+        connect_args={"check_same_thread": False},
+    )
+else:
+    # Postgres configuration (Neon/Vercel)
+    engine = create_engine(
+        database_url,
+        echo=True if settings.ENVIRONMENT == "development" else False,
+        # Ensure we use a pool size that fits serverless limits if needed
+        pool_pre_ping=True,
+    )
 
 
 def create_db_and_tables():
