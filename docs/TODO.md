@@ -46,17 +46,17 @@
 
 - [x] Setup FastAPI `BackgroundTasks` for silent visitor tracking.
 - [x] Create database schema (Visitor Analytics & Chat History).
-- [x] Build Chatbot logic (LLM integration - currently mock).
+- [x] Build Chatbot logic (Mock with randomized multilingual responses).
 - [x] **DUMMY DATA:** Implement mock API response to simulate chatbot interaction.
 - [x] Correct Python version to 3.12.
 - [x] Setup GitHub CI workflows for frontend and backend.
 
 ## Phase 4: Deployment Readiness (Vercel focus)
 
-- [ ] Create `vercel.json` at root for monorepo routing.
-- [ ] Configure Environment Variables in Vercel (Web3Forms, Backend URL).
-- [ ] Optimize Bun build script for Vercel.
-- [ ] Set up production-ready CORS policy in FastAPI.
+- [x] Create `vercel.json` at root for monorepo routing.
+- [x] Configure Environment Variables in Vercel (Web3Forms, Backend URL).
+- [x] Optimize Bun build script for Vercel.
+- [x] Set up production-ready CORS policy in FastAPI.
 
 ## Phase 5: Contact & Cleanup
 
