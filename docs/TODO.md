@@ -53,9 +53,9 @@
 
 ## Phase 4: Deployment Readiness (Vercel focus)
 
-- [ ] Create `vercel.json` at root for monorepo routing.
-- [ ] Configure Environment Variables in Vercel (Web3Forms, Backend URL).
-- [ ] Optimize Bun build script for Vercel.
+- [x] Create `vercel.json` at root for monorepo routing.
+- [x] Configure Environment Variables in Vercel (Web3Forms, Backend URL).
+- [x] Optimize Bun build script for Vercel.
 - [x] Set up production-ready CORS policy in FastAPI.
 
 ## Phase 5: Contact & Cleanup
