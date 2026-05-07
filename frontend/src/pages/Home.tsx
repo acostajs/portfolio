@@ -10,7 +10,7 @@ interface Message {
 }
 
 const Home: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -64,6 +64,7 @@ const Home: React.FC = () => {
         },
         body: JSON.stringify({
           message: userMessage,
+          language: locale,
           history: messages.map((m) => ({ role: m.role, content: m.content })),
         }),
       });

@@ -43,6 +43,7 @@ class ChatMessageBase(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+    language: str = "en"
     history: List[ChatMessageBase] = []
 
 
@@ -130,18 +131,19 @@ async def health():
 @app.post("/api/v1/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     user_message = request.message.lower()
+    lang = request.language if request.language in ["en", "es", "fr"] else "en"
 
     # Determine response based on triggers
     if any(t in user_message for t in about.data["triggers"]):
-        reply = random.choice(about.data["answers"])
+        reply = random.choice(about.data["answers"][lang])
     elif any(t in user_message for t in experience.data["triggers"]):
-        reply = random.choice(experience.data["answers"])
+        reply = random.choice(experience.data["answers"][lang])
     elif any(t in user_message for t in projects.data["triggers"]):
-        reply = random.choice(projects.data["answers"])
+        reply = random.choice(projects.data["answers"][lang])
     elif any(t in user_message for t in contact.data["triggers"]):
-        reply = random.choice(contact.data["answers"])
+        reply = random.choice(contact.data["answers"][lang])
     else:
-        reply = random.choice(fallback.data["answers"])
+        reply = random.choice(fallback.data["answers"][lang])
 
     # Save to history in background
     background_tasks.add_task(save_chat_interaction, request.message, reply)

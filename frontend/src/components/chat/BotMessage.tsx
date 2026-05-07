@@ -18,7 +18,6 @@ const BotMessage: React.FC<BotMessageProps> = ({
 }) => {
   const [showSub, setShowSub] = useState(!isInitial);
   const [showFeatures, setShowFeatures] = useState(!isInitial);
-  const [showClosing, setShowClosing] = useState(!isInitial);
 
   return (
     <div className="flex items-start max-w-3xl animate-slide-in-left">
