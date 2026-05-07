@@ -1,5 +1,9 @@
 data = {
-    "triggers": ["experience", "work", "job", "career", "history", "professional", "company"],
+    "triggers": [
+        "experience", "work", "job", "career", "history", "professional", "company",
+        "experiencia", "trabajo", "empleo", "carrera", "profesional", "empresa", "trayectoria",
+        "expérience", "travail", "emploi", "carrière", "professionnel", "entreprise", "parcours"
+    ],
     "answers": {
         "en": [
             "Juan has experience as a Full-Stack Developer, working on AI-driven portfolios and high-performance web apps using React and FastAPI.",

@@ -1,5 +1,9 @@
 data = {
-    "triggers": ["project", "portfolio", "built", "made", "showcase", "works", "github"],
+    "triggers": [
+        "project", "portfolio", "built", "made", "showcase", "works", "github",
+        "proyecto", "portafolio", "hecho", "trabajos", "repositorio",
+        "projet", "portfolio", "fait", "travaux", "répertoire"
+    ],
     "answers": {
         "en": [
             "One of Juan's main projects is this AI-powered portfolio, built with a modern stack including React, FastAPI, and Tailwind CSS.",

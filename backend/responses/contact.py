@@ -1,5 +1,9 @@
 data = {
-    "triggers": ["contact", "email", "reach", "hire", "talk", "message", "linkedin"],
+    "triggers": [
+        "contact", "email", "reach", "hire", "talk", "message", "linkedin",
+        "contacto", "correo", "hablar", "mensaje", "escribir",
+        "contacter", "courriel", "parler", "message", "écrire"
+    ],
     "answers": {
         "en": [
             "You can contact Juan at acosta.juan@icloud.com or through the contact form on this site. He's always open to new opportunities!",

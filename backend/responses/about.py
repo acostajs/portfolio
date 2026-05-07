@@ -1,5 +1,9 @@
 data = {
-    "triggers": ["about", "who", "bio", "background", "story", "yourself", "skill", "tech", "proficient", "know"],
+    "triggers": [
+        "about", "who", "bio", "background", "story", "yourself", "skill", "tech", "proficient", "know",
+        "sobre", "quién", "quien", "historia", "habilidades", "tecnología", "conocer", "perfil",
+        "propos", "qui", "histoire", "compétences", "technologie", "connaître", "profil"
+    ],
     "answers": {
         "en": [
             "Juan is a passionate Web Developer based in Montréal, dedicated to building clean, efficient, and user-centric web applications. He loves solving complex problems!",
