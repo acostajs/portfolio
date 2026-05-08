@@ -6,6 +6,7 @@ import Experience from "./pages/Experience";
 import Projects from "./pages/Projects";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
+import Analytics from "./pages/Analytics";
 import { type PageId } from "./components/layout/Sidebar";
 import { useTranslation } from "../lib/hooks/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,6 +29,8 @@ function App() {
         return <Blog />;
       case "contact":
         return <Contact />;
+      case "analytics":
+        return <Analytics />;
       default:
         return <Home />;
     }

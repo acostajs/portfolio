@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:5173"
     DATABASE_URL: Optional[str] = None
     ENVIRONMENT: str = "development"
+    ANALYTICS_PASSWORD: str = "admin123"
 
 
 settings = Settings()

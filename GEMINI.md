@@ -23,40 +23,49 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Version 0.1.0: Motion & High-End Visuals**.
+The project is currently in **Version 0.1.2: Platform & Analytics**.
 
 ### Major Milestones Completed
 
 - **Version 0.0.1-2**: Infrastructure, i18n engine, and core UI shell (Header/Sidebar).
 - **Version 0.0.3-4**: FastAPI backend with telemetry, SQLModel integration, and Vercel deployment readiness.
 - **Version 0.0.5-8**: Web3Forms integration, mobile UX refinements, a localized trigger-based chatbot persona, and final polish/optimization.
+- **Version 0.0.9-0.1.0**: AI persona expansion (Technical & HR), Markdown support, Blog module, and Motion/Visual polish.
+- **Version 0.1.1**: Global Command Palette (Cmd+K), Haptic feedback, accessibility (a11y) improvements, and SEO optimization.
 
-### TODO: Establish Build/Run Scripts
+## Building and Running
 
-As the infrastructure is still being set up, the following commands are anticipated:
+### Root-Level Orchestration
 
-#### Frontend (Planned)
+The project uses a monorepo structure with root-level scripts for ease of use:
+
+#### Initial Setup
 
 ```bash
-cd frontend
+# Setup both frontend and backend
 bun install
-bun run dev
+npm run setup:backend
 ```
 
-#### Backend (Planned)
-
-Using **uv** for fast package management:
+#### Development
 
 ```bash
-# Initialize backend environment (Recommended)
-npm run setup:backend
+# Run frontend and backend in separate terminals
+bun run dev:frontend
+bun run dev:backend
+```
 
-# Or manually:
-cd backend
-uv venv
-source .venv/bin/activate
-uv sync
-uv run uvicorn main:app --reload
+#### Quality Control
+
+```bash
+# Linting and Type-checking
+bun run lint
+
+# Testing
+bun run test
+
+# Formatting
+bun run format
 ```
 
 ## Development Conventions

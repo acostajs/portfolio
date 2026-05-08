@@ -11,6 +11,9 @@ An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trig
 
 ## Key Features
 
+- **Analytics Dashboard**: Secure, password-protected dashboard to visualize visitor telemetry and chat query statistics.
+- **Progressive Web App (PWA)**: Offline availability and "Add to Home Screen" support via `vite-plugin-pwa`.
+- **Hands-Free Voice Interaction**: Integrated Web Speech API for speech-to-text input and text-to-speech chatbot responses.
 - **Advanced AI Persona**: Modular technical expertise and HR screening simulation with 20+ specialized categories.
 - **Markdown Chat Support**: Formatted responses with syntax highlighting for code blocks.
 - **Lightweight Blog Module**: Multi-language technical notes and articles section.
@@ -31,13 +34,30 @@ An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trig
 
 ### Backend
 
+From the root directory:
+
+```bash
+npm run setup:backend
+npm run dev:backend
+```
+
+Or manually from the `backend` folder:
+
 ```bash
 cd backend
-npm run setup:backend # Or use uv directly
+uv sync
 uv run uvicorn main:app --reload
 ```
 
 ### Frontend
+
+From the root directory:
+
+```bash
+npm run dev:frontend
+```
+
+Or manually from the `frontend` folder:
 
 ```bash
 cd frontend
