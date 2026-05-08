@@ -16,6 +16,7 @@ export const en = {
     about: "About",
     experience: "Experience",
     projects: "Projects",
+    blog: "Blog",
     contact: "Contact",
   },
   home: {
@@ -39,6 +40,7 @@ export const en = {
         { cmd: "/about", desc: "Go to About page." },
         { cmd: "/experience", desc: "Go to Experience page." },
         { cmd: "/projects", desc: "Go to Projects page." },
+        { cmd: "/blog", desc: "Go to Blog page." },
         { cmd: "/contact", desc: "Go to Contact page." },
       ],
     },
@@ -63,6 +65,11 @@ export const en = {
     title: "Recent Projects",
     viewProject: "View Project",
     viewGithub: "GitHub",
+  },
+  blog: {
+    title: "Technical Notes",
+    readMore: "Read More",
+    backToList: "Back to List",
   },
   contact: {
     title: "Get in Touch",

@@ -103,9 +103,13 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     }
 
     // Navigation commands
-    const navMatch = ["/about", "/experience", "/projects", "/contact"].find(
-      (n) => cleanCmd === n,
-    );
+    const navMatch = [
+      "/about",
+      "/experience",
+      "/projects",
+      "/blog",
+      "/contact",
+    ].find((n) => cleanCmd === n);
 
     if (navMatch && onNavigate) {
       onNavigate(navMatch.substring(1) as PageId);

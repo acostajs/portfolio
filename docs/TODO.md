@@ -13,7 +13,7 @@
   - **Work Style**: Remote communication preferences and professional growth motivations.
   - **Evaluation**: Implement logic to evaluate the balance between "technical ego" and team collaboration.
 - [x] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting for code blocks.
-- [ ] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes and articles.
+- [x] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes and articles.
 
 ## ⏳ Backlog & Future Ideas
 

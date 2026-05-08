@@ -18,6 +18,7 @@ export const es: TranslationType = {
     about: "Sobre mí",
     experience: "Experiencia",
     projects: "Proyectos",
+    blog: "Blog",
     contact: "Contacto",
   },
   home: {
@@ -41,6 +42,7 @@ export const es: TranslationType = {
         { cmd: "/about", desc: "Ir a la página Sobre mí." },
         { cmd: "/experience", desc: "Ir a la página de Experiencia." },
         { cmd: "/projects", desc: "Ir a la página de Proyectos." },
+        { cmd: "/blog", desc: "Ir a la página de Blog." },
         { cmd: "/contact", desc: "Ir a la página de Contacto." },
       ],
     },
@@ -65,6 +67,11 @@ export const es: TranslationType = {
     title: "Proyectos Recientes",
     viewProject: "Ver Proyecto",
     viewGithub: "GitHub",
+  },
+  blog: {
+    title: "Notas Técnicas",
+    readMore: "Leer más",
+    backToList: "Volver a la lista",
   },
   contact: {
     title: "Ponte en Contacto",
