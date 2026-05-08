@@ -21,8 +21,7 @@ export const en = {
   home: {
     welcome: "Hi! I'm Juan Acosta's portfolio assistant. 👋",
     subwelcome: "I can tell you about:",
-    chatbotPlaceholder:
-      "Ask me anything about Juan's skills, projects, or experience...",
+    chatbotPlaceholder: "Ask me about Juan's skills, projects...",
     features: [
       "Skills & Technologies",
       "Projects & Experience",

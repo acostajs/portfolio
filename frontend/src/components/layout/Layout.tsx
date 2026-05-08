@@ -19,7 +19,7 @@ const Layout: React.FC<LayoutProps> = ({
   const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
-    <div className="flex h-screen bg-bg transition-colors duration-300 overflow-hidden">
+    <div className="flex h-dvh bg-bg transition-colors duration-300 overflow-hidden">
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={closeSidebar}

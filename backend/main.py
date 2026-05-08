@@ -173,8 +173,8 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
 @app.get("/api/v1/chat/history")
 async def get_chat_history():
     with Session(engine) as session:
-        from sqlmodel import select
+        from sqlmodel import select, desc
 
-        statement = select(ChatMessage).order_by(ChatMessage.timestamp.desc()).limit(50)
+        statement = select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
         results = session.exec(statement).all()
         return results

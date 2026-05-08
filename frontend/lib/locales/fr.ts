@@ -23,8 +23,7 @@ export const fr: TranslationType = {
   home: {
     welcome: "Salut ! Je suis l'assistant du portfolio de Juan Acosta. 👋",
     subwelcome: "Je peux vous parler de :",
-    chatbotPlaceholder:
-      "Demandez-moi n'importe quoi sur les compétences, les projets ou l'expérience de Juan...",
+    chatbotPlaceholder: "Demandez-moi sur Juan...",
     features: [
       "Compétences et technologies",
       "Projets et expérience",

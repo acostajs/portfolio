@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col h-full overflow-y-auto custom-scrollbar pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
           {/* Top Profile Section */}
           <div className="p-5 flex flex-col items-center">
             <div className="relative mb-3">

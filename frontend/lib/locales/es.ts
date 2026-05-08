@@ -23,8 +23,7 @@ export const es: TranslationType = {
   home: {
     welcome: "¡Hola! Soy el asistente del portafolio de Juan Acosta. 👋",
     subwelcome: "Puedo contarte sobre:",
-    chatbotPlaceholder:
-      "Pregúntame cualquier cosa sobre las habilidades, proyectos o experiencia de Juan...",
+    chatbotPlaceholder: "Pregúntame sobre Juan...",
     features: [
       "Habilidades y Tecnologías",
       "Proyectos y Experiencia",

@@ -2,19 +2,6 @@
 
 ## 🎯 Current Phase: Final Polish & Optimization
 
-- [ ] **Mobile Viewport & Technical Fixes**: Ensure a robust experience across iOS and Android browsers:
-  - **Dynamic Viewport**: Replace `100vh` with `100dvh` (Dynamic Viewport Height) on the main container to handle shifting address bars.
-  - **Safe Areas**: Implement `padding-bottom: env(safe-area-inset-bottom)` for the input container and `padding-top: env(safe-area-inset-top)` for the header.
-  - **Anchoring**: Verify `position: fixed` / `sticky` anchoring for the input as the browser UI expands/contracts.
-  - **Keyboard Management**: Test and fix "keyboard-up" behavior to ensure the input field is lifted into view when the virtual keyboard opens.
-- [ ] **Mobile UI Refinement (Visual Audit)**: Address issues identified in mobile screenshots:
-  - **Header**: Fix truncation of "Asistente de..." and optimize spacing between language/theme toggles.
-  - **i18n Bug**: Fix hardcoded English greeting ("Hi! I'm Juan...") appearing when the language is set to Spanish or French.
-  - **Input Field**: Optimize the placeholder text to prevent truncation on narrow screens.
-  - **Chat Layout**: Adjust message bubble padding/margins to improve readability on mobile.
-- [ ] **Strengthen Pre-commit Hooks**: Update Husky/root configuration to run a full validation suite before every commit:
-  - **Backend**: `uv run ruff check`, `uv run ruff format`, `uv run pyright`, `uv run pytest`.
-  - **Frontend**: `bun tsc --noEmit`, `bun run lint`, `bun test`.
 - [ ] **API Documentation Sync**: Align `docs/API.md` with the actual implementation (Middleware-based telemetry, etc.).
 - [ ] **Session Persistence**: Implement `localStorage` in the frontend to keep chat history across page refreshes.
 - [ ] **Lighthouse Optimization**: Conduct a final performance audit to ensure 90+ scores across the board.
@@ -43,7 +30,11 @@
 - [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
 - [ ] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
 
-## ✅ Archive (Completed)
+### Phase 8: Final Polish & Optimization
+
+- [x] **Strengthen Pre-commit Hooks**: Updated Husky/root configuration to run a full validation suite (Ruff, Pyright, Pytest, TSC, ESLint, Bun test).
+- [x] **Mobile Viewport & Technical Fixes**: Implemented `100dvh`, safe area insets, and robust flexbox anchoring.
+- [x] **Mobile UI Refinement (Visual Audit)**: Optimized header spacing, fixed i18n remounting bug, and shortened placeholders.
 
 ### Phase 7: Mobile UX, Messaging & Persona
 
