@@ -21,13 +21,29 @@ const Contact: React.FC = () => {
     setStatus("loading");
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY || "");
+    const object = Object.fromEntries(formData);
+
+    // Web3Forms configuration
+    const json = JSON.stringify({
+      ...object,
+      access_key: import.meta.env.VITE_WEB3FORMS_KEY || "",
+      subject: "New Message from Portfolio Contact Form",
+      from_name: object.name,
+    });
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
 
@@ -69,6 +85,14 @@ const Contact: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Honeypot Spam Protection */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              className="hidden"
+              style={{ display: "none" }}
+            ></input>
+
             {status === "error" && (
               <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-xl flex items-center text-red-500 animate-fade-in">
                 <AlertCircle className="w-5 h-5 mr-3 shrink-0" />

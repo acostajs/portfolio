@@ -28,19 +28,19 @@ data = {
     ],
     "answers": {
         "en": [
-            "Juan is a passionate Web Developer based in Montréal, dedicated to building clean, efficient, and user-centric web applications. He loves solving complex problems!",
-            "Based in Montréal, Juan focuses on React and FastAPI development. He's driven by curiosity and a desire to create digital experiences that make a difference.",
-            "Juan is a developer who specializes in modern web technologies like TypeScript, Bun, and Python. He's always looking for ways to optimize performance and user experience.",
+            "I'm a passionate Web Developer based in Montréal! I love building clean, efficient applications and solving complex problems with code. 😊",
+            "I'm focused on React and FastAPI development here in Montréal. I'm always curious and looking for new ways to create great digital experiences.",
+            "I specialize in modern web tech like TypeScript, Bun, and Python. I'm always aiming to optimize performance and make things smooth for users!",
         ],
         "es": [
-            "Juan es un apasionado desarrollador web radicado en Montreal, dedicado a crear aplicaciones web limpias, eficientes y centradas en el usuario. ¡Le encanta resolver problemas complejos!",
-            "Con sede en Montreal, Juan se enfoca en el desarrollo con React y FastAPI. Lo impulsa la curiosidad y el deseo de crear experiencias digitales que marquen la diferencia.",
-            "Juan es un desarrollador especializado en tecnologías web modernas como TypeScript, Bun y Python. Siempre busca formas de optimizar el rendimiento y la experiencia del usuario.",
+            "¡Soy un apasionado desarrollador web radicado en Montreal! Me encanta crear aplicaciones limpias y eficientes, y resolver problemas complejos con código. 😊",
+            "Me enfoco en el desarrollo con React y FastAPI aquí en Montreal. Siempre tengo curiosidad y busco nuevas formas de crear excelentes experiencias digitales.",
+            "Me especializo en tecnologías web modernas como TypeScript, Bun y Python. ¡Mi objetivo siempre es optimizar el rendimiento y hacer que todo sea fluido para los usuarios!",
         ],
         "fr": [
-            "Juan est un développeur Web passionné basé à Montréal, dédié à la création d'applications Web propres, efficaces et centrées sur l'utilisateur. Il adore résoudre des problèmes complexes !",
-            "Basé à Montréal, Juan se concentre sur le développement React et FastAPI. Il est animé par la curiosité et le désir de créer des expériences numériques qui font la différence.",
-            "Juan est un développeur spécialisé dans les technologies Web modernes comme TypeScript, Bun et Python. Il cherche toujours des moyens d'optimiser les performances et l'expérience utilisateur.",
+            "Je suis un développeur Web passionné basé à Montréal ! J'adore créer des applications propres et efficaces et résoudre des problèmes complexes avec du code. 😊",
+            "Je me concentre sur le développement React et FastAPI ici à Montréal. Je suis toujours curieux et je cherche de nouvelles façons de créer de superbes expériences numériques.",
+            "Je me spécialise dans les technologies Web modernes comme TypeScript, Bun et Python. Je cherche toujours à optimiser les performances et à rendre les choses fluides pour les utilisateurs !",
         ],
     },
 }

@@ -1,19 +1,19 @@
 data = {
     "answers": {
         "en": [
-            "That's an interesting question about Juan! Currently, I'm his specialized assistant. Can I tell you about his skills, projects, or how to contact him?",
-            "I'm not quite sure about that, but I can certainly help you learn more about Juan's background, experience, or recent works!",
-            "Interesting! While I focus on Juan's professional portfolio, I'd be happy to tell you about his expertise in React and FastAPI.",
+            "That's a great question! I'm still learning, but I can definitely tell you all about my skills, the projects I've built, or how to get in touch with me. 😊",
+            "I'm not quite sure about that one, but I'd love to chat about my background, tech stack, or some of the cool things I've been working on lately!",
+            "Interesting! While I'm focused on my professional portfolio here, I'd be happy to dive into my experience with React, FastAPI, or anything else in my toolkit.",
         ],
         "es": [
-            "¡Es una pregunta interesante sobre Juan! Actualmente, soy su asistente especializado. ¿Puedo hablarte sobre sus habilidades, proyectos o cómo contactarlo?",
-            "No estoy muy seguro de eso, ¡pero sin duda puedo ayudarte a aprender más sobre la trayectoria, experiencia o trabajos recientes de Juan!",
-            "¡Interesante! Aunque me enfoco en el portafolio profesional de Juan, me encantaría contarte sobre su experiencia en React y FastAPI.",
+            "¡Esa es una gran pregunta! Todavía estoy aprendiendo, pero definitivamente puedo contarte todo sobre mis habilidades, los proyectos que he construido o cómo contactarme. 😊",
+            "No estoy muy seguro de eso, ¡pero me encantaría charlar sobre mi trayectoria, mi stack tecnológico o algunas de las cosas geniales en las que he estado trabajando últimamente!",
+            "¡Interesante! Aunque aquí me enfoco en mi portafolio profesional, me encantaría profundizar en mi experiencia con React, FastAPI o cualquier otra cosa en mi arsenal.",
         ],
         "fr": [
-            "C'est une question intéressante sur Juan ! Actuellement, je suis son assistant spécialisé. Puis-je vous parler de ses compétences, de ses projets ou de la façon de le contacter ?",
-            "Je ne suis pas tout à fait sûr de cela, mais je peux certainement vous aider à en savoir plus sur le parcours de Juan, son expérience ou ses travaux récents !",
-            "Intéressant ! Bien que je me concentre sur le portfolio professionnel de Juan, je serais ravi de vous parler de son expertise en React et FastAPI.",
+            "C'est une excellente question ! J'apprends encore, mais je peux certainement tout vous dire sur mes compétences, les projets que j'ai réalisés ou comment me contacter. 😊",
+            "Je ne suis pas tout à fait sûr de cela, mais j'adorerais discuter de mon parcours, de mon stack technique ou de certaines des choses sympas sur lesquelles j'ai travaillé récemment !",
+            "Intéressant ! Bien que je me concentre ici sur mon portfolio professionnel, je serais ravi de plonger dans mon expérience avec React, FastAPI ou tout autre outil de mon arsenal.",
         ],
     }
 }

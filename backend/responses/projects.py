@@ -20,19 +20,19 @@ data = {
     ],
     "answers": {
         "en": [
-            "One of Juan's main projects is this AI-powered portfolio, built with a modern stack including React, FastAPI, and Tailwind CSS.",
-            "He has developed several full-stack applications focusing on performance and multilingual support. You can check his GitHub for more!",
-            "Juan's projects often combine clean UI/UX with efficient backend logic, such as interactive chatbots and telemetry systems.",
+            "One of my main projects is actually this AI-powered portfolio! I built it with React, FastAPI, and Tailwind CSS. 💻",
+            "I've developed several full-stack apps with a focus on performance and multi-language support. You can check out my GitHub to see the code!",
+            "My projects usually mix clean UI/UX with efficient backends, like this interactive chatbot and my visitor telemetry system.",
         ],
         "es": [
-            "Uno de los proyectos principales de Juan es este portafolio impulsado por IA, creado con un stack moderno que incluye React, FastAPI y Tailwind CSS.",
-            "Ha desarrollado varias aplicaciones full-stack centrándose en el rendimiento y el soporte multilingüe. ¡Puedes consultar su GitHub para ver más!",
-            "Los proyectos de Juan a menudo combinan una interfaz limpia con una lógica de backend eficiente, como chatbots interactivos y sistemas de telemetría.",
+            "¡Uno de mis proyectos principales es precisamente este portafolio impulsado por IA! Lo construí con React, FastAPI y Tailwind CSS. 💻",
+            "He desarrollado varias aplicaciones full-stack enfocadas en el rendimiento y el soporte multilingüe. ¡Puedes echar un vistazo a mi GitHub para ver el código!",
+            "Mis proyectos suelen mezclar una interfaz limpia con backends eficientes, como este chatbot interactivo y mi sistema de telemetría de visitantes.",
         ],
         "fr": [
-            "L'un des projets principaux de Juan est ce portfolio propulsé par l'IA, construit avec une pile moderne comprenant React, FastAPI et Tailwind CSS.",
-            "Il a développé plusieurs applications full-stack en se concentrant sur la performance et le support multilingue. Vous pouvez consulter son GitHub pour en savoir plus !",
-            "Les projets de Juan combinent souvent une interface utilisateur épurée avec une logique backend efficace, comme des chatbots interactifs et des systèmes de télémétrie.",
+            "L'un de mes projets principaux est justement ce portfolio propulsé par l'IA ! Je l'ai construit avec React, FastAPI et Tailwind CSS. 💻",
+            "J'ai développé plusieurs applications full-stack en mettant l'accent sur la performance et le support multilingue. Vous pouvez consulter mon GitHub pour voir le code !",
+            "Mes projets mélangent généralement une interface utilisateur épurée avec des backends efficaces, comme ce chatbot interactif et mon système de télémétrie des visiteurs.",
         ],
     },
 }
