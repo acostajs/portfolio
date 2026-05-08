@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+
+const theme = vscDarkPlus as unknown as {
+  [key: string]: React.CSSProperties;
+};
 
 interface BotMessageProps {
   content: string;
@@ -62,17 +66,15 @@ const BotMessage: React.FC<BotMessageProps> = ({
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
-              code({ className, children, ...props }) {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              code({ node, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "");
                 const isInline = !match;
                 return !isInline ? (
                   <SyntaxHighlighter
-                    style={
-                      vscDarkPlus as { [key: string]: React.CSSProperties }
-                    }
+                    style={theme}
                     language={match[1]}
                     PreTag="div"
-                    {...props}
                   >
                     {String(children).replace(/\n$/, "")}
                   </SyntaxHighlighter>
