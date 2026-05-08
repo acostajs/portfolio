@@ -12,31 +12,31 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { setTheme, resolvedTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-40 h-16 bg-[var(--header-bg)] backdrop-blur-md border-b border-border px-4 lg:px-8 w-full">
+    <header className="flex-none sticky top-0 z-40 h-16 bg-[var(--header-bg)] backdrop-blur-md border-b border-border px-4 lg:px-8 w-full">
       <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
         {/* Left Section: Mobile Menu Toggle & Logo */}
-        <div className="flex items-center">
+        <div className="flex items-center min-w-0">
           <button
             onClick={onMenuClick}
-            className="p-2 mr-2 text-text hover:bg-accent-bg rounded-lg lg:hidden"
+            className="p-2 mr-2 text-text hover:bg-accent-bg rounded-lg lg:hidden flex-none"
             aria-label={t.header.toggleSidebar}
           >
             <Menu className="w-6 h-6" />
           </button>
 
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent mr-3">
+          <div className="flex items-center min-w-0">
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent mr-3 flex-none">
               <img
                 src="/avatar.jpeg"
                 alt={t.common.name}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-base font-bold text-text-header leading-tight">
+            <div className="flex flex-col min-w-0">
+              <h1 className="text-[clamp(0.875rem,4vw,1rem)] font-bold text-text-header leading-tight truncate">
                 {t.header.title}
               </h1>
-              <p className="text-xs text-text opacity-70">
+              <p className="text-[10px] text-text opacity-70 truncate">
                 {t.header.subtitle}
               </p>
             </div>
@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         </div>
 
         {/* Right Section: Toggles */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 flex-none ml-2">
           {/* Language Toggle */}
           <div className="flex items-center bg-white/5 border border-border rounded-lg p-0.5">
             {(["en", "fr", "es"] as const).map((l) => (

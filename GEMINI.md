@@ -42,10 +42,14 @@ bun run dev
 Using **uv** for fast package management:
 
 ```bash
+# Initialize backend environment (Recommended)
+npm run setup:backend
+
+# Or manually:
 cd backend
 uv venv
 source .venv/bin/activate
-uv pip install -r requirements.txt  # Or 'uv sync' if using pyproject.toml
+uv sync
 uv run uvicorn main:app --reload
 ```
 

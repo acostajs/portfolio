@@ -16,19 +16,19 @@ data = {
     ],
     "answers": {
         "en": [
-            "You're welcome! Happy to help.",
-            "Anytime! Let me know if you have more questions about Juan.",
-            "Glad I could help! Is there anything else you'd like to know?",
+            "You're very welcome! Happy I could help. 😊",
+            "Anytime! Let me know if you want to know more about my work.",
+            "Glad I could help! Is there anything else you're curious about?",
         ],
         "es": [
-            "¡De nada! Es un placer ayudarte.",
-            "¡No hay de qué! Avísame si tienes más preguntas sobre Juan.",
-            "¡Un placer! ¿Hay algo más que te gustaría saber?",
+            "¡De nada! Un placer haberte ayudado. 😊",
+            "¡Cuando quieras! Avísame si quieres saber más sobre mi trabajo.",
+            "¡Me alegra haberte ayudado! ¿Hay algo más sobre lo que tengas curiosidad?",
         ],
         "fr": [
-            "De rien ! Heureux de vous aider.",
-            "Je vous en prie ! N'hésitez pas si vous avez d'autres questions sur Juan.",
-            "C'est un plaisir ! Y a-t-il autre chose que vous aimeriez savoir ?",
+            "De rien ! Heureux d'avoir pu vous aider. 😊",
+            "Je vous en prie ! N'hésitez pas si vous voulez en savoir plus sur mon travail.",
+            "Ravi d'avoir pu aider ! Y a-t-il autre chose qui vous intrigue ?",
         ],
     },
 }

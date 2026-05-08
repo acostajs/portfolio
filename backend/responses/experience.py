@@ -24,19 +24,19 @@ data = {
     ],
     "answers": {
         "en": [
-            "Juan has experience as a Full-Stack Developer, working on AI-driven portfolios and high-performance web apps using React and FastAPI.",
-            "He has worked on various projects involving frontend optimization with Bun and Vite, and building robust backends with Python.",
-            "Juan's professional background includes building scalable web applications and implementing AI features to enhance user interaction.",
+            "I've been working as a Full-Stack Developer, focusing on AI-driven portfolios and high-performance web apps with React and FastAPI. 🚀",
+            "My experience covers frontend optimization with Bun and Vite, along with building reliable backends using Python and SQLModel.",
+            "I have a background in building scalable web apps and I love implementing AI features to make interactions more engaging!",
         ],
         "es": [
-            "Juan tiene experiencia como desarrollador Full-Stack, trabajando en portafolios impulsados por IA y aplicaciones web de alto rendimiento usando React y FastAPI.",
-            "Ha trabajado en varios proyectos que involucran la optimización del frontend con Bun y Vite, y la creación de backends robustos con Python.",
-            "La trayectoria profesional de Juan incluye la creación de aplicaciones web escalables y la implementación de funciones de IA para mejorar la interacción del usuario.",
+            "He estado trabajando como desarrollador Full-Stack, enfocándome en portafolios impulsados por IA y aplicaciones web de alto rendimiento con React y FastAPI. 🚀",
+            "Mi experiencia abarca la optimización del frontend con Bun y Vite, junto con la creación de backends confiables usando Python y SQLModel.",
+            "Tengo trayectoria creando aplicaciones web escalables y me encanta implementar funciones de IA para hacer que las interacciones sean más atractivas.",
         ],
         "fr": [
-            "Juan a de l'expérience en tant que développeur Full-Stack, travaillant sur des portfolios pilotés par l'IA et des applications Web de haute performance utilisant React et FastAPI.",
-            "Il a travaillé sur divers projets impliquant l'optimisation du frontend avec Bun et Vite, et la construction de backends robustes avec Python.",
-            "Le parcours professionnel de Juan comprend la création d'applications Web évolutives et la mise en œuvre de fonctionnalités d'IA pour améliorer l'interaction avec l'utilisateur.",
+            "J'ai travaillé en tant que développeur Full-Stack, me concentrant sur des portfolios pilotés par l'IA et des applications Web de haute performance avec React et FastAPI. 🚀",
+            "Mon expérience couvre l'optimisation du frontend avec Bun et Vite, ainsi que la construction de backends fiables utilisant Python et SQLModel.",
+            "J'ai de l'expérience dans la création d'applications Web évolutives et j'adore implémenter des fonctionnalités d'IA pour rendre les interactions plus engageantes !",
         ],
     },
 }

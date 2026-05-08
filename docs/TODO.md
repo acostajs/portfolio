@@ -79,5 +79,30 @@
 
 - [ ] **AI Backend & Persona (Trigger-Based Logic)**
   - [x] Restore trigger-based response modules in `backend/responses/`.
-  - [ ] Refine keyword triggers for better accuracy.
-  - [ ] Expand response dataset for EN, FR, and ES.
+
+Integrating those tips directly into the tasks makes the list much more "dev-ready." It defines the **how** alongside the **what**, which helps prevent technical debt.
+
+Here is the updated **Phase 7** list with the senior engineering insights baked in:
+
+---
+
+## ## Phase 7: Mobile UX Refinement, Messaging Logic & Persona Tuning
+
+### UI / UX (Mobile & Layout)
+
+- [x] **Sticky Layout (Flexbox Strategy):** Implement a `h-screen` flex-col wrapper. Set the Header and Input as fixed-height components and apply `flex-1 overflow-y-auto` to the chat container to ensure the input is always anchored and visible.
+- [x] **Header Typography Fix:** Use media queries or fluid typography (e.g., `text-[clamp(...)]`) for the "Portfolio Assistant..." text to prevent breaking on narrow viewports.
+- [x] **Input Placeholder Optimization:** Shorten the mobile placeholder text or use a CSS selector to reduce `font-size` specifically for the `::placeholder` on small screens.
+
+### Backend & Integration
+
+- [x] **Backend Initialization Shortcut:** Implement a root-level script (e.g., in `package.json`) to automate the backend environment setup and start the server using `uv`.
+- [x] **Database Streamlining:** Modify the POST controller to exclude assistant strings from the `save` logic. **Note:** Ensure the React/Vue state still holds these responses in memory so the user's current session remains coherent.
+- [x] **Visit Notifications:** Removed due to Web3Forms server-side restrictions on the free plan. Silent telemetry remains active for analytics.
+- [x] **Web3Forms Debugging:** Audit the `form` submission handler. Check the `fetch` response codes and verify that the `access_key` is correctly loaded from environment variables.
+
+### Bot Logic & Localization
+
+- [x] **Persona Update:** Refactor the System Message to enforce a first-person perspective. Update the greeting and fallback phrases to be casual and warm.
+- [x] **NLU Refinement:** Review current keyword mapping; implement better regex or fuzzy matching to increase trigger accuracy.
+- [x] **Multilingual Expansion (EN/FR/ES):** Scale the content JSON/Object to include full translations for English, French, and Spanish, ensuring the "warm tone" carries across all three cultures.

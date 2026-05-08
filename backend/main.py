@@ -3,6 +3,7 @@ import random
 import time
 import sys
 import os
+import re
 from contextlib import asynccontextmanager
 from typing import List, Optional
 
@@ -86,19 +87,27 @@ def save_telemetry(data: TelemetryData):
         logger.error(f"Failed to save telemetry: {e}")
 
 
-def save_chat_interaction(user_msg: str, bot_msg: str):
+def save_chat_interaction(user_msg: str):
     try:
         with Session(engine) as session:
-            # We don't have a session_id linked yet in this simple mock
-            # but we can log them.
+            # Only save the user message to streamline database usage
             user_entry = ChatMessage(role="user", content=user_msg)
-            bot_entry = ChatMessage(role="assistant", content=bot_msg)
             session.add(user_entry)
-            session.add(bot_entry)
             session.commit()
-            logger.info("Chat interaction saved to database")
+            logger.info("User chat message saved to database")
     except Exception as e:
         logger.error(f"Failed to save chat interaction: {e}")
+
+
+def is_trigger_match(user_message: str, triggers: List[str]) -> bool:
+    """Helper to check if any trigger matches the user message with word boundaries."""
+    user_message = user_message.lower()
+    for trigger in triggers:
+        # Use regex to match trigger as a whole word/phrase to avoid false positives
+        pattern = rf"\b{re.escape(trigger.lower())}\b"
+        if re.search(pattern, user_message):
+            return True
+    return False
 
 
 # --- Global Middleware for Telemetry ---
@@ -138,24 +147,24 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     user_message = request.message.lower()
     lang = request.language if request.language in ["en", "es", "fr"] else "en"
 
-    # Determine response based on triggers
-    if any(t in user_message for t in greetings.data["triggers"]):
+    # Determine response based on triggers with improved NLU matching
+    if is_trigger_match(user_message, greetings.data["triggers"]):
         reply = random.choice(greetings.data["answers"][lang])
-    elif any(t in user_message for t in thanks.data["triggers"]):
+    elif is_trigger_match(user_message, thanks.data["triggers"]):
         reply = random.choice(thanks.data["answers"][lang])
-    elif any(t in user_message for t in about.data["triggers"]):
+    elif is_trigger_match(user_message, about.data["triggers"]):
         reply = random.choice(about.data["answers"][lang])
-    elif any(t in user_message for t in experience.data["triggers"]):
+    elif is_trigger_match(user_message, experience.data["triggers"]):
         reply = random.choice(experience.data["answers"][lang])
-    elif any(t in user_message for t in projects.data["triggers"]):
+    elif is_trigger_match(user_message, projects.data["triggers"]):
         reply = random.choice(projects.data["answers"][lang])
-    elif any(t in user_message for t in contact.data["triggers"]):
+    elif is_trigger_match(user_message, contact.data["triggers"]):
         reply = random.choice(contact.data["answers"][lang])
     else:
         reply = random.choice(fallback.data["answers"][lang])
 
-    # Save to history in background
-    background_tasks.add_task(save_chat_interaction, request.message, reply)
+    # Save user message to history in background (excluding assistant response)
+    background_tasks.add_task(save_chat_interaction, request.message)
 
     return ChatResponse(reply=reply)
 
