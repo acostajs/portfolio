@@ -7,7 +7,7 @@
     "frontend"
   ],
   "scripts": {
-    "dev:frontend": "bun --cwd frontend run dev",
+    "dev:frontend": "cd frontend && bun dev",
     "dev:backend": "cd backend && uv run uvicorn main:app --reload",
     "setup:backend": "cd backend && uv sync",
     "build": "bun --cwd frontend install && bun --cwd frontend run build",
