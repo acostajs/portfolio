@@ -6,6 +6,23 @@ _(No active tasks - transition to Backlog or review completed items)_
 
 ## ⏳ Backlog & Future Ideas
 
+### Phase 9: AI Intelligence & Deep Content
+
+- [ ] **Advanced Technical Persona Expansion**: Expand chatbot triggers and logic to provide expert-level answers from a junior full-stack perspective on:
+  - **Core Foundations**: Version Control (Gitflow/Trunk), Performance (Web Vitals), Security (OWASP), and Testing Philosophy.
+  - **Frontend Specialization**: State Management, Accessibility (WCAG 2.2), Rendering Patterns (SSR/SSG), and CSS Architecture.
+  - **Backend Specialization**: API Design (REST/GraphQL), Database Mastery (Indexing, NoSQL), System Architecture, and Auth (OAuth2/JWT).
+  - **Full Stack & DevOps**: Infrastructure as Code (Docker/Terraform), CI/CD (GitHub Actions), and Monitoring (Sentry).
+  - **Behavioral**: Technical Conflict Resolution, Tool Selection Justification, AI-Assisted Workflow, and Stakeholder Communication.
+- [ ] **HR & Personality Assessment**: Enable the chatbot to simulate HR screenings by addressing:
+  - **Soft Skills**: Handling constructive feedback, ownership of mistakes, and prioritization under pressure.
+  - **Work Style**: Remote communication preferences and professional growth motivations.
+  - **Evaluation**: Implement logic to evaluate the balance between "technical ego" and team collaboration.
+- [ ] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting for code blocks.
+- [ ] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes and articles.
+
+### Phase 10: Motion & High-End Visuals
+
 - [ ] **Motion & Micro-interactions**: Integrate `framer-motion` for:
   - Staggered chat bubble entry animations.
   - Smooth page transitions between navigation links.
@@ -14,19 +31,25 @@ _(No active tasks - transition to Backlog or review completed items)_
   - Apply **Glassmorphism** (`backdrop-blur`) to Sidebar and Header.
   - Implement a subtle, animated **Mesh Gradient** background.
   - Add blur-up placeholders for progressive image loading.
-- [ ] **Command Palette (Cmd+K)**: Implement a global search/navigation menu.
-- [ ] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting.
-- [ ] **Advanced UX**:
+
+### Phase 11: Professional UX & Accessibility
+
+- [ ] **Command Palette (Cmd+K)**: Implement a global search/navigation menu for keyboard-first efficiency.
+- [ ] **Advanced UX Enhancements**:
   - **Header Navigation**: Clicking the Header logo/title should return the user to the Home (Chat) view.
   - **Haptic Feedback**: Add subtle vibrations for mobile interactions.
   - **Copy-to-Clipboard**: Quick copy for email/socials in Sidebar/Contact.
 - [ ] **Accessibility (a11y) & SEO**:
   - Add a "Skip to Content" link for screen readers.
   - Implement high-visibility `:focus-visible` rings for keyboard navigation.
+
+### Phase 12: Platform & Analytics
+
 - [ ] **Analytics Dashboard**: Create a simple password-protected view to visualize visitor telemetry and common chat queries.
-- [ ] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes.
-- [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
 - [ ] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
+- [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
+
+## ✅ Archive (Completed)
 
 ### Phase 8: Final Polish & Optimization
 
