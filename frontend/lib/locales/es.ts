@@ -35,6 +35,15 @@ export const es: TranslationType = {
       "Juan habla inglés, francés y español—¡puedes cambiar el idioma y el tema usando los botones superiores! También admito /comandos para navegación rápida. ¿Qué te gustaría saber?",
     commands: {
       help: "Comandos disponibles:",
+      subjectsTitle: "También puedo hablar sobre:",
+      subjects: [
+        "Habilidades y Tecnologías",
+        "Proyectos y Experiencia",
+        "Biografía y Perfil Profesional",
+        "Habilidades Blandas y Filosofía de Trabajo",
+        "Pasatiempos e Intereses",
+        "Información de Contacto",
+      ],
       clear: "Historial de chat borrado.",
       clearSuccess: "Historial de chat borrado. ¿En qué más puedo ayudarte?",
       error: "Comando desconocido. Escribe /help para ver los comandos.",

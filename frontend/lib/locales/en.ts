@@ -33,6 +33,15 @@ export const en = {
       "Juan speaks English, French, and Spanish—you can switch languages and themes using the buttons at the top! I also support /commands for quick navigation. What would you like to know?",
     commands: {
       help: "Available commands:",
+      subjectsTitle: "I can also talk about:",
+      subjects: [
+        "Skills & Technologies",
+        "Projects & Experience",
+        "Bio & Professional Background",
+        "Soft Skills & Work Philosophy",
+        "Hobbies & Interests",
+        "Contact Information",
+      ],
       clear: "Chat history cleared.",
       clearSuccess: "Chat history cleared. How else can I help you?",
       error: "Unknown command. Type /help to see available commands.",

@@ -117,7 +117,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
     if (cleanCmd === "/help") {
       const helpContent = `${t.home.commands.help}\n\n${t.home.commands.list
-        .map((item) => `${item.cmd} : ${item.desc}`)
+        .map((item) => `- **${item.cmd}**: ${item.desc}`)
+        .join(
+          "\n",
+        )}\n\n${t.home.commands.subjectsTitle}\n\n${t.home.commands.subjects
+        .map((subject) => `- ${subject}`)
         .join("\n")}`;
 
       setMessages((prev) => [
