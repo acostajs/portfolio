@@ -51,7 +51,8 @@ const Blog: React.FC = () => {
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  code({ className, children, ...props }) {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  code({ node, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
                     const isInline = !match;
                     return !isInline ? (
@@ -59,7 +60,6 @@ const Blog: React.FC = () => {
                         style={theme}
                         language={match[1]}
                         PreTag="div"
-                        {...props}
                       >
                         {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>
