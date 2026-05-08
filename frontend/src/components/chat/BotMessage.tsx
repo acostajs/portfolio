@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import Typewriter from "./Typewriter";
+import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface BotMessageProps {
   content: string;
@@ -7,6 +10,7 @@ interface BotMessageProps {
   features?: string[];
   subwelcome?: string;
   closing?: string;
+  skipTypewriter?: boolean;
 }
 
 const BotMessage: React.FC<BotMessageProps> = ({
@@ -15,9 +19,34 @@ const BotMessage: React.FC<BotMessageProps> = ({
   features,
   subwelcome,
   closing,
+  skipTypewriter,
 }) => {
-  const [showSub, setShowSub] = useState(!isInitial);
-  const [showFeatures, setShowFeatures] = useState(!isInitial);
+  const [displayedContent, setDisplayedContent] = useState(
+    skipTypewriter ? content : "",
+  );
+  const [showSub, setShowSub] = useState(skipTypewriter || !isInitial);
+  const [showFeatures, setShowFeatures] = useState(
+    skipTypewriter || !isInitial,
+  );
+
+  useEffect(() => {
+    if (skipTypewriter) return;
+
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayedContent(content.slice(0, i));
+      i++;
+      if (i > content.length) {
+        clearInterval(interval);
+        if (isInitial) {
+          setShowSub(true);
+          // Sequential show for features after a small delay
+          setTimeout(() => setShowFeatures(true), 500);
+        }
+      }
+    }, 15);
+    return () => clearInterval(interval);
+  }, [content, isInitial, skipTypewriter]);
 
   return (
     <div className="flex items-start max-w-3xl animate-slide-in-left">
@@ -29,22 +58,40 @@ const BotMessage: React.FC<BotMessageProps> = ({
         />
       </div>
       <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm">
-        <p className="text-text-header font-medium mb-4 leading-relaxed whitespace-pre-wrap">
-          <Typewriter
-            key={content}
-            text={content}
-            onComplete={() => isInitial && setShowSub(true)}
-          />
-        </p>
+        <div className="text-text-header font-medium mb-4 leading-relaxed markdown-content">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              code({ className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
+                const isInline = !match;
+                return !isInline ? (
+                  <SyntaxHighlighter
+                    style={
+                      vscDarkPlus as { [key: string]: React.CSSProperties }
+                    }
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  >
+                    {String(children).replace(/\n$/, "")}
+                  </SyntaxHighlighter>
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {displayedContent}
+          </ReactMarkdown>
+        </div>
 
         {isInitial && showSub && (
           <div className="space-y-4 animate-fade-in">
             <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
-              <Typewriter
-                key={subwelcome}
-                text={subwelcome || ""}
-                onComplete={() => setShowFeatures(true)}
-              />
+              {subwelcome}
             </p>
             {showFeatures && (
               <ul className="space-y-2">
@@ -65,7 +112,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
 
         {isInitial && showFeatures && (
           <p className="text-text mt-8 leading-relaxed italic opacity-80 animate-fade-in">
-            <Typewriter key={closing} text={closing || ""} speed={10} />
+            {closing}
           </p>
         )}
       </div>

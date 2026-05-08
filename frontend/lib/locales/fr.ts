@@ -18,6 +18,7 @@ export const fr: TranslationType = {
     about: "À propos",
     experience: "Expérience",
     projects: "Projets",
+    blog: "Blog",
     contact: "Contact",
   },
   home: {
@@ -41,6 +42,7 @@ export const fr: TranslationType = {
         { cmd: "/about", desc: "Aller à la page À propos." },
         { cmd: "/experience", desc: "Aller à la page Expérience." },
         { cmd: "/projects", desc: "Aller à la page Projets." },
+        { cmd: "/blog", desc: "Aller à la page Blog." },
         { cmd: "/contact", desc: "Aller à la page Contact." },
       ],
     },
@@ -54,7 +56,7 @@ export const fr: TranslationType = {
   },
   about: {
     title: "À propos de moi",
-    p1: "Je suis un développeur web passionné basé à Montréal, dédié à la création d'applications web propres, efficaces et centrées sur l'utilisateur.",
+    p1: "Je suis un développeur web passionné basé à Montréal, dédié à la création d' applications web propres, efficaces et centrées sur l'utilisateur.",
     p2: "Mon parcours dans la technologie est guidé par une curiosité pour la résolution de problèmes complexes et un désir de créer des expériences numériques qui font la différence.",
     skillsTitle: "Compétences clés",
   },
@@ -65,6 +67,11 @@ export const fr: TranslationType = {
     title: "Projets récents",
     viewProject: "Voir le projet",
     viewGithub: "GitHub",
+  },
+  blog: {
+    title: "Notes techniques",
+    readMore: "Lire la suite",
+    backToList: "Retour à la liste",
   },
   contact: {
     title: "Contactez-moi",

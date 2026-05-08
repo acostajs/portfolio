@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Experience from "./pages/Experience";
 import Projects from "./pages/Projects";
+import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import { type PageId } from "./components/layout/Sidebar";
 import { useTranslation } from "../lib/hooks/useTranslation";
@@ -22,6 +23,8 @@ function App() {
         return <Experience />;
       case "projects":
         return <Projects />;
+      case "blog":
+        return <Blog />;
       case "contact":
         return <Contact />;
       default:

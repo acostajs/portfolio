@@ -1,25 +1,21 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Phase: Final Polish & Optimization
+## 🎯 Current Phase: AI Intelligence & Deep Content
 
-_(No active tasks - transition to Backlog or review completed items)_
-
-## ⏳ Backlog & Future Ideas
-
-### Phase 9: AI Intelligence & Deep Content
-
-- [ ] **Advanced Technical Persona Expansion**: Expand chatbot triggers and logic to provide expert-level answers from a junior full-stack perspective on:
+- [x] **Advanced Technical Persona Expansion**: Expand chatbot triggers and logic to provide expert-level answers from a junior full-stack perspective on:
   - **Core Foundations**: Version Control (Gitflow/Trunk), Performance (Web Vitals), Security (OWASP), and Testing Philosophy.
   - **Frontend Specialization**: State Management, Accessibility (WCAG 2.2), Rendering Patterns (SSR/SSG), and CSS Architecture.
   - **Backend Specialization**: API Design (REST/GraphQL), Database Mastery (Indexing, NoSQL), System Architecture, and Auth (OAuth2/JWT).
   - **Full Stack & DevOps**: Infrastructure as Code (Docker/Terraform), CI/CD (GitHub Actions), and Monitoring (Sentry).
   - **Behavioral**: Technical Conflict Resolution, Tool Selection Justification, AI-Assisted Workflow, and Stakeholder Communication.
-- [ ] **HR & Personality Assessment**: Enable the chatbot to simulate HR screenings by addressing:
+- [x] **HR & Personality Assessment**: Enable the chatbot to simulate HR screenings by addressing:
   - **Soft Skills**: Handling constructive feedback, ownership of mistakes, and prioritization under pressure.
   - **Work Style**: Remote communication preferences and professional growth motivations.
   - **Evaluation**: Implement logic to evaluate the balance between "technical ego" and team collaboration.
-- [ ] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting for code blocks.
-- [ ] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes and articles.
+- [x] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting for code blocks.
+- [x] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes and articles.
+
+## ⏳ Backlog & Future Ideas
 
 ### Phase 10: Motion & High-End Visuals
 

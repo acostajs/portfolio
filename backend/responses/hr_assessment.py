@@ -1,0 +1,134 @@
+data = {
+    "categories": [
+        {
+            "triggers": [
+                "feedback",
+                "constructive",
+                "criticism",
+                "improvement",
+                "retroalimentación",
+                "critica",
+                "mejora",
+                "rétroaction",
+                "critique",
+                "amélioration",
+            ],
+            "answers": {
+                "en": [
+                    "I value constructive feedback as a gift for growth. I try to listen actively, separate my ego from my work, and focus on the actionable points to improve. In my previous teams, I've always encouraged 'radical candor' to keep the quality high.",
+                ],
+                "es": [
+                    "Valoro la retroalimentación constructiva como un regalo para el crecimiento. Intento escuchar activamente, separar mi ego de mi trabajo y enfocarme en los puntos accionables para mejorar. En mis equipos anteriores, siempre he fomentado la 'sinceridad radical' para mantener la calidad alta.",
+                ],
+                "fr": [
+                    "Je considère la rétroaction constructive comme un cadeau pour la croissance. J'essaie d'écouter activement, de séparer mon ego de mon travail et de me concentrer sur les points exploitables pour m'améliorer. Dans mes équipes précédentes, j'ai toujours encouragé la 'sincérité radicale' pour maintenir une qualité élevée.",
+                ],
+            },
+        },
+        {
+            "triggers": [
+                "mistake",
+                "error",
+                "failure",
+                "ownership",
+                "error",
+                "fallo",
+                "responsabilidad",
+                "erreur",
+                "échec",
+                "responsabilité",
+            ],
+            "answers": {
+                "en": [
+                    "When I make a mistake, I own it immediately. I focus on communicating the issue, finding a fix, and—most importantly—conducting a post-mortem to ensure it doesn't happen again. Failures are just expensive lessons if you don't learn from them.",
+                ],
+                "es": [
+                    "Cuando cometo un error, lo asumo de inmediato. Me enfoco en comunicar el problema, encontrar una solución y, lo más importante, realizar un post-mortem para asegurar que no vuelva a ocurrir. Los fallos son solo lecciones costosas si no aprendes de ellos.",
+                ],
+                "fr": [
+                    "Quand je fais une erreur, je l'assume immédiatement. Je me concentre sur la communication du problème, la recherche d'une solution et, surtout, la réalisation d'un post-mortem pour m'assurer que cela ne se reproduise plus. Les échecs ne sont que des leçons coûteuses si vous n'en tirez pas les enseignements.",
+                ],
+            },
+        },
+        {
+            "triggers": [
+                "pressure",
+                "priority",
+                "prioritization",
+                "deadline",
+                "deadline",
+                "presión",
+                "prioridad",
+                "plazo",
+                "pression",
+                "priorité",
+                "délai",
+            ],
+            "answers": {
+                "en": [
+                    "Under pressure, I rely on rigorous prioritization. I use techniques like the Eisenhower Matrix to distinguish between urgent and important tasks. I also believe in transparent communication with the team about what can and cannot be achieved within a given deadline.",
+                ],
+                "es": [
+                    "Bajo presión, confío en una priorización rigurosa. Uso técnicas como la Matriz de Eisenhower para distinguir entre tareas urgentes e importantes. También creo en la comunicación transparente con el equipo sobre lo que se puede y no se puede lograr en un plazo determinado.",
+                ],
+                "fr": [
+                    "Sous pression, je m'appuie sur une priorisation rigoureuse. J'utilise des techniques comme la matrice d'Eisenhower pour distinguer les tâches urgentes des tâches importantes. Je crois également en une communication transparente avec l'équipe sur ce qui peut et ne peut pas être réalisé dans un délai donné.",
+                ],
+            },
+        },
+        {
+            "triggers": [
+                "remote",
+                "communication",
+                "zoom",
+                "slack",
+                "async",
+                "remoto",
+                "comunicación",
+                "asíncrono",
+                "télétravail",
+                "communication",
+                "asynchrone",
+            ],
+            "answers": {
+                "en": [
+                    "I'm a big fan of remote work and asynchronous communication. I believe in over-communicating via Slack, keeping documentation up to date, and making the most of Zoom calls for high-bandwidth discussions. It's about building trust through consistency.",
+                ],
+                "es": [
+                    "Soy un gran fan del trabajo remoto y la comunicación asíncrona. Creo en sobre-comunicar a través de Slack, mantener la documentación al día y aprovechar al máximo las llamadas de Zoom para discusiones complejas. Se trata de generar confianza a través de la consistencia.",
+                ],
+                "fr": [
+                    "Je suis un grand adepte du télétravail et de la communication asynchrone. Je crois qu'il faut sur-communiquer via Slack, tenir la documentation à jour et tirer le meilleur parti des appels Zoom pour les discussions complexes. L'objectif est de instaurer la confiance par la cohérence.",
+                ],
+            },
+        },
+        {
+            "triggers": [
+                "growth",
+                "motivation",
+                "learning",
+                "career",
+                "future",
+                "crecimiento",
+                "motivación",
+                "aprendizaje",
+                "carrera",
+                "croissance",
+                "motivation",
+                "apprentissage",
+                "carrière",
+            ],
+            "answers": {
+                "en": [
+                    "My primary motivation is continuous learning. I'm constantly exploring new technologies and patterns to become a more well-rounded engineer. My goal is to work on projects that challenge me and allow me to contribute to a team's long-term success.",
+                ],
+                "es": [
+                    "Mi principal motivación es el aprendizaje continuo. Constantemente exploro nuevas tecnologías y patrones para convertirme en un ingeniero más completo. Mi objetivo es trabajar en proyectos que me desafíen y me permitan contribuir al éxito a largo plazo de un equipo.",
+                ],
+                "fr": [
+                    "Ma principale motivation est l'apprentissage continu. J'explore constamment de nouvelles technologies et de nouveaux modèles pour devenir un ingénieur plus complet. Mon objectif est de travailler sur des projets qui me stimulent et me permettent de contribuer au succès à long terme d'une équipe.",
+                ],
+            },
+        },
+    ]
+}

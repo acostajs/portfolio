@@ -9,9 +9,16 @@ import {
   MapPin,
   Download,
   Link as LinkIcon,
+  Newspaper,
 } from "lucide-react";
 
-export type PageId = "home" | "about" | "experience" | "projects" | "contact";
+export type PageId =
+  | "home"
+  | "about"
+  | "experience"
+  | "projects"
+  | "blog"
+  | "contact";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -33,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     { id: "about" as PageId, name: t.nav.about, icon: User },
     { id: "experience" as PageId, name: t.nav.experience, icon: Briefcase },
     { id: "projects" as PageId, name: t.nav.projects, icon: Code },
+    { id: "blog" as PageId, name: t.nav.blog, icon: Newspaper },
     { id: "contact" as PageId, name: t.nav.contact, icon: Mail },
   ];
 
