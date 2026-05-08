@@ -4,8 +4,12 @@ import { blogPosts, type BlogPost } from "../../lib/mocks";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import { ArrowLeft, Calendar, Tag, ChevronRight } from "lucide-react";
+
+const theme = vscDarkPlus as unknown as {
+  [key: string]: React.CSSProperties;
+};
 
 const Blog: React.FC = () => {
   const { t, locale } = useTranslation();
@@ -52,11 +56,7 @@ const Blog: React.FC = () => {
                     const isInline = !match;
                     return !isInline ? (
                       <SyntaxHighlighter
-                        style={
-                          vscDarkPlus as unknown as {
-                            [key: string]: React.CSSProperties;
-                          }
-                        }
+                        style={theme}
                         language={match[1]}
                         PreTag="div"
                         {...props}
