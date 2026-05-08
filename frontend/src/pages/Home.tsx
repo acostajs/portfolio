@@ -4,6 +4,7 @@ import { Send, Loader2 } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
 import { type PageId } from "../components/layout/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
+import { hapticFeedback } from "../../lib/haptic";
 
 interface Message {
   role: "user" | "assistant";
@@ -54,14 +55,21 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     if (showSuggestions) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
+        hapticFeedback(5);
         setSuggestionIndex((prev) => (prev + 1) % suggestions.length);
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
+        hapticFeedback(5);
         setSuggestionIndex(
           (prev) => (prev - 1 + suggestions.length) % suggestions.length,
         );
-      } else if (e.key === "Enter" || e.key === "Tab") {
+      } else if (e.key === "Enter") {
         e.preventDefault();
+        hapticFeedback(10);
+        handleSend(suggestions[suggestionIndex].cmd);
+      } else if (e.key === "Tab") {
+        e.preventDefault();
+        hapticFeedback(10);
         setInput(suggestions[suggestionIndex].cmd);
       } else if (e.key === "Escape") {
         setInput(""); // Or some other way to dismiss
@@ -162,10 +170,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     return false;
   };
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleSend = async (overrideMessage?: string) => {
+    const userMessage = (overrideMessage || input).trim();
+    if (!userMessage || isLoading) return;
 
-    const userMessage = input.trim();
+    hapticFeedback(15);
     setInput("");
 
     // Check for slash commands first
@@ -287,7 +296,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                       key={suggestion.cmd}
                       onMouseEnter={() => setSuggestionIndex(idx)}
                       onClick={() => {
-                        setInput(suggestion.cmd);
+                        handleSend(suggestion.cmd);
                       }}
                       className={`px-6 py-3 cursor-pointer transition-colors flex items-center justify-between ${
                         idx === suggestionIndex

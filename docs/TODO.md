@@ -2,14 +2,14 @@
 
 ## 🎯 Current Version: Professional UX & Accessibility
 
-- [ ] **Command Palette (Cmd+K)**: Implement a global search/navigation menu for keyboard-first efficiency.
-- [ ] **Advanced UX Enhancements**:
-  - **Header Navigation**: Clicking the Header logo/title should return the user to the Home (Chat) view.
-  - **Haptic Feedback**: Add subtle vibrations for mobile interactions.
-  - **Copy-to-Clipboard**: Quick copy for email/socials in Sidebar/Contact.
-- [ ] **Accessibility (a11y) & SEO**:
-  - Add a "Skip to Content" link for screen readers.
-  - Implement high-visibility `:focus-visible` rings for keyboard navigation.
+- [x] **Command Palette (Cmd+K)**: Implement a global search/navigation menu for keyboard-first efficiency.
+- [x] **Advanced UX Enhancements**:
+  - [x] **Header Navigation**: Clicking the Header logo/title returns the user to the Home (Chat) view.
+  - [x] **Haptic Feedback**: Add subtle vibrations for mobile interactions.
+  - [x] **Copy-to-Clipboard**: Quick copy for email/socials in Sidebar/Contact.
+- [x] **Accessibility (a11y) & SEO**:
+  - [x] Add a "Skip to Content" link for screen readers.
+  - [x] Implement high-visibility `:focus-visible` rings for keyboard navigation.
 
 ## ⏳ Backlog & Future Ideas
 
