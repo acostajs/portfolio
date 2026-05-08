@@ -2,7 +2,6 @@
 
 ## 🎯 Current Phase: Final Polish & Optimization
 
-- [ ] **API Documentation Sync**: Align `docs/API.md` with the actual implementation (Middleware-based telemetry, etc.).
 - [ ] **Session Persistence**: Implement `localStorage` in the frontend to keep chat history across page refreshes.
 - [ ] **Lighthouse Optimization**: Conduct a final performance audit to ensure 90+ scores across the board.
 - [ ] **Trigger Refinement**: Expand the fallback and greeting responses to feel more natural within the existing logic.
@@ -32,6 +31,7 @@
 
 ### Phase 8: Final Polish & Optimization
 
+- [x] **API Documentation Sync**: Synchronized `docs/API.md` with FastAPI implementation and telemetry logic.
 - [x] **Strengthen Pre-commit Hooks**: Updated Husky/root configuration to run a full validation suite (Ruff, Pyright, Pytest, TSC, ESLint, Bun test).
 - [x] **Mobile Viewport & Technical Fixes**: Implemented `100dvh`, safe area insets, and robust flexbox anchoring.
 - [x] **Mobile UI Refinement (Visual Audit)**: Optimized header spacing, fixed i18n remounting bug, and shortened placeholders.
