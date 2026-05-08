@@ -68,7 +68,9 @@ const BotMessage: React.FC<BotMessageProps> = ({
                 return !isInline ? (
                   <SyntaxHighlighter
                     style={
-                      vscDarkPlus as { [key: string]: React.CSSProperties }
+                      vscDarkPlus as unknown as {
+                        [key: string]: React.CSSProperties;
+                      }
                     }
                     language={match[1]}
                     PreTag="div"
