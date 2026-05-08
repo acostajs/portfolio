@@ -23,7 +23,8 @@ export const es: TranslationType = {
   },
   home: {
     welcome: "¡Hola! Soy el asistente del portafolio de Juan Acosta. 👋",
-    subwelcome: "Puedo contarte sobre:",
+    subwelcome:
+      "Puedes interactuar conmigo para conocer la trayectoria de Juan. Puedo contarte sobre:",
     chatbotPlaceholder: "Pregúntame sobre Juan...",
     features: [
       "Habilidades y Tecnologías",
@@ -31,10 +32,11 @@ export const es: TranslationType = {
       "Información de Contacto",
     ],
     closing:
-      "También puedes explorar páginas específicas usando la barra lateral de navegación. ¿Qué te gustaría saber?",
+      "Juan habla inglés, francés y español—¡puedes cambiar el idioma y el tema usando los botones superiores! También admito /comandos para navegación rápida. ¿Qué te gustaría saber?",
     commands: {
       help: "Comandos disponibles:",
       clear: "Historial de chat borrado.",
+      clearSuccess: "Historial de chat borrado. ¿En qué más puedo ayudarte?",
       error: "Comando desconocido. Escribe /help para ver los comandos.",
       list: [
         { cmd: "/clear", desc: "Borrar el historial." },

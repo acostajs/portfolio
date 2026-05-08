@@ -11,6 +11,7 @@ import {
   Link as LinkIcon,
   Newspaper,
 } from "lucide-react";
+import ProgressiveImage from "../chat/ProgressiveImage";
 
 export type PageId =
   | "home"
@@ -77,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       />
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-sidebar-bg border-r border-border transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-50 ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-sidebar-bg backdrop-blur-xl border-r border-border transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -86,11 +87,10 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="p-5 flex flex-col items-center">
             <div className="relative mb-3">
               <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white/10 shadow-lg">
-                <img
+                <ProgressiveImage
                   src="/avatar.jpeg"
                   alt={t.common.name}
-                  className="w-full h-full object-cover grayscale brightness-110"
-                  loading="lazy"
+                  className="w-full h-full grayscale brightness-110"
                 />
               </div>
             </div>

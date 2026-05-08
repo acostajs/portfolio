@@ -23,13 +23,13 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Phase 9: AI Intelligence & Deep Content**.
+The project is currently in **Version 0.1.0: Motion & High-End Visuals**.
 
 ### Major Milestones Completed
 
-- **Phase 1-2**: Infrastructure, i18n engine, and core UI shell (Header/Sidebar).
-- **Phase 3-4**: FastAPI backend with telemetry, SQLModel integration, and Vercel deployment readiness.
-- **Phase 5-8**: Web3Forms integration, mobile UX refinements, a localized trigger-based chatbot persona, and final polish/optimization.
+- **Version 0.0.1-2**: Infrastructure, i18n engine, and core UI shell (Header/Sidebar).
+- **Version 0.0.3-4**: FastAPI backend with telemetry, SQLModel integration, and Vercel deployment readiness.
+- **Version 0.0.5-8**: Web3Forms integration, mobile UX refinements, a localized trigger-based chatbot persona, and final polish/optimization.
 
 ### TODO: Establish Build/Run Scripts
 
@@ -81,7 +81,7 @@ uv run uvicorn main:app --reload
 ### Git & Workflow
 
 - **Conventional Commits:** Follow the standard format.
-- **Commit Body:** Must explain the "Why" and link to the relevant Phase in `TODO.md`.
+- **Commit Body:** Must explain the "Why" and link to the relevant Version in `TODO.md`.
 - **Scopes:** `[frontend]`, `[backend]`, `[monorepo]`, `[infra]`, `[i18n]`.
 
 ## Key Resources

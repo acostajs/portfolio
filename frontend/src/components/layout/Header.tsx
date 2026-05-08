@@ -2,12 +2,14 @@ import React from "react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContextUtils";
 import { Menu, Moon, Sun } from "lucide-react";
+import ProgressiveImage from "../chat/ProgressiveImage";
 
 interface HeaderProps {
   onMenuClick: () => void;
+  onLogoClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
   const { t, locale, setLocale } = useTranslation();
   const { setTheme, resolvedTheme } = useTheme();
 
@@ -24,16 +26,19 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             <Menu className="w-6 h-6" />
           </button>
 
-          <div className="flex items-center min-w-0">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent mr-3 flex-none">
-              <img
+          <button
+            onClick={onLogoClick}
+            className="flex items-center min-w-0 group hover:opacity-80 transition-opacity"
+            aria-label="Go to Home"
+          >
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent mr-3 flex-none group-hover:scale-105 transition-transform">
+              <ProgressiveImage
                 src="/avatar.jpeg"
                 alt={t.common.name}
-                className="w-full h-full object-cover"
-                loading="lazy"
+                className="w-full h-full"
               />
             </div>
-            <div className="flex flex-col min-w-0">
+            <div className="flex flex-col min-w-0 text-left">
               <h1 className="text-[clamp(0.875rem,4vw,1rem)] font-bold text-text-header leading-tight truncate">
                 {t.header.title}
               </h1>
@@ -41,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 {t.header.subtitle}
               </p>
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Right Section: Toggles */}

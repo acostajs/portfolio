@@ -21,7 +21,8 @@ export const en = {
   },
   home: {
     welcome: "Hi! I'm Juan Acosta's portfolio assistant. 👋",
-    subwelcome: "I can tell you about:",
+    subwelcome:
+      "You can interact with me to learn about Juan's background. I can tell you about:",
     chatbotPlaceholder: "Ask me about Juan's skills, projects...",
     features: [
       "Skills & Technologies",
@@ -29,10 +30,11 @@ export const en = {
       "Contact Information",
     ],
     closing:
-      "You can also explore specific pages using the navigation sidebar. What would you like to know?",
+      "Juan speaks English, French, and Spanish—you can switch languages and themes using the buttons at the top! I also support /commands for quick navigation. What would you like to know?",
     commands: {
       help: "Available commands:",
       clear: "Chat history cleared.",
+      clearSuccess: "Chat history cleared. How else can I help you?",
       error: "Unknown command. Type /help to see available commands.",
       list: [
         { cmd: "/clear", desc: "Clear chat history." },
