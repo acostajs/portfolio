@@ -31,6 +31,19 @@ export const es: TranslationType = {
     ],
     closing:
       "También puedes explorar páginas específicas usando la barra lateral de navegación. ¿Qué te gustaría saber?",
+    commands: {
+      help: "Comandos disponibles:",
+      clear: "Historial de chat borrado.",
+      error: "Comando desconocido. Escribe /help para ver los comandos.",
+      list: [
+        { cmd: "/clear", desc: "Borrar el historial." },
+        { cmd: "/help", desc: "Mostrar este mensaje de ayuda." },
+        { cmd: "/about", desc: "Ir a la página Sobre mí." },
+        { cmd: "/experience", desc: "Ir a la página de Experiencia." },
+        { cmd: "/projects", desc: "Ir a la página de Proyectos." },
+        { cmd: "/contact", desc: "Ir a la página de Contacto." },
+      ],
+    },
   },
   header: {
     title: "Asistente de Portafolio",

@@ -29,7 +29,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
         />
       </div>
       <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm">
-        <p className="text-text-header font-medium mb-4 leading-relaxed">
+        <p className="text-text-header font-medium mb-4 leading-relaxed whitespace-pre-wrap">
           <Typewriter
             key={content}
             text={content}

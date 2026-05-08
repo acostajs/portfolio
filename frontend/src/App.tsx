@@ -15,7 +15,7 @@ function App() {
   const renderPage = () => {
     switch (activePage) {
       case "home":
-        return <Home />;
+        return <Home onNavigate={setActivePage} />;
       case "about":
         return <About />;
       case "experience":

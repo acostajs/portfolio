@@ -2,7 +2,6 @@
 
 ## 🎯 Current Phase: Final Polish & Optimization
 
-- [ ] **Session Persistence**: Implement `localStorage` in the frontend to keep chat history across page refreshes.
 - [ ] **Lighthouse Optimization**: Conduct a final performance audit to ensure 90+ scores across the board.
 - [ ] **Trigger Refinement**: Expand the fallback and greeting responses to feel more natural within the existing logic.
 
@@ -19,6 +18,7 @@
 - [ ] **Command Palette (Cmd+K)**: Implement a global search/navigation menu.
 - [ ] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting.
 - [ ] **Advanced UX**:
+  - **Header Navigation**: Clicking the Header logo/title should return the user to the Home (Chat) view.
   - **Haptic Feedback**: Add subtle vibrations for mobile interactions.
   - **Copy-to-Clipboard**: Quick copy for email/socials in Sidebar/Contact.
 - [ ] **Accessibility (a11y) & SEO**:
@@ -31,6 +31,8 @@
 
 ### Phase 8: Final Polish & Optimization
 
+- [x] **Chat Commands**: Implemented local slash commands (/clear, /help, /about, /experience, /projects, /contact).
+- [x] **Session Persistence**: Implemented `localStorage` to preserve chat history across refreshes.
 - [x] **API Documentation Sync**: Synchronized `docs/API.md` with FastAPI implementation and telemetry logic.
 - [x] **Strengthen Pre-commit Hooks**: Updated Husky/root configuration to run a full validation suite (Ruff, Pyright, Pytest, TSC, ESLint, Bun test).
 - [x] **Mobile Viewport & Technical Fixes**: Implemented `100dvh`, safe area insets, and robust flexbox anchoring.

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { Send, Loader2 } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
+import { type PageId } from "../components/layout/Sidebar";
 
 interface Message {
   role: "user" | "assistant";
@@ -9,19 +10,38 @@ interface Message {
   isInitial?: boolean;
 }
 
-const Home: React.FC = () => {
+interface HomeProps {
+  onNavigate?: (page: PageId) => void;
+}
+
+const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const { t, locale } = useTranslation();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: t.home.welcome,
-      isInitial: true,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = localStorage.getItem("portfolio-chat-history");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse chat history:", e);
+      }
+    }
+    return [
+      {
+        role: "assistant",
+        content: t.home.welcome,
+        isInitial: true,
+      },
+    ];
+  });
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("portfolio-chat-history", JSON.stringify(messages));
+  }, [messages]);
 
   // Scroll to bottom whenever messages change or loading state changes
   useEffect(() => {
@@ -49,11 +69,65 @@ const Home: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+  const handleCommand = (cmd: string): boolean => {
+    const cleanCmd = cmd.toLowerCase().trim();
+
+    if (cleanCmd === "/clear") {
+      setMessages([
+        {
+          role: "assistant",
+          content: t.home.commands.clear,
+          isInitial: true,
+        },
+      ]);
+      localStorage.removeItem("portfolio-chat-history");
+      return true;
+    }
+
+    if (cleanCmd === "/help") {
+      const helpContent = `${t.home.commands.help}\n\n${t.home.commands.list
+        .map((item) => `${item.cmd} : ${item.desc}`)
+        .join("\n")}`;
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "user", content: cmd },
+        { role: "assistant", content: helpContent },
+      ]);
+      return true;
+    }
+
+    // Navigation commands
+    const navMatch = ["/about", "/experience", "/projects", "/contact"].find(
+      (n) => cleanCmd === n,
+    );
+
+    if (navMatch && onNavigate) {
+      onNavigate(navMatch.substring(1) as PageId);
+      return true;
+    }
+
+    if (cleanCmd.startsWith("/")) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "user", content: cmd },
+        { role: "assistant", content: t.home.commands.error },
+      ]);
+      return true;
+    }
+
+    return false;
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage = input.trim();
     setInput("");
+
+    // Check for slash commands first
+    if (handleCommand(userMessage)) return;
+
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
 
