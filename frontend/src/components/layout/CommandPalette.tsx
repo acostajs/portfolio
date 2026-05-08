@@ -14,6 +14,7 @@ import {
   Sun,
   Globe,
   Command,
+  Shield,
 } from "lucide-react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContextUtils";
@@ -111,6 +112,13 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onPageChange }) => {
       section: "Navigation",
       icon: Mail,
       action: () => onPageChange("contact"),
+    },
+    {
+      id: "analytics",
+      name: "Analytics Dashboard",
+      section: "Navigation",
+      icon: Shield,
+      action: () => onPageChange("analytics"),
     },
     // External
     {

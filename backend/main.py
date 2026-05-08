@@ -10,10 +10,11 @@ from typing import List, Optional
 # Add the current directory to sys.path to ensure local imports work on Vercel
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from fastapi import BackgroundTasks, FastAPI, Request
+from fastapi import BackgroundTasks, FastAPI, Request, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
-from sqlmodel import Session
+from sqlmodel import Session, select, func, desc
 
 from config import settings
 from database import create_db_and_tables, engine
@@ -74,6 +75,19 @@ class ChatResponse(BaseModel):
 
 # --- App Initialization ---
 app = FastAPI(title="Portfolio Backend", lifespan=lifespan)
+
+# --- Security ---
+analytics_key_header = APIKeyHeader(name="X-Analytics-Password", auto_error=False)
+
+
+def verify_analytics_password(password: str = Depends(analytics_key_header)):
+    if not password or password != settings.ANALYTICS_PASSWORD:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid analytics password",
+        )
+    return password
+
 
 # --- Middleware ---
 app.add_middleware(
@@ -211,8 +225,60 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
 @app.get("/api/v1/chat/history")
 async def get_chat_history():
     with Session(engine) as session:
-        from sqlmodel import select, desc
-
         statement = select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
         results = session.exec(statement).all()
         return results
+
+
+# --- Analytics Endpoints ---
+@app.get(
+    "/api/v1/analytics/telemetry", dependencies=[Depends(verify_analytics_password)]
+)
+async def get_telemetry(limit: int = 100):
+    with Session(engine) as session:
+        statement = (
+            select(VisitorSession).order_by(desc(VisitorSession.timestamp)).limit(limit)
+        )
+        results = session.exec(statement).all()
+        return results
+
+
+@app.get("/api/v1/analytics/stats", dependencies=[Depends(verify_analytics_password)])
+async def get_stats():
+    with Session(engine) as session:
+        # Get total visitors
+        total_visitors = session.exec(select(func.count(VisitorSession.id))).one()  # type: ignore
+
+        # Get total chat messages
+        total_messages = session.exec(select(func.count(ChatMessage.id))).one()  # type: ignore
+
+        # Get top pages
+        top_pages_statement = (
+            select(
+                VisitorSession.path,
+                func.count(VisitorSession.id).label("count"),  # type: ignore
+            )
+            .group_by(VisitorSession.path)
+            .order_by(desc("count"))
+            .limit(10)
+        )
+        top_pages = session.exec(top_pages_statement).all()
+
+        # Get most common chat queries (simple grouping)
+        top_queries_statement = (
+            select(
+                ChatMessage.content,
+                func.count(ChatMessage.id).label("count"),  # type: ignore
+            )
+            .group_by(ChatMessage.content)
+            .order_by(desc("count"))
+            .limit(10)
+        )
+        top_queries = session.exec(top_queries_statement).all()
+
+        return {
+            "total_visitors": total_visitors,
+            "total_messages": total_messages,
+            "top_pages": [{"path": p, "count": c} for p, c in top_pages],
+            "top_queries": [{"query": q, "count": c} for q, c in top_queries],
+        }

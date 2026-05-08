@@ -1,20 +1,19 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Platform & Analytics (0.1.2)
+## 🎯 Current Version: Engagement & Community (0.1.3)
 
-- [ ] **Analytics Dashboard**: Create a simple password-protected view to visualize visitor telemetry and common chat queries.
-- [ ] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
-- [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
-
-## ⏳ Backlog & Future Ideas
-
-### Version 0.1.3: Engagement & Community
-
-- [ ] **Newsletter Integration**: Add a simple subscription form for blog updates.
 - [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [ ] **Chatbot Feedback Loop**: Allow users to rate chatbot responses to improve trigger logic.
 
+## ⏳ Backlog & Future Ideas
+
 ## ✅ Archive (Completed)
+
+### Version 0.1.2: Platform & Analytics
+
+- [x] **Analytics Dashboard**: Create a simple password-protected view to visualize visitor telemetry and common chat queries.
+- [x] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
+- [x] **Voice Interaction**: Implemented Web Speech API for hands-free chatbot interaction (STT & TTS).
 
 ### Version 0.1.1: Professional UX & Accessibility
 

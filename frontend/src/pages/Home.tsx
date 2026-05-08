@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
 import { type PageId } from "../components/layout/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 import { hapticFeedback } from "../../lib/haptic";
+import { useSpeech } from "../../lib/hooks/useSpeech";
 
 interface Message {
   role: "user" | "assistant";
@@ -19,6 +20,15 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const { t, locale } = useTranslation();
+  const {
+    isListening,
+    startListening,
+    stopListening,
+    speak,
+    stopSpeaking,
+    error: speechError,
+  } = useSpeech();
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem("portfolio-chat-history");
     if (saved) {
@@ -44,6 +54,12 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<Message[]>([]);
+
+  // Keep messagesRef in sync with messages state to avoid stale closures
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
 
   const suggestions = t.home.commands.list.filter((cmd) =>
     cmd.cmd.toLowerCase().startsWith(input.toLowerCase()),
@@ -192,7 +208,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         body: JSON.stringify({
           message: userMessage,
           language: locale,
-          history: messages.map((m) => ({ role: m.role, content: m.content })),
+          history: messagesRef.current.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
         }),
       });
 
@@ -203,6 +222,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         ...prev,
         { role: "assistant", content: data.reply, shouldAnimate: true },
       ]);
+
+      if (isVoiceEnabled) {
+        // Use a small delay to let the UI update first
+        setTimeout(() => speak(data.reply, locale), 500);
+      }
     } catch (error) {
       console.error("Chat error:", error);
       setMessages((prev) => [
@@ -215,6 +239,28 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       ]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleMicToggle = () => {
+    hapticFeedback(20);
+    if (isListening) {
+      stopListening();
+    } else {
+      setIsVoiceEnabled(true);
+      startListening(locale, (text) => {
+        handleSend(text);
+      });
+    }
+  };
+
+  const toggleVoiceOutput = () => {
+    hapticFeedback(10);
+    if (isVoiceEnabled) {
+      stopSpeaking();
+      setIsVoiceEnabled(false);
+    } else {
+      setIsVoiceEnabled(true);
     }
   };
 
@@ -282,6 +328,34 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       {/* Chat Input Area - Anchored at the bottom */}
       <div className="flex-none p-4 pt-0 pb-[calc(1rem+env(safe-area-inset-bottom))] md:p-8 md:pt-0 bg-bg/80 backdrop-blur-sm border-t border-border/50 md:border-none md:bg-transparent">
         <div className="max-w-5xl mx-auto relative">
+          {/* Speech Status Indicator */}
+          <AnimatePresence>
+            {(isListening || speechError) && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="absolute bottom-full left-0 mb-4 flex items-center gap-2 px-3 py-1.5 bg-sidebar-bg/90 backdrop-blur-md border border-border rounded-full shadow-lg z-10"
+              >
+                {isListening ? (
+                  <>
+                    <div className="w-2 h-2 bg-error rounded-full animate-pulse" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-text">
+                      Listening...
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-2 h-2 bg-error rounded-full" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-error">
+                      Speech Error: {speechError}
+                    </span>
+                  </>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <AnimatePresence>
             {showSuggestions && (
               <motion.div
@@ -330,6 +404,40 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }}
             className="relative group"
           >
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1 z-10">
+              <button
+                type="button"
+                onClick={handleMicToggle}
+                className={`p-2 rounded-xl transition-all ${
+                  isListening
+                    ? "bg-error text-white animate-pulse"
+                    : "text-text hover:text-text-header hover:bg-white/5"
+                }`}
+                title="Voice Input"
+              >
+                {isListening ? (
+                  <Mic className="w-5 h-5" />
+                ) : (
+                  <MicOff className="w-5 h-5" />
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={toggleVoiceOutput}
+                className={`p-2 rounded-xl transition-all ${
+                  isVoiceEnabled
+                    ? "text-accent bg-accent/10"
+                    : "text-text opacity-40 hover:opacity-100 hover:bg-white/5"
+                }`}
+                title={isVoiceEnabled ? "Mute Assistant" : "Unmute Assistant"}
+              >
+                {isVoiceEnabled ? (
+                  <Volume2 className="w-5 h-5" />
+                ) : (
+                  <VolumeX className="w-5 h-5" />
+                )}
+              </button>
+            </div>
             <input
               type="text"
               value={input}
@@ -341,7 +449,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               placeholder={t.home.chatbotPlaceholder}
               aria-label="Chat message"
               disabled={isLoading}
-              className="w-full pl-6 pr-14 py-4 md:py-5 bg-white/5 border border-border focus:border-accent rounded-2xl outline-none transition-all shadow-2xl backdrop-blur-md placeholder:text-text/40 placeholder:text-xs md:placeholder:text-base text-text-header disabled:opacity-50"
+              className="w-full pl-24 pr-14 py-4 md:py-5 bg-white/5 border border-border focus:border-accent rounded-2xl outline-none transition-all shadow-2xl backdrop-blur-md placeholder:text-text/40 placeholder:text-xs md:placeholder:text-base text-text-header disabled:opacity-50"
             />
             <button
               type="submit"

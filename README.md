@@ -11,6 +11,9 @@ An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trig
 
 ## Key Features
 
+- **Analytics Dashboard**: Secure, password-protected dashboard to visualize visitor telemetry and chat query statistics.
+- **Progressive Web App (PWA)**: Offline availability and "Add to Home Screen" support via `vite-plugin-pwa`.
+- **Hands-Free Voice Interaction**: Integrated Web Speech API for speech-to-text input and text-to-speech chatbot responses.
 - **Advanced AI Persona**: Modular technical expertise and HR screening simulation with 20+ specialized categories.
 - **Markdown Chat Support**: Formatted responses with syntax highlighting for code blocks.
 - **Lightweight Blog Module**: Multi-language technical notes and articles section.
