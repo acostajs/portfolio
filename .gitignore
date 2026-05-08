@@ -41,3 +41,6 @@ bun.lockb
 .idea/
 *.swp
 *.swo
+
+# Database
+portfolio.db
