@@ -12,8 +12,8 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { setTheme, resolvedTheme } = useTheme();
 
   return (
-    <header className="flex-none sticky top-0 z-40 h-16 bg-[var(--header-bg)] backdrop-blur-md border-b border-border px-4 lg:px-8 w-full">
-      <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
+    <header className="flex-none sticky top-0 z-40 bg-[var(--header-bg)] backdrop-blur-md border-b border-border px-4 lg:px-8 w-full pt-[env(safe-area-inset-top)]">
+      <div className="flex items-center justify-between h-16 max-w-7xl mx-auto">
         {/* Left Section: Mobile Menu Toggle & Logo */}
         <div className="flex items-center min-w-0">
           <button
@@ -30,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 src="/avatar.jpeg"
                 alt={t.common.name}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="flex flex-col min-w-0">
@@ -44,14 +45,15 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         </div>
 
         {/* Right Section: Toggles */}
-        <div className="flex items-center space-x-2 flex-none ml-2">
+        <div className="flex items-center space-x-1 sm:space-x-2 flex-none ml-2">
           {/* Language Toggle */}
           <div className="flex items-center bg-white/5 border border-border rounded-lg p-0.5">
             {(["en", "fr", "es"] as const).map((l) => (
               <button
                 key={l}
                 onClick={() => setLocale(l)}
-                className={`px-2 py-1 rounded-md text-[10px] font-bold transition-all ${
+                aria-label={`Switch to ${l === "en" ? "English" : l === "fr" ? "French" : "Spanish"}`}
+                className={`px-1.5 py-1 sm:px-2 sm:py-1 rounded-md text-[9px] sm:text-[10px] font-bold transition-all ${
                   locale === l
                     ? "bg-accent text-white shadow-lg"
                     : "text-text hover:text-text-header"
@@ -68,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               onClick={() =>
                 setTheme(resolvedTheme === "dark" ? "light" : "dark")
               }
-              className="px-2 py-1 rounded-md text-[10px] font-bold transition-all text-text hover:text-text-header"
+              className="px-1.5 py-1 sm:px-2 sm:py-1 rounded-md text-[9px] sm:text-[10px] font-bold transition-all text-text hover:text-text-header"
               aria-label={t.header.toggleTheme}
             >
               {resolvedTheme === "dark" ? (

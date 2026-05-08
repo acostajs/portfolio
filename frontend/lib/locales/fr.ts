@@ -23,8 +23,7 @@ export const fr: TranslationType = {
   home: {
     welcome: "Salut ! Je suis l'assistant du portfolio de Juan Acosta. 👋",
     subwelcome: "Je peux vous parler de :",
-    chatbotPlaceholder:
-      "Demandez-moi n'importe quoi sur les compétences, les projets ou l'expérience de Juan...",
+    chatbotPlaceholder: "Demandez-moi sur Juan...",
     features: [
       "Compétences et technologies",
       "Projets et expérience",
@@ -32,6 +31,19 @@ export const fr: TranslationType = {
     ],
     closing:
       "Vous pouvez également explorer des pages spécifiques à l'aide de la barre latérale de navigation. Que aimeriez-vous savoir ?",
+    commands: {
+      help: "Commandes disponibles :",
+      clear: "Historique du chat effacé.",
+      error: "Commande inconnue. Tapez /help pour voir les commandes.",
+      list: [
+        { cmd: "/clear", desc: "Effacer l'historique." },
+        { cmd: "/help", desc: "Afficher ce message d'aide." },
+        { cmd: "/about", desc: "Aller à la page À propos." },
+        { cmd: "/experience", desc: "Aller à la page Expérience." },
+        { cmd: "/projects", desc: "Aller à la page Projets." },
+        { cmd: "/contact", desc: "Aller à la page Contact." },
+      ],
+    },
   },
   header: {
     title: "Assistant Portfolio",

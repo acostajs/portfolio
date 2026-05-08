@@ -18,7 +18,16 @@ from sqlmodel import Session
 from config import settings
 from database import create_db_and_tables, engine
 from models import VisitorSession, ChatMessage
-from responses import about, experience, projects, contact, fallback, greetings, thanks
+from responses import (
+    about,
+    experience,
+    projects,
+    contact,
+    fallback,
+    greetings,
+    thanks,
+    fun,
+)
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -160,6 +169,8 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
         reply = random.choice(projects.data["answers"][lang])
     elif is_trigger_match(user_message, contact.data["triggers"]):
         reply = random.choice(contact.data["answers"][lang])
+    elif is_trigger_match(user_message, fun.data["triggers"]):
+        reply = random.choice(fun.data["answers"][lang])
     else:
         reply = random.choice(fallback.data["answers"][lang])
 
@@ -173,8 +184,8 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
 @app.get("/api/v1/chat/history")
 async def get_chat_history():
     with Session(engine) as session:
-        from sqlmodel import select
+        from sqlmodel import select, desc
 
-        statement = select(ChatMessage).order_by(ChatMessage.timestamp.desc()).limit(50)
+        statement = select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
         results = session.exec(statement).all()
         return results

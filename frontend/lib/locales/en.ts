@@ -21,8 +21,7 @@ export const en = {
   home: {
     welcome: "Hi! I'm Juan Acosta's portfolio assistant. 👋",
     subwelcome: "I can tell you about:",
-    chatbotPlaceholder:
-      "Ask me anything about Juan's skills, projects, or experience...",
+    chatbotPlaceholder: "Ask me about Juan's skills, projects...",
     features: [
       "Skills & Technologies",
       "Projects & Experience",
@@ -30,6 +29,19 @@ export const en = {
     ],
     closing:
       "You can also explore specific pages using the navigation sidebar. What would you like to know?",
+    commands: {
+      help: "Available commands:",
+      clear: "Chat history cleared.",
+      error: "Unknown command. Type /help to see available commands.",
+      list: [
+        { cmd: "/clear", desc: "Clear chat history." },
+        { cmd: "/help", desc: "Show available commands." },
+        { cmd: "/about", desc: "Go to About page." },
+        { cmd: "/experience", desc: "Go to Experience page." },
+        { cmd: "/projects", desc: "Go to Projects page." },
+        { cmd: "/contact", desc: "Go to Contact page." },
+      ],
+    },
   },
   header: {
     title: "Portfolio Assistant",

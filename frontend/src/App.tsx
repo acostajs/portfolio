@@ -6,14 +6,16 @@ import Experience from "./pages/Experience";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import { type PageId } from "./components/layout/Sidebar";
+import { useTranslation } from "../lib/hooks/useTranslation";
 
 function App() {
   const [activePage, setActivePage] = useState<PageId>("home");
+  const { locale } = useTranslation();
 
   const renderPage = () => {
     switch (activePage) {
       case "home":
-        return <Home />;
+        return <Home onNavigate={setActivePage} />;
       case "about":
         return <About />;
       case "experience":
@@ -29,7 +31,12 @@ function App() {
 
   return (
     <Layout activePage={activePage} onPageChange={setActivePage}>
-      {renderPage()}
+      <div
+        key={locale}
+        className="flex-1 flex flex-col min-h-0 overflow-hidden"
+      >
+        {renderPage()}
+      </div>
     </Layout>
   );
 }

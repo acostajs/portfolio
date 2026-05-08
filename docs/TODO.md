@@ -1,108 +1,117 @@
-# TODO.md
+# Project Roadmap (TODO.md)
 
-## Phase 1: Infrastructure & i18n
+## 🎯 Current Phase: Final Polish & Optimization
 
-- [x] **Monorepo Initialization**
-  - [x] Initialize git and root `package.json`.
-  - [x] Setup `.gitignore` (Root, Frontend, Backend specifics).
-  - [x] Create `frontend/` (React + Bun + Tailwind).
-  - [x] Create `backend/` (FastAPI + Python + Virtualenv).
-- [x] **Enforcement & Automation (Gemini CLI Prep)**
-  - [x] Install `husky` and `lint-staged` at the root.
-  - [x] Configure `commit-msg` hook to enforce Conventional Commits.
-  - [x] Configure `pre-commit` hook to run `prettier` and `eslint` on staged files.
-  - [x] Create `.clisettings.json` (or equivalent) to point Gemini CLI to `.ai-rules`.
-- [x] **Styling & Core Config**
-  - [x] Define CSS Design Tokens in `frontend/src/styles/globals.css`.
-  - [x] Setup `frontend/lib/locales/` with base TS objects for EN, FR, ES.
-- [x] **Vercel Orchestration**
-  - [x] Create `vercel.json` with rewrites for `/api/*` to the Python backend.
-- [x] Setup `frontend/lib/locales/` with EN, FR, and ES objects.
-- [x] Implement ThemeProvider (System/Light/Dark).
-- [x] **DUMMY DATA:** Populate translation objects with placeholder strings for all views.
+_(No active tasks - transition to Backlog or review completed items)_
 
-## Phase 2: Layout, Navigation & i18n
+## ⏳ Backlog & Future Ideas
 
-- [x] **Infrastructure: Assets & Metadata**
-  - [x] Configure `favicon.ico` and `site.webmanifest` in the HTML head.
-  - [x] Move and link `public/avatar.jpeg` for the Sidebar profile and Header logo.
-- [x] **Core Components: The Shell**
-  - [x] Build **Header**: Include Sidebar toggle, Theme toggle, and Language toggle (EN/FR/ES).
-  - [x] Build **Sidebar (<aside>)**:
-    - [x] Profile: Name, Title (Full-Stack Developer), Location (Montréal).
-    - [x] Links: Home, About, Experience, Projects, Contact.
-    - [x] Status: "Open to full-time opportunities".
-  - [x] Build **Mobile Overlay**: Sidebar should slide over content on small screens.
-- [x] **i18n & Theming Engine**
-  - [x] Implement System-first Theme detection (Default: Dark).
-  - [x] Implement Browser-first Language detection (Default: EN).
-  - [x] Map all UI strings to `frontend/lib/locales/` (Zero Static Text Rule).
-- [x] **Content & Routing**
-  - [x] Setup routing where Main content changes but Header/Sidebar persist.
-  - [x] Create **Home View**: Interactive chatbot shell with welcome message.
-  - [x] **DUMMY DATA**: Populate `frontend/lib/mocks.ts` with your specific tech stack (TypeScript, React, Bun, FastAPI) and past experience.
+### Phase 9: AI Intelligence & Deep Content
 
-## Phase 3: Backend Implementation
+- [ ] **Advanced Technical Persona Expansion**: Expand chatbot triggers and logic to provide expert-level answers from a junior full-stack perspective on:
+  - **Core Foundations**: Version Control (Gitflow/Trunk), Performance (Web Vitals), Security (OWASP), and Testing Philosophy.
+  - **Frontend Specialization**: State Management, Accessibility (WCAG 2.2), Rendering Patterns (SSR/SSG), and CSS Architecture.
+  - **Backend Specialization**: API Design (REST/GraphQL), Database Mastery (Indexing, NoSQL), System Architecture, and Auth (OAuth2/JWT).
+  - **Full Stack & DevOps**: Infrastructure as Code (Docker/Terraform), CI/CD (GitHub Actions), and Monitoring (Sentry).
+  - **Behavioral**: Technical Conflict Resolution, Tool Selection Justification, AI-Assisted Workflow, and Stakeholder Communication.
+- [ ] **HR & Personality Assessment**: Enable the chatbot to simulate HR screenings by addressing:
+  - **Soft Skills**: Handling constructive feedback, ownership of mistakes, and prioritization under pressure.
+  - **Work Style**: Remote communication preferences and professional growth motivations.
+  - **Evaluation**: Implement logic to evaluate the balance between "technical ego" and team collaboration.
+- [ ] **Markdown Chat Support**: Render markdown in chat responses with syntax highlighting for code blocks.
+- [ ] **Blog Module**: Add a lightweight, markdown-based blog section for technical notes and articles.
 
-- [x] Setup FastAPI `BackgroundTasks` for silent visitor tracking.
-- [x] Create database schema (Visitor Analytics & Chat History).
-- [x] Build Chatbot logic (Mock with randomized multilingual responses).
-- [x] **DUMMY DATA:** Implement mock API response to simulate chatbot interaction.
-- [x] Correct Python version to 3.12.
-- [x] Setup GitHub CI workflows for frontend and backend.
+### Phase 10: Motion & High-End Visuals
 
-## Phase 4: Deployment Readiness (Vercel focus)
+- [ ] **Motion & Micro-interactions**: Integrate `framer-motion` for:
+  - Staggered chat bubble entry animations.
+  - Smooth page transitions between navigation links.
+  - "Thinking" pulse animation for the chatbot avatar.
+- [ ] **Modern Visual Polish**:
+  - Apply **Glassmorphism** (`backdrop-blur`) to Sidebar and Header.
+  - Implement a subtle, animated **Mesh Gradient** background.
+  - Add blur-up placeholders for progressive image loading.
 
-- [x] Create `vercel.json` at root for monorepo routing.
-- [x] Configure Environment Variables in Vercel (Web3Forms, Backend URL).
-- [x] Optimize Bun build script for Vercel.
-- [x] Set up production-ready CORS policy in FastAPI.
+### Phase 11: Professional UX & Accessibility
 
-## Phase 5: Contact & Cleanup
+- [ ] **Command Palette (Cmd+K)**: Implement a global search/navigation menu for keyboard-first efficiency.
+- [ ] **Advanced UX Enhancements**:
+  - **Header Navigation**: Clicking the Header logo/title should return the user to the Home (Chat) view.
+  - **Haptic Feedback**: Add subtle vibrations for mobile interactions.
+  - **Copy-to-Clipboard**: Quick copy for email/socials in Sidebar/Contact.
+- [ ] **Accessibility (a11y) & SEO**:
+  - Add a "Skip to Content" link for screen readers.
+  - Implement high-visibility `:focus-visible` rings for keyboard navigation.
 
-- [x] Connect Contact page to Web3Forms using the public key.
-- [x] Final audit for semantic HTML and Tailwind consistency.
+### Phase 12: Platform & Analytics
 
-## Phase 6: UI Refinement, Audit & Groq AI Integration
+- [ ] **Analytics Dashboard**: Create a simple password-protected view to visualize visitor telemetry and common chat queries.
+- [ ] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
+- [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
 
-- [x] **Audit & Optimization**
-  - [x] Codebase Audit: Perform a deep dive for semantic HTML improvements and Tailwind CSS consistency.
-  - [x] Tree Shaking: Identify and remove unused components, dead types, and redundant Tailwind utility classes.
-  - [x] Security & Stability: Scan for logic bugs and potential security risks in both frontend and backend handlers.
+## ✅ Archive (Completed)
 
-- [x] **UI/UX Improvements**
-  - [x] Sticky Navigation: Fix the Header position to ensure it remains accessible when the chat or page content extends.
-  - [x] Chat Layout: Pin the chatbot input to the bottom of the viewport so it stays visible regardless of message history length.
-  - [x] Typography Refresh: Update global CSS variables to implement new font stacks:
-    - Sans: Space Grotesk, system fonts.
-    - Mono: ui-monospace, SFMono-Regular, and standard fallbacks.
+### Phase 8: Final Polish & Optimization
 
-- [ ] **AI Backend & Persona (Trigger-Based Logic)**
-  - [x] Restore trigger-based response modules in `backend/responses/`.
+- [x] **Trigger Refinement**: Expanded greeting, fallback, and "fun" responses for a more varied and natural persona.
+- [x] **Lighthouse Optimization**: Implemented SEO metadata, accessibility (ARIA), and performance (lazy-loading) best practices.
+- [x] **Chat Commands**: Implemented local slash commands (/clear, /help, /about, /experience, /projects, /contact).
+- [x] **Session Persistence**: Implemented `localStorage` to preserve chat history across refreshes.
+- [x] **API Documentation Sync**: Synchronized `docs/API.md` with FastAPI implementation and telemetry logic.
+- [x] **Strengthen Pre-commit Hooks**: Updated Husky/root configuration to run a full validation suite (Ruff, Pyright, Pytest, TSC, ESLint, Bun test).
+- [x] **Mobile Viewport & Technical Fixes**: Implemented `100dvh`, safe area insets, and robust flexbox anchoring.
+- [x] **Mobile UI Refinement (Visual Audit)**: Optimized header spacing, fixed i18n remounting bug, and shortened placeholders.
 
-Integrating those tips directly into the tasks makes the list much more "dev-ready." It defines the **how** alongside the **what**, which helps prevent technical debt.
+### Phase 7: Mobile UX, Messaging & Persona
 
-Here is the updated **Phase 7** list with the senior engineering insights baked in:
+- [x] **Sticky Layout**: Implemented `h-screen` flex-col strategy for fixed header/input.
+- [x] **Header Typography**: Fixed text breaking on mobile using fluid sizing.
+- [x] **Input Optimization**: Shortened mobile placeholders for better fit.
+- [x] **Backend Automation**: Created root-level scripts for `uv` environment setup.
+- [x] **Database Optimization**: Excluded assistant messages from DB to save space.
+- [x] **Persona Tuning**: Updated system responses to a warm, first-person perspective.
+- [x] **NLU Refinement**: Improved trigger matching with regex/word boundaries.
+- [x] **i18n Expansion**: Completed full translation sets for EN, FR, and ES.
 
----
+### Phase 6: UI Refinement & Audit
 
-## ## Phase 7: Mobile UX Refinement, Messaging Logic & Persona Tuning
+- [x] **Codebase Audit**: Semantic HTML and Tailwind consistency check.
+- [x] **Tree Shaking**: Removed unused components and dead types.
+- [x] **Security Scan**: Audited backend handlers and frontend forms.
+- [x] **Sticky Navigation**: Pinned Header for persistent access.
+- [x] **Chat Layout**: Pinned input field to the bottom of the viewport.
+- [x] **Typography Refresh**: Implemented Space Grotesk and SFMono stacks.
+- [x] **Trigger Logic**: Restored modular trigger responses in `backend/responses/`.
 
-### UI / UX (Mobile & Layout)
+### Phase 5: Contact & Cleanup
 
-- [x] **Sticky Layout (Flexbox Strategy):** Implement a `h-screen` flex-col wrapper. Set the Header and Input as fixed-height components and apply `flex-1 overflow-y-auto` to the chat container to ensure the input is always anchored and visible.
-- [x] **Header Typography Fix:** Use media queries or fluid typography (e.g., `text-[clamp(...)]`) for the "Portfolio Assistant..." text to prevent breaking on narrow viewports.
-- [x] **Input Placeholder Optimization:** Shorten the mobile placeholder text or use a CSS selector to reduce `font-size` specifically for the `::placeholder` on small screens.
+- [x] **Web3Forms Integration**: Connected Contact page to the external service.
+- [x] **Validation**: Final audit for semantic HTML and accessibility.
 
-### Backend & Integration
+### Phase 4: Deployment Readiness
 
-- [x] **Backend Initialization Shortcut:** Implement a root-level script (e.g., in `package.json`) to automate the backend environment setup and start the server using `uv`.
-- [x] **Database Streamlining:** Modify the POST controller to exclude assistant strings from the `save` logic. **Note:** Ensure the React/Vue state still holds these responses in memory so the user's current session remains coherent.
-- [x] **Visit Notifications:** Removed due to Web3Forms server-side restrictions on the free plan. Silent telemetry remains active for analytics.
-- [x] **Web3Forms Debugging:** Audit the `form` submission handler. Check the `fetch` response codes and verify that the `access_key` is correctly loaded from environment variables.
+- [x] **Vercel Config**: Root-level `vercel.json` for monorepo routing.
+- [x] **Env Variables**: Configured keys in Vercel dashboard.
+- [x] **Build Optimization**: Tuned Bun build scripts for production.
+- [x] **CORS Policy**: Set up production-ready origins in FastAPI.
 
-### Bot Logic & Localization
+### Phase 3: Backend Implementation
 
-- [x] **Persona Update:** Refactor the System Message to enforce a first-person perspective. Update the greeting and fallback phrases to be casual and warm.
-- [x] **NLU Refinement:** Review current keyword mapping; implement better regex or fuzzy matching to increase trigger accuracy.
-- [x] **Multilingual Expansion (EN/FR/ES):** Scale the content JSON/Object to include full translations for English, French, and Spanish, ensuring the "warm tone" carries across all three cultures.
+- [x] **Telemetry**: FastAPI `BackgroundTasks` for silent tracking.
+- [x] **Database**: SQLModel schema for Analytics and Chat history.
+- [x] **Mock Chat**: Initial randomized response logic.
+- [x] **Tooling**: Updated to Python 3.12 and configured CI workflows.
+
+### Phase 2: Layout & Navigation
+
+- [x] **Shell Components**: Built Header, Sidebar, and Mobile Overlay.
+- [x] **Theming**: System-first dark/light mode detection.
+- [x] **Routing**: Client-side navigation with persistent shell.
+- [x] **Data Mocks**: Populated `lib/mocks.ts` with developer data.
+
+### Phase 1: Infrastructure & i18n
+
+- [x] **Monorepo**: Initialized React (Bun) + FastAPI (Python) structure.
+- [x] **Automation**: Setup Husky, commitlint, and lint-staged.
+- [x] **i18n Engine**: Custom TypeScript-based translation system.
+- [x] **Vercel Prep**: Initial monorepo routing configuration.

@@ -24,16 +24,22 @@ data = {
             "Hey! So glad you're here. How can I help you today? 😊",
             "Hi there! I'm Juan's digital assistant, here to chat about my work and experience. What's on your mind?",
             "Hey! Feel free to ask me anything about my journey in tech or my latest projects!",
+            "Hi! Hope your day is going great. Is there anything specific you'd like to know about my background?",
+            "Hello! It's a pleasure to meet you. I'm ready to answer any questions about my professional path.",
         ],
         "es": [
             "¡Hola! Qué alegría que estés por aquí. ¿En qué puedo ayudarte hoy? 😊",
             "¡Hola! Soy el asistente digital de Juan, aquí para charlar sobre mi trabajo y experiencia. ¿Qué tienes en mente?",
             "¡Hola! ¡No dudes en preguntarme lo que sea sobre mi trayectoria tecnológica o mis últimos proyectos!",
+            "¡Hola! Espero que estés teniendo un gran día. ¿Hay algo específico que quieras saber sobre mi trayectoria?",
+            "¡Hola! Es un placer saludarte. Estoy listo para responder cualquier duda sobre mi camino profesional.",
         ],
         "fr": [
             "Salut ! Je suis ravi que vous soyez là. Comment puis-je vous aider aujourd'hui ? 😊",
             "Coucou ! Je suis l'assistant numérique de Juan, ici pour discuter de mon travail et de mon expérience. Qu'avez-vous en tête ?",
             "Salut ! N'hésitez pas à me poser n'importe quelle question sur mon parcours en tech ou mes derniers projets !",
+            "Bonjour ! J'espère que votre journée se passe bien. Y a-t-il quelque chose de précis que vous aimeriez savoir sur mon parcours ?",
+            "Salut ! C'est un plaisir de vous rencontrer. Je suis prêt à répondre à toutes vos questions sur mon parcours professionnel.",
         ],
     },
 }
