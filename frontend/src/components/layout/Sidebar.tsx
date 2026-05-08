@@ -82,6 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   src="/avatar.jpeg"
                   alt={t.common.name}
                   className="w-full h-full object-cover grayscale brightness-110"
+                  loading="lazy"
                 />
               </div>
             </div>

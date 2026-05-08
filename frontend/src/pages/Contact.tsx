@@ -102,12 +102,16 @@ const Contact: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1">
+                <label
+                  htmlFor="contact-name"
+                  className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1"
+                >
                   {t.contact.formName}
                 </label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text opacity-50" />
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     required
@@ -117,12 +121,16 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1">
+                <label
+                  htmlFor="contact-email"
+                  className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1"
+                >
                   {t.contact.formEmail}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text opacity-50" />
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     required
@@ -134,12 +142,16 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1">
+              <label
+                htmlFor="contact-message"
+                className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1"
+              >
                 {t.contact.formMessage}
               </label>
               <div className="relative">
                 <MessageSquare className="absolute left-4 top-5 w-4 h-4 text-text opacity-50" />
                 <textarea
+                  id="contact-message"
                   name="message"
                   required
                   rows={5}

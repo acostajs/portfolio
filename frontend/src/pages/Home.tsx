@@ -227,12 +227,14 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t.home.chatbotPlaceholder}
+              aria-label="Chat message"
               disabled={isLoading}
               className="w-full pl-6 pr-14 py-4 md:py-5 bg-white/5 border border-border focus:border-accent rounded-2xl outline-none transition-all shadow-2xl backdrop-blur-md placeholder:text-text/40 placeholder:text-xs md:placeholder:text-base text-text-header disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
+              aria-label="Send message"
               className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-white/10 text-text hover:text-white hover:bg-accent rounded-xl transition-all shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (

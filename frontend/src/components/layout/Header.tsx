@@ -30,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 src="/avatar.jpeg"
                 alt={t.common.name}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="flex flex-col min-w-0">
@@ -51,6 +52,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               <button
                 key={l}
                 onClick={() => setLocale(l)}
+                aria-label={`Switch to ${l === "en" ? "English" : l === "fr" ? "French" : "Spanish"}`}
                 className={`px-1.5 py-1 sm:px-2 sm:py-1 rounded-md text-[9px] sm:text-[10px] font-bold transition-all ${
                   locale === l
                     ? "bg-accent text-white shadow-lg"

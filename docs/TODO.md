@@ -2,8 +2,7 @@
 
 ## 🎯 Current Phase: Final Polish & Optimization
 
-- [ ] **Lighthouse Optimization**: Conduct a final performance audit to ensure 90+ scores across the board.
-- [ ] **Trigger Refinement**: Expand the fallback and greeting responses to feel more natural within the existing logic.
+_(No active tasks - transition to Backlog or review completed items)_
 
 ## ⏳ Backlog & Future Ideas
 
@@ -31,6 +30,8 @@
 
 ### Phase 8: Final Polish & Optimization
 
+- [x] **Trigger Refinement**: Expanded greeting, fallback, and "fun" responses for a more varied and natural persona.
+- [x] **Lighthouse Optimization**: Implemented SEO metadata, accessibility (ARIA), and performance (lazy-loading) best practices.
 - [x] **Chat Commands**: Implemented local slash commands (/clear, /help, /about, /experience, /projects, /contact).
 - [x] **Session Persistence**: Implemented `localStorage` to preserve chat history across refreshes.
 - [x] **API Documentation Sync**: Synchronized `docs/API.md` with FastAPI implementation and telemetry logic.
