@@ -3,6 +3,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import { motion, AnimatePresence } from "framer-motion";
+import ProgressiveImage from "./ProgressiveImage";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -53,14 +55,34 @@ const BotMessage: React.FC<BotMessageProps> = ({
   }, [content, isInitial, skipTypewriter]);
 
   return (
-    <div className="flex items-start max-w-3xl animate-slide-in-left">
-      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-border mr-4 mt-1 shrink-0">
-        <img
+    <div className="flex items-start max-w-3xl">
+      <motion.div
+        initial={false}
+        animate={
+          !skipTypewriter
+            ? {
+                scale: [1, 1.05, 1],
+                borderColor: [
+                  "rgba(255,255,255,0.1)",
+                  "rgba(9,105,218,0.5)",
+                  "rgba(255,255,255,0.1)",
+                ],
+              }
+            : {}
+        }
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="w-10 h-10 rounded-full overflow-hidden border-2 border-border mr-4 mt-1 shrink-0 shadow-lg"
+      >
+        <ProgressiveImage
           src="/avatar.jpeg"
           alt="Assistant"
-          className="w-full h-full object-cover grayscale"
+          className="w-full h-full grayscale"
         />
-      </div>
+      </motion.div>
       <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm">
         <div className="text-text-header font-medium mb-4 leading-relaxed markdown-content">
           <ReactMarkdown
@@ -90,33 +112,47 @@ const BotMessage: React.FC<BotMessageProps> = ({
           </ReactMarkdown>
         </div>
 
-        {isInitial && showSub && (
-          <div className="space-y-4 animate-fade-in">
-            <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
-              {subwelcome}
-            </p>
-            {showFeatures && (
-              <ul className="space-y-2">
-                {features?.map((feature, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-center text-text-header animate-slide-in-left"
-                    style={{ animationDelay: `${idx * 100}ms` }}
-                  >
-                    <span className="w-1.5 h-1.5 bg-accent rounded-full mr-3 shadow-[0_0_8px_rgba(9,105,218,0.8)]"></span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
+        <AnimatePresence>
+          {isInitial && showSub && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-4"
+            >
+              <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
+                {subwelcome}
+              </p>
+              {showFeatures && (
+                <ul className="space-y-2">
+                  {features?.map((feature, idx) => (
+                    <motion.li
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex items-center text-text-header"
+                    >
+                      <span className="w-1.5 h-1.5 bg-accent rounded-full mr-3 shadow-[0_0_8px_rgba(9,105,218,0.8)]"></span>
+                      {feature}
+                    </motion.li>
+                  ))}
+                </ul>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {isInitial && showFeatures && (
-          <p className="text-text mt-8 leading-relaxed italic opacity-80 animate-fade-in">
-            {closing}
-          </p>
-        )}
+        <AnimatePresence>
+          {isInitial && showFeatures && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              className="text-text mt-8 leading-relaxed italic"
+            >
+              {closing}
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

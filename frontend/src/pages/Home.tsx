@@ -3,6 +3,7 @@ import { useTranslation } from "../../lib/hooks/useTranslation";
 import { Send, Loader2 } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
 import { type PageId } from "../components/layout/Sidebar";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Message {
   role: "user" | "assistant";
@@ -40,7 +41,33 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [suggestionIndex, setSuggestionIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const suggestions = t.home.commands.list.filter((cmd) =>
+    cmd.cmd.toLowerCase().startsWith(input.toLowerCase()),
+  );
+
+  const showSuggestions = input.startsWith("/") && suggestions.length > 0;
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (showSuggestions) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSuggestionIndex((prev) => (prev + 1) % suggestions.length);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSuggestionIndex(
+          (prev) => (prev - 1 + suggestions.length) % suggestions.length,
+        );
+      } else if (e.key === "Enter" || e.key === "Tab") {
+        e.preventDefault();
+        setInput(suggestions[suggestionIndex].cmd);
+      } else if (e.key === "Escape") {
+        setInput(""); // Or some other way to dismiss
+      }
+    }
+  };
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
@@ -80,8 +107,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       setMessages([
         {
           role: "assistant",
-          content: t.home.commands.clear,
-          isInitial: true,
+          content: t.home.commands.clearSuccess,
           shouldAnimate: true,
         },
       ]);
@@ -187,39 +213,52 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         className="flex-1 overflow-y-auto custom-scrollbar scroll-smooth"
       >
         <div className="max-w-5xl mx-auto p-4 md:p-8 space-y-6 md:space-y-8">
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${
-                msg.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              {msg.role === "assistant" ? (
-                <BotMessage
-                  content={msg.content}
-                  isInitial={msg.isInitial}
-                  skipTypewriter={!msg.shouldAnimate}
-                  features={msg.isInitial ? t.home.features : undefined}
-                  subwelcome={msg.isInitial ? t.home.subwelcome : undefined}
-                  closing={msg.isInitial ? t.home.closing : undefined}
-                />
-              ) : (
-                <div className="bg-accent text-white p-4 rounded-2xl rounded-tr-none shadow-lg max-w-2xl animate-slide-in-right">
-                  <p className="leading-relaxed">{msg.content}</p>
-                </div>
-              )}
-            </div>
-          ))}
+          <AnimatePresence initial={false}>
+            {messages.map((msg, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.23, 1, 0.32, 1],
+                  delay: msg.shouldAnimate ? 0 : 0.05,
+                }}
+                className={`flex ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {msg.role === "assistant" ? (
+                  <BotMessage
+                    content={msg.content}
+                    isInitial={msg.isInitial}
+                    skipTypewriter={!msg.shouldAnimate}
+                    features={msg.isInitial ? t.home.features : undefined}
+                    subwelcome={msg.isInitial ? t.home.subwelcome : undefined}
+                    closing={msg.isInitial ? t.home.closing : undefined}
+                  />
+                ) : (
+                  <div className="bg-accent text-white p-4 rounded-2xl rounded-tr-none shadow-lg max-w-2xl border border-white/10">
+                    <p className="leading-relaxed">{msg.content}</p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </AnimatePresence>
 
           {isLoading && (
-            <div className="flex justify-start animate-fade-in">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-start"
+            >
               <div className="bg-white/5 border border-border p-4 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm flex items-center space-x-2">
                 <Loader2 className="w-4 h-4 animate-spin text-accent" />
                 <span className="text-sm text-text opacity-70">
                   Thinking...
                 </span>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Spacer */}
@@ -229,7 +268,48 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
       {/* Chat Input Area - Anchored at the bottom */}
       <div className="flex-none p-4 pt-0 pb-[calc(1rem+env(safe-area-inset-bottom))] md:p-8 md:pt-0 bg-bg/80 backdrop-blur-sm border-t border-border/50 md:border-none md:bg-transparent">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto relative">
+          <AnimatePresence>
+            {showSuggestions && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className="absolute bottom-full left-0 w-full mb-2 bg-sidebar-bg/90 backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden z-50"
+              >
+                <ul className="py-2 max-h-60 overflow-y-auto custom-scrollbar">
+                  {suggestions.map((suggestion, idx) => (
+                    <li
+                      key={suggestion.cmd}
+                      onMouseEnter={() => setSuggestionIndex(idx)}
+                      onClick={() => {
+                        setInput(suggestion.cmd);
+                      }}
+                      className={`px-6 py-3 cursor-pointer transition-colors flex items-center justify-between ${
+                        idx === suggestionIndex
+                          ? "bg-accent text-white"
+                          : "text-text hover:bg-white/5"
+                      }`}
+                    >
+                      <span className="font-bold font-mono">
+                        {suggestion.cmd}
+                      </span>
+                      <span
+                        className={`text-xs ${
+                          idx === suggestionIndex
+                            ? "text-white/80"
+                            : "text-text/60"
+                        }`}
+                      >
+                        {suggestion.desc}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -240,7 +320,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <input
               type="text"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setSuggestionIndex(0);
+              }}
+              onKeyDown={handleKeyDown}
               placeholder={t.home.chatbotPlaceholder}
               aria-label="Chat message"
               disabled={isLoading}

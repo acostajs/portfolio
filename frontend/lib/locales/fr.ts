@@ -23,7 +23,8 @@ export const fr: TranslationType = {
   },
   home: {
     welcome: "Salut ! Je suis l'assistant du portfolio de Juan Acosta. 👋",
-    subwelcome: "Je peux vous parler de :",
+    subwelcome:
+      "Vous pouvez interagir avec moi pour découvrir le parcours de Juan. Je peux vous parler de :",
     chatbotPlaceholder: "Demandez-moi sur Juan...",
     features: [
       "Compétences et technologies",
@@ -31,10 +32,12 @@ export const fr: TranslationType = {
       "Informations de contact",
     ],
     closing:
-      "Vous pouvez également explorer des pages spécifiques à l'aide de la barre latérale de navigation. Que aimeriez-vous savoir ?",
+      "Juan parle anglais, français et espagnol—vous pouvez changer de langue et de thème à l'aide des boutons en haut ! Je supporte aussi les /commandes pour une navigation rapide. Que aimeriez-vous savoir ?",
     commands: {
       help: "Commandes disponibles :",
       clear: "Historique du chat effacé.",
+      clearSuccess:
+        "Historique du chat effacé. Comment puis-je vous aider d'autre ?",
       error: "Commande inconnue. Tapez /help pour voir les commandes.",
       list: [
         { cmd: "/clear", desc: "Effacer l'historique." },

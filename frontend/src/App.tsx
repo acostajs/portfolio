@@ -8,6 +8,7 @@ import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import { type PageId } from "./components/layout/Sidebar";
 import { useTranslation } from "../lib/hooks/useTranslation";
+import { motion, AnimatePresence } from "framer-motion";
 
 function App() {
   const [activePage, setActivePage] = useState<PageId>("home");
@@ -34,12 +35,18 @@ function App() {
 
   return (
     <Layout activePage={activePage} onPageChange={setActivePage}>
-      <div
-        key={locale}
-        className="flex-1 flex flex-col min-h-0 overflow-hidden"
-      >
-        {renderPage()}
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`${activePage}-${locale}`}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="flex-1 flex flex-col min-h-0 overflow-hidden"
+        >
+          {renderPage()}
+        </motion.div>
+      </AnimatePresence>
     </Layout>
   );
 }

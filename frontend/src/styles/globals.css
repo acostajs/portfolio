@@ -67,7 +67,7 @@
   --text: #4b5563;
   --text-h: #111827;
   --bg: #ffffff;
-  --sidebar-bg: #f6f8fa;
+  --sidebar-bg: rgba(246, 248, 250, 0.75);
   --header-bg: rgba(246, 248, 250, 0.8);
   --border: #d0d7de;
   --code-bg: #f6f8fa;
@@ -90,7 +90,7 @@
   --text: #8b949e;
   --text-h: #ffffff;
   --bg: #0d1117;
-  --sidebar-bg: #010409; /* Deeper dark for sidebar */
+  --sidebar-bg: rgba(1, 4, 9, 0.75); /* Deeper dark for sidebar */
   --header-bg: rgba(1, 4, 9, 0.8); /* Deeper dark for header */
   --border: #30363d;
   --code-bg: #161b22;
