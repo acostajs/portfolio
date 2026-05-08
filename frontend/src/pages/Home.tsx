@@ -8,6 +8,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   isInitial?: boolean;
+  shouldAnimate?: boolean;
 }
 
 interface HomeProps {
@@ -20,7 +21,9 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     const saved = localStorage.getItem("portfolio-chat-history");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Strip shouldAnimate from saved messages so they don't re-type on refresh
+        return parsed.map((m: Message) => ({ ...m, shouldAnimate: false }));
       } catch (e) {
         console.error("Failed to parse chat history:", e);
       }
@@ -30,6 +33,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         role: "assistant",
         content: t.home.welcome,
         isInitial: true,
+        shouldAnimate: true,
       },
     ];
   });
@@ -78,6 +82,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           role: "assistant",
           content: t.home.commands.clear,
           isInitial: true,
+          shouldAnimate: true,
         },
       ]);
       localStorage.removeItem("portfolio-chat-history");
@@ -92,7 +97,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       setMessages((prev) => [
         ...prev,
         { role: "user", content: cmd },
-        { role: "assistant", content: helpContent },
+        { role: "assistant", content: helpContent, shouldAnimate: true },
       ]);
       return true;
     }
@@ -111,7 +116,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       setMessages((prev) => [
         ...prev,
         { role: "user", content: cmd },
-        { role: "assistant", content: t.home.commands.error },
+        {
+          role: "assistant",
+          content: t.home.commands.error,
+          shouldAnimate: true,
+        },
       ]);
       return true;
     }
@@ -149,7 +158,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       const data = await response.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.reply },
+        { role: "assistant", content: data.reply, shouldAnimate: true },
       ]);
     } catch (error) {
       console.error("Chat error:", error);
@@ -158,6 +167,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         {
           role: "assistant",
           content: "Sorry, I encountered an error. Please try again later.",
+          shouldAnimate: true,
         },
       ]);
     } finally {
@@ -184,6 +194,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 <BotMessage
                   content={msg.content}
                   isInitial={msg.isInitial}
+                  skipTypewriter={!msg.shouldAnimate}
                   features={msg.isInitial ? t.home.features : undefined}
                   subwelcome={msg.isInitial ? t.home.subwelcome : undefined}
                   closing={msg.isInitial ? t.home.closing : undefined}

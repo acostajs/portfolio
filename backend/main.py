@@ -27,6 +27,12 @@ from responses import (
     greetings,
     thanks,
     fun,
+    technical_core,
+    technical_frontend,
+    technical_backend,
+    technical_devops,
+    technical_behavioral,
+    hr_assessment,
 )
 
 # --- Logging Setup ---
@@ -156,22 +162,43 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     user_message = request.message.lower()
     lang = request.language if request.language in ["en", "es", "fr"] else "en"
 
+    # List of response modules to check against in priority order
+    response_modules = [
+        technical_core,
+        technical_frontend,
+        technical_backend,
+        technical_devops,
+        technical_behavioral,
+        hr_assessment,
+        greetings,
+        thanks,
+        about,
+        experience,
+        projects,
+        contact,
+        fun,
+    ]
+
+    reply = None
     # Determine response based on triggers with improved NLU matching
-    if is_trigger_match(user_message, greetings.data["triggers"]):
-        reply = random.choice(greetings.data["answers"][lang])
-    elif is_trigger_match(user_message, thanks.data["triggers"]):
-        reply = random.choice(thanks.data["answers"][lang])
-    elif is_trigger_match(user_message, about.data["triggers"]):
-        reply = random.choice(about.data["answers"][lang])
-    elif is_trigger_match(user_message, experience.data["triggers"]):
-        reply = random.choice(experience.data["answers"][lang])
-    elif is_trigger_match(user_message, projects.data["triggers"]):
-        reply = random.choice(projects.data["answers"][lang])
-    elif is_trigger_match(user_message, contact.data["triggers"]):
-        reply = random.choice(contact.data["answers"][lang])
-    elif is_trigger_match(user_message, fun.data["triggers"]):
-        reply = random.choice(fun.data["answers"][lang])
-    else:
+    for module in response_modules:
+        # Check if the module has categorized responses (for expert-level technical answers)
+        if "categories" in module.data:
+            for category in module.data["categories"]:
+                if is_trigger_match(user_message, category["triggers"]):
+                    reply = random.choice(category["answers"][lang])
+                    break
+            if reply:
+                break
+        # Fallback to flat trigger matching
+        elif "triggers" in module.data and is_trigger_match(
+            user_message, module.data["triggers"]
+        ):
+            reply = random.choice(module.data["answers"][lang])
+            break
+
+    # If no trigger matched, use fallback
+    if not reply:
         reply = random.choice(fallback.data["answers"][lang])
 
     # Save user message to history in background (excluding assistant response)
