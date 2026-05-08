@@ -3,6 +3,7 @@ import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContextUtils";
 import { Menu, Moon, Sun } from "lucide-react";
 import ProgressiveImage from "../chat/ProgressiveImage";
+import { hapticFeedback } from "../../../lib/haptic";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -13,13 +14,31 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
   const { t, locale, setLocale } = useTranslation();
   const { setTheme, resolvedTheme } = useTheme();
 
+  const handleLanguageChange = (l: "en" | "fr" | "es") => {
+    hapticFeedback(5);
+    setLocale(l);
+  };
+
+  const handleThemeToggle = () => {
+    hapticFeedback(10);
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
+  const handleLogoClick = () => {
+    hapticFeedback(15);
+    onLogoClick?.();
+  };
+
   return (
     <header className="flex-none sticky top-0 z-40 bg-[var(--header-bg)] backdrop-blur-md border-b border-border px-4 lg:px-8 w-full pt-[env(safe-area-inset-top)]">
       <div className="flex items-center justify-between h-16 max-w-7xl mx-auto">
         {/* Left Section: Mobile Menu Toggle & Logo */}
         <div className="flex items-center min-w-0">
           <button
-            onClick={onMenuClick}
+            onClick={() => {
+              hapticFeedback(10);
+              onMenuClick();
+            }}
             className="p-2 mr-2 text-text hover:bg-accent-bg rounded-lg lg:hidden flex-none"
             aria-label={t.header.toggleSidebar}
           >
@@ -27,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
           </button>
 
           <button
-            onClick={onLogoClick}
+            onClick={handleLogoClick}
             className="flex items-center min-w-0 group hover:opacity-80 transition-opacity"
             aria-label="Go to Home"
           >
@@ -56,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
             {(["en", "fr", "es"] as const).map((l) => (
               <button
                 key={l}
-                onClick={() => setLocale(l)}
+                onClick={() => handleLanguageChange(l)}
                 aria-label={`Switch to ${l === "en" ? "English" : l === "fr" ? "French" : "Spanish"}`}
                 className={`px-1.5 py-1 sm:px-2 sm:py-1 rounded-md text-[9px] sm:text-[10px] font-bold transition-all ${
                   locale === l
@@ -72,9 +91,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
           {/* Theme Toggle - Sized to match language buttons */}
           <div className="flex items-center bg-white/5 border border-border rounded-lg p-0.5">
             <button
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
+              onClick={handleThemeToggle}
               className="px-1.5 py-1 sm:px-2 sm:py-1 rounded-md text-[9px] sm:text-[10px] font-bold transition-all text-text hover:text-text-header"
               aria-label={t.header.toggleTheme}
             >

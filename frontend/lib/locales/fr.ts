@@ -35,6 +35,15 @@ export const fr: TranslationType = {
       "Juan parle anglais, français et espagnol—vous pouvez changer de langue et de thème à l'aide des boutons en haut ! Je supporte aussi les /commandes pour une navigation rapide. Que aimeriez-vous savoir ?",
     commands: {
       help: "Commandes disponibles :",
+      subjectsTitle: "Je peux aussi parler de :",
+      subjects: [
+        "Compétences et Technologies",
+        "Projets et Expérience",
+        "Biographie et Parcours Professionnel",
+        "Savoir-être et Philosophie de Travail",
+        "Loisirs et Centres d'intérêt",
+        "Informations de Contact",
+      ],
       clear: "Historique du chat effacé.",
       clearSuccess:
         "Historique du chat effacé. Comment puis-je vous aider d'autre ?",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import {
   Home,
@@ -10,8 +10,11 @@ import {
   Download,
   Link as LinkIcon,
   Newspaper,
+  Copy,
+  Check,
 } from "lucide-react";
 import ProgressiveImage from "../chat/ProgressiveImage";
+import { hapticFeedback } from "../../../lib/haptic";
 
 export type PageId =
   | "home"
@@ -35,6 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onPageChange,
 }) => {
   const { t } = useTranslation();
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const navLinks = [
     { id: "home" as PageId, name: t.nav.home, icon: Home },
@@ -47,7 +51,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const contactInfo = [
     { icon: MapPin, text: t.common.location },
-    { icon: Mail, text: t.common.email, href: `mailto:${t.common.email}` },
+    {
+      icon: Mail,
+      text: t.common.email,
+      href: `mailto:${t.common.email}`,
+      isEmail: true,
+    },
     {
       icon: LinkIcon,
       text: t.common.linkedin,
@@ -61,8 +70,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   const handleLinkClick = (id: PageId) => {
+    hapticFeedback(10);
     onPageChange(id);
     onClose(); // Close sidebar on mobile after clicking
+  };
+
+  const copyToClipboard = (text: string) => {
+    hapticFeedback(15);
+    navigator.clipboard.writeText(text);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   return (
@@ -144,6 +161,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Bottom Contact Section */}
           <div className="px-6 space-y-3 mb-6">
             {contactInfo.map((info, idx) => {
+              const isEmail = "isEmail" in info && info.isEmail;
+
               const Content = (
                 <>
                   <info.icon className="w-3.5 h-3.5 mr-3 opacity-60 group-hover:opacity-100 group-hover:text-accent transition-all shrink-0" />
@@ -151,30 +170,47 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </>
               );
 
-              if (info.href) {
-                return (
-                  <a
-                    key={idx}
-                    href={info.href}
-                    target={info.href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      info.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="flex items-center text-[13px] text-text hover:text-text-header transition-colors group"
-                  >
-                    {Content}
-                  </a>
-                );
-              }
-
               return (
-                <div
-                  key={idx}
-                  className="flex items-center text-[13px] text-text cursor-default group"
-                >
-                  {Content}
+                <div key={idx} className="flex items-center group">
+                  {info.href ? (
+                    <a
+                      href={info.href}
+                      target={
+                        info.href.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel={
+                        info.href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      className="flex items-center text-[13px] text-text hover:text-text-header transition-colors flex-1 truncate"
+                    >
+                      {Content}
+                    </a>
+                  ) : (
+                    <div className="flex items-center text-[13px] text-text cursor-default flex-1 truncate">
+                      {Content}
+                    </div>
+                  )}
+
+                  {isEmail && (
+                    <button
+                      onClick={() => copyToClipboard(info.text)}
+                      className={`ml-2 p-1.5 rounded-md transition-all ${
+                        copiedEmail
+                          ? "text-success bg-success/10"
+                          : "text-text opacity-0 group-hover:opacity-100 hover:bg-white/5"
+                      }`}
+                      aria-label="Copy email"
+                      title="Copy email"
+                    >
+                      {copiedEmail ? (
+                        <Check className="w-3 h-3" />
+                      ) : (
+                        <Copy className="w-3 h-3" />
+                      )}
+                    </button>
+                  )}
                 </div>
               );
             })}
