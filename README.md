@@ -31,13 +31,30 @@ An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trig
 
 ### Backend
 
+From the root directory:
+
+```bash
+npm run setup:backend
+npm run dev:backend
+```
+
+Or manually from the `backend` folder:
+
 ```bash
 cd backend
-npm run setup:backend # Or use uv directly
+uv sync
 uv run uvicorn main:app --reload
 ```
 
 ### Frontend
+
+From the root directory:
+
+```bash
+npm run dev:frontend
+```
+
+Or manually from the `frontend` folder:
 
 ```bash
 cd frontend

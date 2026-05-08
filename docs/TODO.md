@@ -1,6 +1,22 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Professional UX & Accessibility
+## 🎯 Current Version: Platform & Analytics (0.1.2)
+
+- [ ] **Analytics Dashboard**: Create a simple password-protected view to visualize visitor telemetry and common chat queries.
+- [ ] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
+- [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
+
+## ⏳ Backlog & Future Ideas
+
+### Version 0.1.3: Engagement & Community
+
+- [ ] **Newsletter Integration**: Add a simple subscription form for blog updates.
+- [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
+- [ ] **Chatbot Feedback Loop**: Allow users to rate chatbot responses to improve trigger logic.
+
+## ✅ Archive (Completed)
+
+### Version 0.1.1: Professional UX & Accessibility
 
 - [x] **Command Palette (Cmd+K)**: Implement a global search/navigation menu for keyboard-first efficiency.
 - [x] **Advanced UX Enhancements**:
@@ -10,16 +26,6 @@
 - [x] **Accessibility (a11y) & SEO**:
   - [x] Add a "Skip to Content" link for screen readers.
   - [x] Implement high-visibility `:focus-visible` rings for keyboard navigation.
-
-## ⏳ Backlog & Future Ideas
-
-### Version 0.1.2: Platform & Analytics
-
-- [ ] **Analytics Dashboard**: Create a simple password-protected view to visualize visitor telemetry and common chat queries.
-- [ ] **PWA Support**: Configure service workers for offline availability and "Add to Home Screen" support.
-- [ ] **Voice Interaction**: Explore Web Speech API for hands-free chatbot interaction.
-
-## ✅ Archive (Completed)
 
 ### Version 0.1.0: Motion & High-End Visuals
 
