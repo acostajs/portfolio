@@ -15,7 +15,7 @@
   - [x] Update Header title to "Juan Acosta, ask me anything".
   - [x] Revamp initial welcome message: change "Juan's virtual assistant" to first-person, remove bullet points, and maintain a warm tone while keeping the core introductory information.
 - [x] **Open Graph & Twitter Cards**: Implement dynamic meta tags for better social sharing.
-- [ ] **Sitemap & robots.txt**: Generate automated sitemap and robots.txt for search engines.
+- [x] **Sitemap & robots.txt**: Generate automated sitemap and robots.txt for search engines.
 - [ ] **Lighthouse Performance Audit**: Reach 95+ in all Lighthouse metrics.
 - [ ] **Social Sharing Components**: Add easy-to-use sharing buttons for blog posts and projects.
 
