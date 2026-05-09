@@ -133,9 +133,9 @@ const BotMessage: React.FC<BotMessageProps> = ({
               <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
                 {subwelcome}
               </p>
-              {showFeatures && (
+              {showFeatures && features && features.length > 0 && (
                 <ul className="space-y-2">
-                  {features?.map((feature, idx) => (
+                  {features.map((feature, idx) => (
                     <motion.li
                       key={idx}
                       initial={{ opacity: 0, x: -10 }}

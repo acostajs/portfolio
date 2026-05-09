@@ -10,40 +10,26 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta
-      name="description"
-      content="Juan Acosta - Full-Stack Developer Portfolio. Explore my projects, skills, and interactive assistant."
-    />
     <meta name="theme-color" content="#0d1117" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://acostajs.vercel.app/" />
-    <meta property="og:title" content="Juan Acosta | Full-Stack Developer" />
-    <meta
-      property="og:description"
-      content="Interactive portfolio featuring a multilingual chatbot assistant and modern web applications."
-    />
-    <meta
-      property="og:image"
-      content="https://acostajs.vercel.app/avatar.jpeg"
-    />
+    <!-- Performance: Preload critical assets -->
+    <link rel="preload" href="/avatar.jpeg" as="image" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://acostajs.vercel.app/" />
-    <meta
-      property="twitter:title"
-      content="Juan Acosta | Full-Stack Developer"
-    />
-    <meta
-      property="twitter:description"
-      content="Interactive portfolio featuring a multilingual chatbot assistant and modern web applications."
-    />
-    <meta
-      property="twitter:image"
-      content="https://acostajs.vercel.app/avatar.jpeg"
-    />
+    <!-- Theme Detection (Avoid FOUC) -->
+    <script>
+      (function () {
+        const theme = localStorage.getItem("portfolio-theme") || "system";
+        const isDark =
+          theme === "dark" ||
+          (theme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -51,7 +37,7 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>Juan | Full-Stack Developer</title>
+    <title>Juan Acosta | Full-Stack Developer</title>
   </head>
   <body>
     <div id="root"></div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { Mail, MessageSquare, User, Send, Loader2 } from "lucide-react";
+import SEO from "../components/layout/SEO";
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
@@ -52,6 +53,7 @@ const Contact: React.FC = () => {
 
   return (
     <article className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+      <SEO title={t.nav.contact} />
       <section className="max-w-3xl mx-auto">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-4">

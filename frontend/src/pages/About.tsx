@@ -1,20 +1,62 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { techStack } from "../../lib/mocks";
+import SEO from "../components/layout/SEO";
+
+interface AboutData {
+  id?: number;
+  p1_en: string;
+  p1_es: string;
+  p1_fr: string;
+  p2_en: string;
+  p2_es: string;
+  p2_fr: string;
+  skills: string[];
+}
 
 const About: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const [data, setData] = useState<AboutData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/v1/about");
+        if (response.ok) {
+          setData(await response.json());
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const getLocalized = (key: string) => {
+    if (!data) return "";
+    const localizedKey = `${key}_${locale}` as keyof AboutData;
+    const fallbackKey = `${key}_en` as keyof AboutData;
+    return (
+      (data[localizedKey] as string) || (data[fallbackKey] as string) || ""
+    );
+  };
+
+  if (isLoading)
+    return <div className="p-8 animate-pulse text-text">Loading...</div>;
 
   return (
     <article className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+      <SEO title={t.nav.about} description={getLocalized("p1")} />
       <div className="max-w-3xl mx-auto space-y-8">
         <section>
           <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-6">
             {t.about.title}
           </h1>
           <div className="space-y-4 text-text leading-relaxed text-lg">
-            <p>{t.about.p1}</p>
-            <p>{t.about.p2}</p>
+            <p>{getLocalized("p1")}</p>
+            <p>{getLocalized("p2")}</p>
           </div>
         </section>
 
@@ -23,7 +65,7 @@ const About: React.FC = () => {
             {t.about.skillsTitle}
           </h2>
           <div className="flex flex-wrap gap-2">
-            {techStack.map((skill) => (
+            {data?.skills?.map((skill: string) => (
               <span
                 key={skill}
                 className="px-4 py-2 bg-white/5 border border-border rounded-lg text-text-header font-medium hover:border-accent hover:text-accent transition-all cursor-default"

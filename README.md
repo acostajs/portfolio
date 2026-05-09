@@ -11,10 +11,8 @@ An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trig
 
 ## Key Features
 
-- **Lightweight CMS**: Fully custom, database-driven content management system to update Chatbot responses and Blog posts in real-time.
-- **Admin Dashboard**: Secure, password-protected `/admin` panel (password: `admin123` by default) for content and chatbot management.
-- **Advanced AI Persona**: Modular technical expertise and HR screening simulation with 20+ specialized categories, powered by a database-driven trigger system.
-- **Lightweight Blog Module**: Multi-language technical notes and articles section, managed via the CMS.
+- **Analytics Dashboard**: Secure, password-protected dashboard to visualize visitor telemetry and chat query statistics.
+- **Lightweight CMS**: Secure Admin section to manage content, blog posts, and chatbot triggers without code changes.
 - **Progressive Web App (PWA)**: Offline availability and "Add to Home Screen" support via `vite-plugin-pwa`.
 - **Hands-Free Voice Interaction**: Integrated Web Speech API for speech-to-text input and text-to-speech chatbot responses.
 - **Markdown Chat Support**: Formatted responses with syntax highlighting for code blocks.

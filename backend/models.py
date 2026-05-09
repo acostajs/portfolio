@@ -27,17 +27,43 @@ class PageContent(SQLModel, table=True):
     fr: str
 
 
-class ChatbotResponseModel(SQLModel, table=True):
+class About(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    module: str = Field(index=True)  # e.g., "about", "technical_core"
-    category: Optional[str] = None  # For categorized responses
-    triggers: List[str] = Field(default=[], sa_column=Column(JSON))
-    answers_en: List[str] = Field(default=[], sa_column=Column(JSON))
-    answers_es: List[str] = Field(default=[], sa_column=Column(JSON))
-    answers_fr: List[str] = Field(default=[], sa_column=Column(JSON))
+    p1_en: str
+    p1_es: str
+    p1_fr: str
+    p2_en: str
+    p2_es: str
+    p2_fr: str
+    skills: List[str] = Field(default=[], sa_column=Column(JSON))
 
 
-class BlogPostModel(SQLModel, table=True):
+class Experience(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    company: str
+    role: str
+    period: str
+    description_en: List[str] = Field(default=[], sa_column=Column(JSON))
+    description_es: List[str] = Field(default=[], sa_column=Column(JSON))
+    description_fr: List[str] = Field(default=[], sa_column=Column(JSON))
+    tech: List[str] = Field(default=[], sa_column=Column(JSON))
+    order: int = Field(default=0)
+
+
+class Project(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    title: str
+    description_en: str
+    description_es: str
+    description_fr: str
+    tech: List[str] = Field(default=[], sa_column=Column(JSON))
+    link: Optional[str] = None
+    github: Optional[str] = None
+    image: Optional[str] = None
+    order: int = Field(default=0)
+
+
+class BlogPost(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     slug: str = Field(index=True, unique=True)
     date: str
@@ -51,3 +77,14 @@ class BlogPostModel(SQLModel, table=True):
     content_en: str
     content_es: str
     content_fr: str
+    published: bool = Field(default=True)
+
+
+class ChatTriggerResponse(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    module: str = Field(index=True)  # e.g., "greetings", "technical_frontend"
+    category: Optional[str] = None  # e.g., "React", "Vue"
+    triggers: List[str] = Field(default=[], sa_column=Column(JSON))
+    answers_en: List[str] = Field(default=[], sa_column=Column(JSON))
+    answers_es: List[str] = Field(default=[], sa_column=Column(JSON))
+    answers_fr: List[str] = Field(default=[], sa_column=Column(JSON))

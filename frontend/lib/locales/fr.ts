@@ -23,22 +23,17 @@ export const fr: TranslationType = {
   },
   home: {
     welcome:
-      "Bienvenue ! Je suis l'assistant virtuel de Juan. Je suis ici pour vous aider à naviguer dans son portfolio et répondre à vos questions sur son travail. 👋",
+      "Salut ! Je suis Juan Acosta. Bienvenue sur mon portfolio ! Je suis ravi de partager mon parcours, mes projets et mon expertise technique avec vous. 👋",
     subwelcome:
-      "J'ai été formé sur le parcours professionnel, les compétences et les projets de Juan. Voici ce dont nous pouvons discuter :",
-    chatbotPlaceholder: "Demandez-moi sur Juan...",
+      "N'hésitez pas à me poser des questions sur mon parcours, les technologies que j'utilise ou comment je peux aider votre équipe. Nous pouvons discuter de mon stack technique, de mes projets récents, de mon parcours professionnel ou de ma philosophie de travail.",
+    chatbotPlaceholder: "Demandez-moi sur mes compétences, projets...",
     newChat: "Nouveau Chat",
     helpful: "Utile",
     notHelpful: "Pas utile",
     feedbackSuccess: "Merci pour votre avis !",
-    features: [
-      "Compétences techniques clés",
-      "Parcours professionnel",
-      "Projets et contributions majeures",
-      "Philosophie de travail et savoir-être",
-    ],
+    features: [],
     closing:
-      "N'hésitez pas à me poser des questions ou à utiliser /commandes pour accéder directement à des sections spécifiques. Vous pouvez même essayer de me parler en utilisant le bouton du micro ! Comment puis-je vous aider aujourd'hui ?",
+      "Vous pouvez également utiliser /commandes pour naviguer, ou simplement taper votre question ci-dessous. Comment puis-je vous aider aujourd'hui ?",
     suggestions: [
       "Quelles sont vos compétences techniques clés ?",
       "Parlez-moi de vos projets les plus récents",
@@ -65,6 +60,7 @@ export const fr: TranslationType = {
         "Historique du chat effacé. Comment puis-je vous aider d'autre ?",
       error: "Commande inconnue. Tapez /help pour voir les commandes.",
       list: [
+        { cmd: "/new", desc: "Démarrer une nouvelle session de chat." },
         { cmd: "/clear", desc: "Effacer l'historique." },
         { cmd: "/help", desc: "Afficher ce message d'aide." },
         { cmd: "/about", desc: "Aller à la page À propos." },
@@ -76,8 +72,8 @@ export const fr: TranslationType = {
     },
   },
   header: {
-    title: "Assistant Portfolio",
-    subtitle: "Posez-moi n'importe quoi sur Juan",
+    title: "Juan Acosta",
+    subtitle: "Posez-moi vos questions",
     toggleSidebar: "Basculer la barre latérale",
     toggleTheme: "Changer le thème",
     language: "Langue",

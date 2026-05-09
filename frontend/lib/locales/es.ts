@@ -23,22 +23,17 @@ export const es: TranslationType = {
   },
   home: {
     welcome:
-      "¡Bienvenido! Soy el asistente virtual de Juan. Estoy aquí para ayudarte a navegar por su portafolio y responder preguntas sobre su trabajo. 👋",
+      "¡Hola! Soy Juan Acosta. ¡Bienvenido a mi portafolio! Estoy aquí para compartir mi trayectoria, proyectos y experiencia técnica contigo. 👋",
     subwelcome:
-      "He sido entrenado sobre la trayectoria profesional, habilidades y proyectos de Juan. Esto es lo que podemos discutir:",
-    chatbotPlaceholder: "Pregúntame sobre Juan...",
+      "Siéntete libre de preguntarme sobre mi formación, las tecnologías que utilizo o cómo puedo ayudar a tu equipo. Podemos hablar de mi stack técnico, proyectos recientes, mi recorrido profesional o mi filosofía de trabajo.",
+    chatbotPlaceholder: "Pregúntame sobre mis habilidades, proyectos...",
     newChat: "Nuevo Chat",
     helpful: "Útil",
     notHelpful: "No útil",
     feedbackSuccess: "¡Gracias por tus comentarios!",
-    features: [
-      "Habilidades Técnicas Principales",
-      "Trayectoria Profesional",
-      "Proyectos y Contribuciones Clave",
-      "Filosofía de Trabajo y Habilidades Blandas",
-    ],
+    features: [],
     closing:
-      "No dudes en preguntarme cualquier cosa, o usa /comandos para ir directamente a secciones específicas. ¡Incluso puedes intentar hablar conmigo usando el botón del micrófono! ¿Cómo puedo ayudarte hoy?",
+      "También puedes usar /comandos para navegar, o simplemente escribe tu pregunta abajo. ¿Cómo puedo ayudarte hoy?",
     suggestions: [
       "¿Cuáles son tus habilidades técnicas principales?",
       "Cuéntame sobre tus proyectos más recientes",
@@ -64,6 +59,7 @@ export const es: TranslationType = {
       clearSuccess: "Historial de chat borrado. ¿En qué más puedo ayudarte?",
       error: "Comando desconocido. Escribe /help para ver los comandos.",
       list: [
+        { cmd: "/new", desc: "Iniciar una nueva sesión de chat." },
         { cmd: "/clear", desc: "Borrar el historial." },
         { cmd: "/help", desc: "Mostrar este mensaje de ayuda." },
         { cmd: "/about", desc: "Ir a la página Sobre mí." },
@@ -75,8 +71,8 @@ export const es: TranslationType = {
     },
   },
   header: {
-    title: "Asistente de Portafolio",
-    subtitle: "Pregúntame cualquier cosa sobre Juan",
+    title: "Juan Acosta",
+    subtitle: "Pregúntame lo que quieras",
     toggleSidebar: "Alternar barra lateral",
     toggleTheme: "Cambiar tema",
     language: "Idioma",

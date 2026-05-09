@@ -1,19 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import {
-  Send,
-  Loader2,
-  Mic,
-  MicOff,
-  Volume2,
-  VolumeX,
-  RotateCcw,
-} from "lucide-react";
+import { Send, Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
 import { motion, AnimatePresence } from "framer-motion";
 import { hapticFeedback } from "../../lib/haptic";
 import { useSpeech } from "../../lib/hooks/useSpeech";
+import SEO from "../components/layout/SEO";
 
 interface Message {
   role: "user" | "assistant";
@@ -33,7 +26,12 @@ const Home: React.FC = () => {
     stopSpeaking,
     error: speechError,
   } = useSpeech();
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
+    const saved = localStorage.getItem("portfolio-voice-enabled");
+    return saved ? JSON.parse(saved) : false;
+  });
+
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem("portfolio-chat-history");
     if (saved) {
@@ -125,6 +123,14 @@ const Home: React.FC = () => {
     }
   };
 
+  // Save voice preference to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(
+      "portfolio-voice-enabled",
+      JSON.stringify(isVoiceEnabled),
+    );
+  }, [isVoiceEnabled]);
+
   // Save messages to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("portfolio-chat-history", JSON.stringify(messages));
@@ -159,15 +165,8 @@ const Home: React.FC = () => {
   const handleCommand = (cmd: string): boolean => {
     const cleanCmd = cmd.toLowerCase().trim();
 
-    if (cleanCmd === "/clear") {
-      setMessages([
-        {
-          role: "assistant",
-          content: t.home.commands.clearSuccess,
-          shouldAnimate: true,
-        },
-      ]);
-      localStorage.removeItem("portfolio-chat-history");
+    if (cleanCmd === "/clear" || cleanCmd === "/new") {
+      handleNewChat();
       return true;
     }
 
@@ -338,6 +337,7 @@ const Home: React.FC = () => {
 
   return (
     <section className="flex-1 flex flex-col h-full overflow-hidden">
+      <SEO />
       {/* Chat Messages Area - This scrolls */}
       <div
         ref={scrollRef}
@@ -531,14 +531,6 @@ const Home: React.FC = () => {
                 ) : (
                   <VolumeX className="w-5 h-5" />
                 )}
-              </button>
-              <button
-                type="button"
-                onClick={handleNewChat}
-                className="p-2 rounded-xl text-text opacity-70 hover:opacity-100 hover:bg-white/5 transition-all"
-                title={t.home.newChat}
-              >
-                <RotateCcw className="w-5 h-5" />
               </button>
             </div>
             <input

@@ -7,6 +7,8 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import SEO from "../components/layout/SEO";
+import SocialShare from "../components/layout/SocialShare";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -16,7 +18,7 @@ const Blog: React.FC = () => {
   const { t, locale } = useTranslation();
   const [selectedPost, setSelectedPost] = useState<DBBlogPost | null>(null);
   const [posts, setPosts] = useState<DBBlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchPublic<DBBlogPost[]>("/blog")
@@ -24,23 +26,33 @@ const Blog: React.FC = () => {
       .catch((err) => {
         console.error("Failed to fetch blog posts:", err);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
-  const getLocalizedValue = (
-    post: DBBlogPost,
-    field: "title" | "excerpt" | "content",
+  const getLocalized = (
+    item: DBBlogPost,
+    key: "title" | "excerpt" | "content",
   ) => {
-    const key = `${field}_${locale}` as keyof DBBlogPost;
-    return (
-      (post[key] as string) ||
-      (post[`${field}_en` as keyof DBBlogPost] as string)
-    );
+    const k = `${key}_${locale}` as keyof DBBlogPost;
+    const fallback = `${key}_en` as keyof DBBlogPost;
+    return (item[k] as string) || (item[fallback] as string) || "";
   };
 
+  if (isLoading)
+    return (
+      <div className="flex-1 flex items-center justify-center bg-bg p-12">
+        <Loader2 className="w-10 h-10 animate-spin text-accent" />
+      </div>
+    );
+
   if (selectedPost) {
+    const title = getLocalized(selectedPost, "title");
+    const excerpt = getLocalized(selectedPost, "excerpt");
+    const content = getLocalized(selectedPost, "content");
+
     return (
       <section className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 animate-fade-in bg-bg">
+        <SEO title={title} description={excerpt} type="article" />
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => setSelectedPost(null)}
@@ -63,8 +75,16 @@ const Blog: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-5xl font-bold text-text-header mb-8 tracking-tight leading-tight">
-              {getLocalizedValue(selectedPost, "title")}
+              {title}
             </h1>
+
+            <div className="mb-12">
+              <SocialShare
+                title={title}
+                url={`/blog/${selectedPost.slug}`}
+                text={excerpt}
+              />
+            </div>
 
             <div className="prose prose-invert max-w-none markdown-content">
               <ReactMarkdown
@@ -90,7 +110,7 @@ const Blog: React.FC = () => {
                   },
                 }}
               >
-                {getLocalizedValue(selectedPost, "content")}
+                {content}
               </ReactMarkdown>
             </div>
           </article>
@@ -99,16 +119,9 @@ const Blog: React.FC = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="flex-1 flex items-center justify-center bg-bg">
-        <Loader2 className="w-10 h-10 animate-spin text-accent" />
-      </div>
-    );
-  }
-
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 animate-fade-in bg-bg">
+      <SEO title={t.nav.blog} />
       <div className="max-w-5xl mx-auto">
         <header className="mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-text-header mb-4 tracking-tighter">
@@ -133,10 +146,10 @@ const Blog: React.FC = () => {
                   </span>
                 </div>
                 <h2 className="text-2xl font-bold text-text-header mb-4 group-hover:text-accent transition-colors leading-snug">
-                  {getLocalizedValue(post, "title")}
+                  {getLocalized(post, "title")}
                 </h2>
                 <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
-                  {getLocalizedValue(post, "excerpt")}
+                  {getLocalized(post, "excerpt")}
                 </p>
               </div>
               <button
