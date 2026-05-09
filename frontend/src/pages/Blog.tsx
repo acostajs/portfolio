@@ -1,31 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { fetchPublic } from "../../lib/api";
-import { type BlogPost as BlogPostType } from "../../lib/mocks";
+import type { BlogPost as DBBlogPost } from "../types/cms";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
+import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 
-// Adapter for DB model to existing frontend BlogPost type if needed
-// The DB model has title_en, title_es, etc.
-// The frontend expects title: { en, es, fr }
-interface DBBlogPost {
-  id: number;
-  slug: string;
-  date: string;
-  category: string;
-  title_en: string;
-  title_es: string;
-  title_fr: string;
-  excerpt_en: string;
-  excerpt_es: string;
-  excerpt_fr: string;
-  content_en: string;
-  content_es: string;
-  content_fr: string;
-}
+const theme = vscDarkPlus as unknown as {
+  [key: string]: React.CSSProperties;
+};
 
 const Blog: React.FC = () => {
   const { t, locale } = useTranslation();
@@ -34,7 +19,7 @@ const Blog: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPublic("/blog")
+    fetchPublic<DBBlogPost[]>("/blog")
       .then(setPosts)
       .catch((err) => {
         console.error("Failed to fetch blog posts:", err);

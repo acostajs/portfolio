@@ -80,12 +80,20 @@ const Home: React.FC = () => {
         isCommand: true,
       }))
     : !input && isFocused && !isLoading
-      ? t.home.suggestions.map((s) => ({
-          text: s,
-          subtext: undefined,
-          value: s,
-          isCommand: false,
-        }))
+      ? [
+          {
+            text: t.home.newChat,
+            subtext: t.home.commands.list.find((c) => c.cmd === "/clear")?.desc,
+            value: "/clear",
+            isCommand: true,
+          },
+          ...t.home.suggestions.map((s) => ({
+            text: s,
+            subtext: undefined,
+            value: s,
+            isCommand: false,
+          })),
+        ]
       : [];
 
   const showSuggestions = activeSuggestions.length > 0;
@@ -527,7 +535,7 @@ const Home: React.FC = () => {
               <button
                 type="button"
                 onClick={handleNewChat}
-                className="p-2 rounded-xl text-text opacity-40 hover:opacity-100 hover:bg-white/5 transition-all"
+                className="p-2 rounded-xl text-text opacity-70 hover:opacity-100 hover:bg-white/5 transition-all"
                 title={t.home.newChat}
               >
                 <RotateCcw className="w-5 h-5" />

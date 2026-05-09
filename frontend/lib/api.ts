@@ -1,6 +1,9 @@
 const API_BASE = "/api/v1";
 
-export const fetchCMS = async (path: string, password?: string) => {
+export const fetchCMS = async <T>(
+  path: string,
+  password?: string,
+): Promise<T> => {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
@@ -16,10 +19,14 @@ export const fetchCMS = async (path: string, password?: string) => {
     throw new Error(`API Error: ${response.statusText}`);
   }
 
-  return response.json();
+  return response.json() as Promise<T>;
 };
 
-export const updateCMS = async (path: string, data: any, password: string) => {
+export const updateCMS = async <T>(
+  path: string,
+  data: T,
+  password: string,
+): Promise<{ status: string; id: number }> => {
   const response = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: {
@@ -33,13 +40,13 @@ export const updateCMS = async (path: string, data: any, password: string) => {
     throw new Error(`API Error: ${response.statusText}`);
   }
 
-  return response.json();
+  return response.json() as Promise<{ status: string; id: number }>;
 };
 
-export const fetchPublic = async (path: string) => {
+export const fetchPublic = async <T>(path: string): Promise<T> => {
   const response = await fetch(`${API_BASE}${path}`);
   if (!response.ok) {
     throw new Error(`API Error: ${response.statusText}`);
   }
-  return response.json();
+  return response.json() as Promise<T>;
 };
