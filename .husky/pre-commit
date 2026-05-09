@@ -7,8 +7,8 @@ bunx lint-staged
 # 2. Run full project type-checking to ensure no regressions
 # This is mandatory and the commit will fail if these do not pass
 echo "✅ Type-checking Frontend..."
-cd frontend && bun tsc --noEmit
+(cd frontend && bun tsc --noEmit)
 echo "✅ Type-checking Backend..."
-cd backend && uv run pyright
+(cd backend && uv run pyright)
 
 echo "🚀 All checks passed. Proceeding with commit."
