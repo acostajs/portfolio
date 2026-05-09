@@ -18,15 +18,6 @@ class ChatFeedback(SQLModel, table=True):
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
-class PageContent(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    section: str = Field(index=True)  # e.g., "about", "contact"
-    key: str = Field(index=True)  # e.g., "p1", "title"
-    en: str
-    es: str
-    fr: str
-
-
 class About(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     p1_en: str

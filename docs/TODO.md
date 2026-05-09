@@ -2,8 +2,17 @@
 
 ## 🎯 Current Version: Post-Launch & Scaling (0.1.7)
 
+- [x] **Audit Remediation: Security & Architecture**:
+  - [x] Secure public `/api/v1/chat/history` endpoint.
+  - [x] Move hardcoded credentials to `.env`.
+  - [x] Modularize `Admin.tsx` (1500+ line monolith).
+  - [x] Fix `seed.py` destructive update pattern.
+- [x] **Audit Remediation: Cleanup & i18n**:
+  - [x] Remove `mocks.ts` and unused `PageContent` models.
+  - [x] Centralize `Project` and `Experience` types in `types/cms.ts`.
+  - [x] Fix i18n violations in Admin section (ZERO Static Text).
 - [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
-- [ ] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths.
+- [x] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths and chat feedback.
 - [ ] **Performance Monitoring**: Set up automated Lighthouse CI checks.
 
 ## ✅ Archive (Completed)
