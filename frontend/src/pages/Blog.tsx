@@ -1,22 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { blogPosts, type BlogPost } from "../../lib/mocks";
+import { fetchPublic } from "../../lib/api";
+import { type BlogPost as BlogPostType } from "../../lib/mocks";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
-import { ArrowLeft, Calendar, Tag, ChevronRight } from "lucide-react";
+import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
 
-const theme = vscDarkPlus as unknown as {
-  [key: string]: React.CSSProperties;
-};
+// Adapter for DB model to existing frontend BlogPost type if needed
+// The DB model has title_en, title_es, etc.
+// The frontend expects title: { en, es, fr }
+interface DBBlogPost {
+  id: number;
+  slug: string;
+  date: string;
+  category: string;
+  title_en: string;
+  title_es: string;
+  title_fr: string;
+  excerpt_en: string;
+  excerpt_es: string;
+  excerpt_fr: string;
+  content_en: string;
+  content_es: string;
+  content_fr: string;
+}
 
 const Blog: React.FC = () => {
   const { t, locale } = useTranslation();
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [selectedPost, setSelectedPost] = useState<DBBlogPost | null>(null);
+  const [posts, setPosts] = useState<DBBlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const getLocalizedValue = (obj: { en: string; es: string; fr: string }) => {
-    return obj[locale as keyof typeof obj] || obj.en;
+  useEffect(() => {
+    fetchPublic("/blog")
+      .then(setPosts)
+      .catch((err) => {
+        console.error("Failed to fetch blog posts:", err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const getLocalizedValue = (
+    post: DBBlogPost,
+    field: "title" | "excerpt" | "content",
+  ) => {
+    const key = `${field}_${locale}` as keyof DBBlogPost;
+    return (
+      (post[key] as string) ||
+      (post[`${field}_en` as keyof DBBlogPost] as string)
+    );
   };
 
   if (selectedPost) {
@@ -44,7 +78,7 @@ const Blog: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-5xl font-bold text-text-header mb-8 tracking-tight leading-tight">
-              {getLocalizedValue(selectedPost.title)}
+              {getLocalizedValue(selectedPost, "title")}
             </h1>
 
             <div className="prose prose-invert max-w-none markdown-content">
@@ -71,12 +105,20 @@ const Blog: React.FC = () => {
                   },
                 }}
               >
-                {getLocalizedValue(selectedPost.content)}
+                {getLocalizedValue(selectedPost, "content")}
               </ReactMarkdown>
             </div>
           </article>
         </div>
       </section>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-bg">
+        <Loader2 className="w-10 h-10 animate-spin text-accent" />
+      </div>
     );
   }
 
@@ -91,7 +133,7 @@ const Blog: React.FC = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {blogPosts.map((post) => (
+          {posts.map((post) => (
             <div
               key={post.slug}
               className="group bg-white/5 border border-border p-8 rounded-3xl hover:border-accent transition-all duration-300 shadow-xl flex flex-col justify-between"
@@ -106,10 +148,10 @@ const Blog: React.FC = () => {
                   </span>
                 </div>
                 <h2 className="text-2xl font-bold text-text-header mb-4 group-hover:text-accent transition-colors leading-snug">
-                  {getLocalizedValue(post.title)}
+                  {getLocalizedValue(post, "title")}
                 </h2>
                 <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
-                  {getLocalizedValue(post.excerpt)}
+                  {getLocalizedValue(post, "excerpt")}
                 </p>
               </div>
               <button
