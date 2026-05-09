@@ -5,12 +5,12 @@
 =======
 ## 🎯 Current Version: SEO, Performance & Social (0.1.6)
 
-- [ ] **CMS CRUD: Content Management**: Implement full add/modify/delete capabilities for:
-  - **About**: Manage bio and personal information.
-  - **Experience**: Manage professional history entries.
-  - **Projects**: Manage portfolio project details and links.
-- [ ] **CMS CRUD: Blog**: Implement full lifecycle management (Create/Edit/Delete) for blog posts.
-- [ ] **CMS CRUD: Chatbot**: Manage chatbot triggers and their corresponding responses via the admin interface.
+- [x] **CMS CRUD: Content Management**: Implement full add/modify/delete capabilities for:
+  - [x] **About**: Manage bio and personal information.
+  - [x] **Experience**: Manage professional history entries.
+  - [x] **Projects**: Manage portfolio project details and links.
+- [x] **CMS CRUD: Blog**: Implement full lifecycle management (Create/Edit/Delete) for blog posts.
+- [x] **CMS CRUD: Chatbot**: Manage chatbot triggers and their corresponding responses via the admin interface.
 - [x] **Persona & Tone Refinement**: Shift chatbot persona to a warmer, first-person perspective ("I'm Juan").
   - [x] Update Header title to "Juan Acosta, ask me anything".
   - [x] Revamp initial welcome message: change "Juan's virtual assistant" to first-person, remove bullet points, and maintain a warm tone while keeping the core introductory information.

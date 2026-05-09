@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { projects } from "../../lib/mocks";
 import { ExternalLink, Link as LinkIcon, Code } from "lucide-react";
 import SEO from "../components/layout/SEO";
 import SocialShare from "../components/layout/SocialShare";
 
+interface ProjectData {
+  id?: number;
+  title: string;
+  description_en: string;
+  description_es?: string;
+  description_fr?: string;
+  tech: string[];
+  link?: string;
+  github?: string;
+  image?: string;
+  order: number;
+}
+
 const Projects: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const [items, setItems] = useState<ProjectData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/v1/projects");
+        if (response.ok) {
+          setItems(await response.json());
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const getLocalized = (item: ProjectData, key: "description") => {
+    const localizedKey = `${key}_${locale}` as keyof ProjectData;
+    const fallbackKey = `${key}_en` as keyof ProjectData;
+    return (
+      (item[localizedKey] as string) || (item[fallbackKey] as string) || ""
+    );
+  };
+
+  if (isLoading)
+    return <div className="p-8 animate-pulse text-text">Loading...</div>;
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
@@ -17,7 +58,7 @@ const Projects: React.FC = () => {
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, idx) => (
+          {items.map((project, idx) => (
             <article
               key={idx}
               className="group bg-white/5 border border-border rounded-2xl overflow-hidden hover:border-accent/50 transition-all flex flex-col shadow-xl backdrop-blur-sm"
@@ -34,16 +75,16 @@ const Projects: React.FC = () => {
                   </h3>
                 </header>
                 <p className="text-text text-sm mb-6 leading-relaxed flex-1">
-                  {project.description}
+                  {getLocalized(project, "description")}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((tech) => (
+                  {project.tech.map((techItem: string) => (
                     <span
-                      key={tech}
+                      key={techItem}
                       className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-white/5 border border-border rounded-lg text-text opacity-80"
                     >
-                      {tech}
+                      {techItem}
                     </span>
                   ))}
                 </div>

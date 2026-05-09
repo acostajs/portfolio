@@ -14,18 +14,21 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlmodel import Session, select, desc
+from sqlmodel import Session, select, desc, col
 
 from config import settings
 from database import create_db_and_tables, engine
 from models import (
     ChatMessage,
     ChatFeedback,
-    ChatbotResponseModel,
-    BlogPostModel,
-    PageContent,
+    About,
+    Experience,
+    Project,
+    BlogPost,
+    ChatTriggerResponse,
 )
 from responses import fallback
+import admin as admin_api
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -64,6 +67,7 @@ class FeedbackRequest(BaseModel):
 
 # --- App Initialization ---
 app = FastAPI(title="Portfolio Backend", lifespan=lifespan)
+app.include_router(admin_api.router)
 
 
 # --- Middleware ---
@@ -138,6 +142,33 @@ async def health():
     return {"status": "healthy"}
 
 
+# --- Public CMS Endpoints ---
+@app.get("/api/v1/about", response_model=About)
+async def get_public_about():
+    with Session(engine) as session:
+        return session.exec(select(About)).first()
+
+
+@app.get("/api/v1/experience", response_model=List[Experience])
+async def get_public_experience():
+    with Session(engine) as session:
+        return session.exec(select(Experience).order_by(col(Experience.order))).all()
+
+
+@app.get("/api/v1/projects", response_model=List[Project])
+async def get_public_projects():
+    with Session(engine) as session:
+        return session.exec(select(Project).order_by(col(Project.order))).all()
+
+
+@app.get("/api/v1/blog", response_model=List[BlogPost])
+async def get_public_blog():
+    with Session(engine) as session:
+        return session.exec(
+            select(BlogPost).where(BlogPost.published).order_by(desc(BlogPost.date))
+        ).all()
+
+
 @app.post("/api/v1/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     user_message = request.message.lower()
@@ -146,32 +177,28 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     reply = None
 
     with Session(engine) as session:
-        # Fetch all responses (in a real app, we might want to optimize this,
-        # but for a portfolio it's fine to check them all or use a smarter query)
-        statement = select(ChatbotResponseModel)
-        db_responses = session.exec(statement).all()
+        # Fetch all triggers from database, ordered by ID to maintain priority
+        db_triggers = session.exec(
+            select(ChatTriggerResponse).order_by(col(ChatTriggerResponse.id))
+        ).all()
 
-        # Iterate through db responses and check for trigger matches
-        for resp in db_responses:
-            if is_trigger_match(user_message, resp.triggers):
-                # Select correct language field
-                answers = []
-                if lang == "en":
-                    answers = resp.answers_en
-                elif lang == "es":
-                    answers = resp.answers_es
-                elif lang == "fr":
-                    answers = resp.answers_fr
-
+        # Priority-based matching
+        for item in db_triggers:
+            if is_trigger_match(user_message, item.triggers):
+                logger.info(
+                    f"Matched trigger: module={item.module}, category={item.category}"
+                )
+                answers = getattr(item, f"answers_{lang}")
                 if answers:
                     reply = random.choice(answers)
                     break
 
-    # If no trigger matched, use fallback from the hardcoded module for now
+    # If no trigger matched, use fallback
     if not reply:
+        logger.info("No trigger matched, using fallback")
         reply = random.choice(fallback.data["answers"][lang])
 
-    # Save user message to history in background (excluding assistant response)
+    # Save user message to history in background
     background_tasks.add_task(save_chat_interaction, request.message)
 
     return ChatResponse(reply=reply)
@@ -188,100 +215,12 @@ async def chat_feedback(request: FeedbackRequest, background_tasks: BackgroundTa
     return {"status": "success"}
 
 
-# --- Auth ---
-def verify_admin(x_admin_password: str = Header(None)):
-    if x_admin_password != settings.ADMIN_PASSWORD:
-        raise HTTPException(status_code=401, detail="Invalid admin password")
-
-
-# --- CMS Routes ---
-@app.get("/api/v1/cms/chatbot", dependencies=[Depends(verify_admin)])
-async def get_cms_chatbot():
-    with Session(engine) as session:
-        return session.exec(select(ChatbotResponseModel)).all()
-
-
-@app.post("/api/v1/cms/chatbot", dependencies=[Depends(verify_admin)])
-async def update_cms_chatbot(response: ChatbotResponseModel):
-    with Session(engine) as session:
-        if response.id:
-            db_resp = session.get(ChatbotResponseModel, response.id)
-            if db_resp:
-                # Update existing
-                for key, value in response.model_dump(exclude={"id"}).items():
-                    setattr(db_resp, key, value)
-                session.add(db_resp)
-                session.commit()
-                return {"status": "updated", "id": db_resp.id}
-
-        # Create new
-        session.add(response)
-        session.commit()
-        session.refresh(response)
-        return {"status": "created", "id": response.id}
-
-
-@app.get("/api/v1/cms/blog", dependencies=[Depends(verify_admin)])
-async def get_cms_blog():
-    with Session(engine) as session:
-        return session.exec(select(BlogPostModel)).all()
-
-
-@app.post("/api/v1/cms/blog", dependencies=[Depends(verify_admin)])
-async def update_cms_blog(post: BlogPostModel):
-    with Session(engine) as session:
-        if post.id:
-            db_post = session.get(BlogPostModel, post.id)
-            if db_post:
-                for key, value in post.model_dump(exclude={"id"}).items():
-                    setattr(db_post, key, value)
-                session.add(db_post)
-                session.commit()
-                return {"status": "updated", "id": db_post.id}
-
-        session.add(post)
-        session.commit()
-        session.refresh(post)
-        return {"status": "created", "id": post.id}
-
-
-@app.get("/api/v1/cms/pages", dependencies=[Depends(verify_admin)])
-async def get_cms_pages():
-    with Session(engine) as session:
-        return session.exec(select(PageContent)).all()
-
-
-@app.post("/api/v1/cms/pages", dependencies=[Depends(verify_admin)])
-async def update_cms_pages(content: PageContent):
-    with Session(engine) as session:
-        if content.id:
-            db_content = session.get(PageContent, content.id)
-            if db_content:
-                for key, value in content.model_dump(exclude={"id"}).items():
-                    setattr(db_content, key, value)
-                session.add(db_content)
-                session.commit()
-                return {"status": "updated", "id": db_content.id}
-
-        session.add(content)
-        session.commit()
-        session.refresh(content)
-        return {"status": "created", "id": content.id}
-
-
-# --- Public CMS Routes ---
-@app.get("/api/v1/blog")
-async def get_blog():
-    with Session(engine) as session:
-        return session.exec(
-            select(BlogPostModel).order_by(desc(BlogPostModel.date))
-        ).all()
-
-
 # Optional: Endpoint to retrieve history as mentioned in API.md
 @app.get("/api/v1/chat/history")
 async def get_chat_history():
     with Session(engine) as session:
-        statement = select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
+        statement = (
+            select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
+        )
         results = session.exec(statement).all()
         return results

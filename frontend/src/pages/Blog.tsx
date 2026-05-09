@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
+<<<<<<< HEAD
 import { fetchPublic } from "../../lib/api";
 import type { BlogPost as DBBlogPost } from "../types/cms";
+=======
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -14,8 +17,26 @@ const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
 };
 
+interface BlogData {
+  id?: number;
+  slug: string;
+  date: string;
+  category: string;
+  title_en: string;
+  title_es: string;
+  title_fr: string;
+  excerpt_en: string;
+  excerpt_es: string;
+  excerpt_fr: string;
+  content_en: string;
+  content_es: string;
+  content_fr: string;
+  published: boolean;
+}
+
 const Blog: React.FC = () => {
   const { t, locale } = useTranslation();
+<<<<<<< HEAD
   const [selectedPost, setSelectedPost] = useState<DBBlogPost | null>(null);
   const [posts, setPosts] = useState<DBBlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,11 +59,46 @@ const Blog: React.FC = () => {
       (post[key] as string) ||
       (post[`${field}_en` as keyof DBBlogPost] as string)
     );
+=======
+  const [items, setItems] = useState<BlogData[]>([]);
+  const [selectedPost, setSelectedPost] = useState<BlogData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/v1/blog");
+        if (response.ok) {
+          setItems(await response.json());
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const getLocalized = (item: BlogData, key: string) => {
+    const k = `${key}_${locale}` as keyof BlogData;
+    const fallback = `${key}_en` as keyof BlogData;
+    return (item[k] as string) || (item[fallback] as string) || "";
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
   };
 
+  if (isLoading)
+    return <div className="p-12 animate-pulse text-text">Loading...</div>;
+
   if (selectedPost) {
+<<<<<<< HEAD
     const title = getLocalizedValue(selectedPost, "title");
     const excerpt = getLocalizedValue(selectedPost, "excerpt");
+=======
+    const title = getLocalized(selectedPost, "title");
+    const excerpt = getLocalized(selectedPost, "excerpt");
+    const content = getLocalized(selectedPost, "content");
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
 
     return (
       <section className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 animate-fade-in bg-bg">
@@ -69,14 +125,18 @@ const Blog: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-5xl font-bold text-text-header mb-8 tracking-tight leading-tight">
+<<<<<<< HEAD
               {getLocalizedValue(selectedPost, "title")}
+=======
+              {title}
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
             </h1>
 
             <div className="mb-12">
               <SocialShare
-                title={getLocalizedValue(selectedPost.title)}
+                title={title}
                 url={`/blog/${selectedPost.slug}`}
-                text={getLocalizedValue(selectedPost.excerpt)}
+                text={excerpt}
               />
             </div>
 
@@ -104,7 +164,11 @@ const Blog: React.FC = () => {
                   },
                 }}
               >
+<<<<<<< HEAD
                 {getLocalizedValue(selectedPost, "content")}
+=======
+                {content}
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
               </ReactMarkdown>
             </div>
           </article>
@@ -133,7 +197,11 @@ const Blog: React.FC = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<<<<<<< HEAD
           {posts.map((post) => (
+=======
+          {items.map((post) => (
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
             <div
               key={post.slug}
               className="group bg-white/5 border border-border p-8 rounded-3xl hover:border-accent transition-all duration-300 shadow-xl flex flex-col justify-between"
@@ -148,10 +216,17 @@ const Blog: React.FC = () => {
                   </span>
                 </div>
                 <h2 className="text-2xl font-bold text-text-header mb-4 group-hover:text-accent transition-colors leading-snug">
+<<<<<<< HEAD
                   {getLocalizedValue(post, "title")}
                 </h2>
                 <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
                   {getLocalizedValue(post, "excerpt")}
+=======
+                  {getLocalized(post, "title")}
+                </h2>
+                <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
+                  {getLocalized(post, "excerpt")}
+>>>>>>> 8bec33b (feat: implement lightweight CMS with CRUD for About, Experience, Projects, Blog, and Chatbot)
                 </p>
               </div>
               <button

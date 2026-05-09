@@ -1,11 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { experience } from "../../lib/mocks";
 import { Calendar, Briefcase } from "lucide-react";
 import SEO from "../components/layout/SEO";
 
+interface ExperienceData {
+  id?: number;
+  company: string;
+  role: string;
+  period: string;
+  description_en: string[];
+  description_es?: string[];
+  description_fr?: string[];
+  tech: string[];
+  order: number;
+}
+
 const Experience: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const [items, setItems] = useState<ExperienceData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/v1/experience");
+        if (response.ok) {
+          setItems(await response.json());
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const getLocalized = (item: ExperienceData, key: "description") => {
+    const localizedKey = `${key}_${locale}` as keyof ExperienceData;
+    const fallbackKey = `${key}_en` as keyof ExperienceData;
+    return (
+      (item[localizedKey] as string[]) || (item[fallbackKey] as string[]) || []
+    );
+  };
+
+  if (isLoading)
+    return <div className="p-8 animate-pulse text-text">Loading...</div>;
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
@@ -16,7 +56,7 @@ const Experience: React.FC = () => {
         </h1>
 
         <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-accent/50 before:via-border before:to-transparent">
-          {experience.map((exp, idx) => (
+          {items.map((exp, idx) => (
             <article
               key={idx}
               className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
@@ -43,17 +83,19 @@ const Experience: React.FC = () => {
                   {exp.company}
                 </div>
                 <ul className="space-y-2 list-disc list-inside text-sm text-text leading-relaxed">
-                  {exp.description.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
+                  {getLocalized(exp, "description").map(
+                    (item: string, i: number) => (
+                      <li key={i}>{item}</li>
+                    ),
+                  )}
                 </ul>
                 <footer className="mt-4 flex flex-wrap gap-1.5">
-                  {exp.tech.map((t) => (
+                  {exp.tech.map((techItem: string) => (
                     <span
-                      key={t}
+                      key={techItem}
                       className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-accent/10 text-accent rounded-md border border-accent/20"
                     >
-                      {t}
+                      {techItem}
                     </span>
                   ))}
                 </footer>
