@@ -1,20 +1,30 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: SEO, Performance & Social (0.1.6)
-
-- [ ] **Dynamic Meta Tags**: Implement `react-helmet-async` to provide unique titles and descriptions for blog posts and pages.
-- [ ] **OpenGraph Image Generation**: Add support for dynamic OG images for blog posts.
-- [ ] **Twitter/X Sharing**: Add share buttons to blog posts.
-
-## ⏳ Backlog & Future Ideas
-
-### Future Enhancements
+## 🎯 Current Version: Post-Launch & Scaling (0.1.7)
 
 - [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
-- [ ] **Voice Preference Persistence**: Save the user's Speech-to-Text and TTS toggle preferences in `localStorage`.
-- [ ] **Page Content CMS Migration**: Complete the migration of static translations to the database for full CMS control.
+- [ ] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths.
+- [ ] **Performance Monitoring**: Set up automated Lighthouse CI checks.
 
 ## ✅ Archive (Completed)
+
+### Version 0.1.6: SEO, Performance & Social
+
+- [x] **CMS CRUD: Content Management**: Implement full add/modify/delete capabilities for:
+  - [x] **About**: Manage bio and personal information.
+  - [x] **Experience**: Manage professional history entries.
+  - [x] **Projects**: Manage portfolio project details and links.
+- [x] **CMS CRUD: Blog**: Implement full lifecycle management (Create/Edit/Delete) for blog posts.
+- [x] **CMS CRUD: Chatbot**: Manage chatbot triggers and their corresponding responses via the admin interface.
+- [x] **Persona & Tone Refinement**: Shift chatbot persona to a warmer, first-person perspective ("I'm Juan").
+  - [x] Update Header title to "Juan Acosta, ask me anything".
+  - [x] Revamp initial welcome message: change "Juan's virtual assistant" to first-person, remove bullet points, and maintain a warm tone while keeping the core introductory information.
+- [x] **Open Graph & Twitter Cards**: Implement dynamic meta tags for better social sharing.
+- [x] **Sitemap & robots.txt**: Generate automated sitemap and robots.txt for search engines.
+- [x] **Lighthouse Performance Audit**: Reach 95+ in all Lighthouse metrics. (Optimized with theme FOUC prevention, preloading, and meta cleanup).
+- [x] **Social Sharing Components**: Add easy-to-use sharing buttons for blog posts and projects.
+- [x] **Voice Preference Persistence**: Save the user's Speech-to-Text and TTS toggle preferences in `localStorage`.
+- [x] **Project Image Management**: Support uploading and displaying project-specific images via the CMS.
 
 ### Version 0.1.5: Lightweight CMS & Content Management
 

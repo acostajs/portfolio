@@ -21,22 +21,17 @@ export const en = {
   },
   home: {
     welcome:
-      "Welcome! I'm Juan's virtual assistant. I'm here to help you navigate his portfolio and answer questions about his work. 👋",
+      "Hi! I'm Juan Acosta. Welcome to my portfolio! I'm here to share my journey, projects, and technical expertise with you. 👋",
     subwelcome:
-      "I've been trained on Juan's professional background, skills, and projects. Here's what we can discuss:",
-    chatbotPlaceholder: "Ask me about Juan's skills, projects...",
+      "Feel free to ask me about my background, the technologies I use, or how I can help your team. We can dive into my technical stack, recent projects, professional journey, or work philosophy.",
+    chatbotPlaceholder: "Ask me about my skills, projects...",
     newChat: "New Chat",
     helpful: "Helpful",
     notHelpful: "Not Helpful",
     feedbackSuccess: "Thank you for your feedback!",
-    features: [
-      "Core Technical Skills",
-      "Professional Journey",
-      "Key Projects & Contributions",
-      "Work Philosophy & Soft Skills",
-    ],
+    features: [],
     closing:
-      "Feel free to ask me anything, or use /commands to jump directly to specific sections. You can even try talking to me using the microphone button! How can I assist you today?",
+      "You can also use /commands to navigate, or just type your question below. How can I help you today?",
     suggestions: [
       "What are your core technical skills?",
       "Tell me about your most recent projects",
@@ -73,8 +68,8 @@ export const en = {
     },
   },
   header: {
-    title: "Portfolio Assistant",
-    subtitle: "Ask me anything about Juan",
+    title: "Juan Acosta",
+    subtitle: "Ask me anything",
     toggleSidebar: "Toggle Sidebar",
     toggleTheme: "Toggle Theme",
     language: "Language",
