@@ -3,6 +3,7 @@ import { useTranslation } from "../../lib/hooks/useTranslation";
 import { projects } from "../../lib/mocks";
 import { ExternalLink, Link as LinkIcon, Code } from "lucide-react";
 import SEO from "../components/layout/SEO";
+import SocialShare from "../components/layout/SocialShare";
 
 const Projects: React.FC = () => {
   const { t } = useTranslation();
@@ -47,29 +48,32 @@ const Projects: React.FC = () => {
                   ))}
                 </div>
 
-                <footer className="flex items-center gap-4 mt-auto">
-                  {project.link && (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-sm font-bold text-accent hover:underline"
-                    >
-                      <ExternalLink className="w-4 h-4 mr-1.5" />
-                      {t.projects.viewProject}
-                    </a>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-sm font-bold text-text hover:text-text-header"
-                    >
-                      <LinkIcon className="w-4 h-4 mr-1.5" />
-                      {t.projects.viewGithub}
-                    </a>
-                  )}
+                <footer className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
+                  <div className="flex items-center gap-4">
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-sm font-bold text-accent hover:underline"
+                      >
+                        <ExternalLink className="w-4 h-4 mr-1.5" />
+                        {t.projects.viewProject}
+                      </a>
+                    )}
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-sm font-bold text-text hover:text-text-header"
+                      >
+                        <LinkIcon className="w-4 h-4 mr-1.5" />
+                        {t.projects.viewGithub}
+                      </a>
+                    )}
+                  </div>
+                  <SocialShare title={project.title} url="/projects" />
                 </footer>
               </div>
             </article>

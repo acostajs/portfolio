@@ -8,6 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import SEO from "../components/layout/SEO";
+import SocialShare from "../components/layout/SocialShare";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -70,6 +71,14 @@ const Blog: React.FC = () => {
             <h1 className="text-3xl md:text-5xl font-bold text-text-header mb-8 tracking-tight leading-tight">
               {getLocalizedValue(selectedPost, "title")}
             </h1>
+
+            <div className="mb-12">
+              <SocialShare
+                title={getLocalizedValue(selectedPost.title)}
+                url={`/blog/${selectedPost.slug}`}
+                text={getLocalizedValue(selectedPost.excerpt)}
+              />
+            </div>
 
             <div className="prose prose-invert max-w-none markdown-content">
               <ReactMarkdown
