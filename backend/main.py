@@ -11,7 +11,7 @@ from rapidfuzz import fuzz
 # Add the current directory to sys.path to ensure local imports work on Vercel
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Depends
+from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlmodel import Session, select, desc, col
@@ -219,8 +219,6 @@ async def chat_feedback(request: FeedbackRequest, background_tasks: BackgroundTa
 @app.get("/api/v1/chat/history")
 async def get_chat_history():
     with Session(engine) as session:
-        statement = (
-            select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
-        )
+        statement = select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
         results = session.exec(statement).all()
         return results

@@ -36,7 +36,11 @@ const About: React.FC = () => {
 
   const getLocalized = (key: string) => {
     if (!data) return "";
-    return data[`${key}_${locale}`] || data[`${key}_en`] || "";
+    const localizedKey = `${key}_${locale}` as keyof AboutData;
+    const fallbackKey = `${key}_en` as keyof AboutData;
+    return (
+      (data[localizedKey] as string) || (data[fallbackKey] as string) || ""
+    );
   };
 
   if (isLoading)

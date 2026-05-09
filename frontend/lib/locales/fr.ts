@@ -60,6 +60,7 @@ export const fr: TranslationType = {
         "Historique du chat effacé. Comment puis-je vous aider d'autre ?",
       error: "Commande inconnue. Tapez /help pour voir les commandes.",
       list: [
+        { cmd: "/new", desc: "Démarrer une nouvelle session de chat." },
         { cmd: "/clear", desc: "Effacer l'historique." },
         { cmd: "/help", desc: "Afficher ce message d'aide." },
         { cmd: "/about", desc: "Aller à la page À propos." },

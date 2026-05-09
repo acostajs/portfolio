@@ -57,6 +57,7 @@ export const en = {
       clearSuccess: "Chat history cleared. How else can I help you?",
       error: "Unknown command. Type /help to see available commands.",
       list: [
+        { cmd: "/new", desc: "Start a new chat session." },
         { cmd: "/clear", desc: "Clear chat history." },
         { cmd: "/help", desc: "Show available commands." },
         { cmd: "/about", desc: "Go to About page." },

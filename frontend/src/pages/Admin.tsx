@@ -742,7 +742,7 @@ const ProjectsManager: React.FC = () => {
             "X-Admin-Password": localStorage.getItem("admin-token") || "",
           },
           body: formData,
-        }
+        },
       );
       if (response.ok) {
         const data = await response.json();

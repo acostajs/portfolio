@@ -59,6 +59,7 @@ export const es: TranslationType = {
       clearSuccess: "Historial de chat borrado. ¿En qué más puedo ayudarte?",
       error: "Comando desconocido. Escribe /help para ver los comandos.",
       list: [
+        { cmd: "/new", desc: "Iniciar una nueva sesión de chat." },
         { cmd: "/clear", desc: "Borrar el historial." },
         { cmd: "/help", desc: "Mostrar este mensaje de ayuda." },
         { cmd: "/about", desc: "Ir a la página Sobre mí." },

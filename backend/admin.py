@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Header, UploadFile, File
 from sqlmodel import Session, select, desc, col
+import os
+import shutil
+import re
 from typing import List, Optional
 from database import engine
 from models import About, Experience, Project, BlogPost, ChatTriggerResponse
@@ -8,9 +11,15 @@ from config import settings
 router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
 
 
+def slugify(text: str) -> str:
+    text = text.lower()
+    text = re.sub(r"[^\w\s-]", "", text)
+    return re.sub(r"[-\s]+", "-", text).strip("-")
+
+
 # --- Auth Middleware ---
-async def verify_admin_password(x_admin_password: Optional[str] = Header(None)):
-    if x_admin_password != settings.ANALYTICS_PASSWORD:
+def verify_admin_password(x_admin_password: Optional[str] = Header(None)):
+    if x_admin_password != settings.ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Invalid admin password")
     return x_admin_password
 
@@ -139,6 +148,44 @@ async def delete_project(
         session.delete(project)
         session.commit()
         return {"status": "success"}
+
+
+@router.post("/projects/{project_id}/upload-image")
+async def upload_project_image(
+    project_id: int,
+    file: UploadFile = File(...),
+    password: str = Depends(verify_admin_password),
+):
+    with Session(engine) as session:
+        project = session.get(Project, project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+
+        # Create directory if it doesn't exist
+        # Path is relative to backend/
+        upload_dir = os.path.abspath(
+            os.path.join(os.getcwd(), "..", "frontend", "public", "images", "projects")
+        )
+        os.makedirs(upload_dir, exist_ok=True)
+
+        # Generate filename
+        original_filename = file.filename or "image.jpg"
+        ext = os.path.splitext(original_filename)[1]
+        filename = f"{slugify(project.title)}{ext}"
+        file_path = os.path.join(upload_dir, filename)
+
+        # Save file
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Update project in DB
+        relative_path = f"/images/projects/{filename}"
+        project.image = relative_path
+        session.add(project)
+        session.commit()
+        session.refresh(project)
+
+        return {"image_url": relative_path}
 
 
 # --- Blog CRUD ---

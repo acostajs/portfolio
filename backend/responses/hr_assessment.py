@@ -106,11 +106,13 @@ data = {
             "triggers": [
                 "growth",
                 "motivation",
+                "motivations",
                 "learning",
                 "career",
                 "future",
                 "crecimiento",
                 "motivación",
+                "motivacion",
                 "aprendizaje",
                 "carrera",
                 "croissance",

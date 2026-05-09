@@ -1,5 +1,5 @@
 import React from "react";
-import { Twitter, Linkedin, Link as LinkIcon, Share2 } from "lucide-react";
+import { X, Link as LinkIcon, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 
@@ -24,13 +24,13 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url, text }) => {
   const shareLinks = [
     {
       name: "Twitter",
-      icon: Twitter,
+      icon: X,
       href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
       color: "hover:text-[#1DA1F2]",
     },
     {
       name: "LinkedIn",
-      icon: Linkedin,
+      icon: LinkIcon,
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
       color: "hover:text-[#0077b5]",
     },

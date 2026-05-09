@@ -3,6 +3,7 @@ import { useTranslation } from "../../lib/hooks/useTranslation";
 import { ExternalLink, Link as LinkIcon, Code } from "lucide-react";
 import SEO from "../components/layout/SEO";
 import SocialShare from "../components/layout/SocialShare";
+import ProgressiveImage from "../components/chat/ProgressiveImage";
 
 interface ProjectData {
   id?: number;
@@ -64,8 +65,16 @@ const Projects: React.FC = () => {
               className="group bg-white/5 border border-border rounded-2xl overflow-hidden hover:border-accent/50 transition-all flex flex-col shadow-xl backdrop-blur-sm"
             >
               <div className="h-48 bg-gradient-to-br from-accent/20 to-bg flex items-center justify-center relative overflow-hidden">
-                <Code className="w-20 h-20 text-accent opacity-20 group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                {project.image ? (
+                  <ProgressiveImage
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <Code className="w-20 h-20 text-accent opacity-20 group-hover:scale-110 transition-transform duration-500" />
+                )}
+                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
               </div>
 
               <div className="p-6 flex-1 flex flex-col">
