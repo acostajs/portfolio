@@ -1,6 +1,28 @@
 # Project Roadmap (TODO.md)
 
+<<<<<<< HEAD
 ## 🎯 Current Version: Post-Launch & Scaling (0.1.7)
+=======
+## 🎯 Current Version: SEO, Performance & Social (0.1.6)
+
+- [ ] **CMS CRUD: Content Management**: Implement full add/modify/delete capabilities for:
+  - **About**: Manage bio and personal information.
+  - **Experience**: Manage professional history entries.
+  - **Projects**: Manage portfolio project details and links.
+- [ ] **CMS CRUD: Blog**: Implement full lifecycle management (Create/Edit/Delete) for blog posts.
+- [ ] **CMS CRUD: Chatbot**: Manage chatbot triggers and their corresponding responses via the admin interface.
+- [x] **Persona & Tone Refinement**: Shift chatbot persona to a warmer, first-person perspective ("I'm Juan").
+  - [x] Update Header title to "Juan Acosta, ask me anything".
+  - [x] Revamp initial welcome message: change "Juan's virtual assistant" to first-person, remove bullet points, and maintain a warm tone while keeping the core introductory information.
+- [x] **Open Graph & Twitter Cards**: Implement dynamic meta tags for better social sharing.
+- [ ] **Sitemap & robots.txt**: Generate automated sitemap and robots.txt for search engines.
+- [ ] **Lighthouse Performance Audit**: Reach 95+ in all Lighthouse metrics.
+- [ ] **Social Sharing Components**: Add easy-to-use sharing buttons for blog posts and projects.
+
+## ⏳ Backlog & Future Ideas
+
+### Future Enhancements
+>>>>>>> 8609a2e (feat: implement dynamic OG and Twitter meta tags with react-helmet-async)
 
 - [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [ ] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths.

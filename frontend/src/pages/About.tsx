@@ -1,12 +1,14 @@
 import React from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { techStack } from "../../lib/mocks";
+import SEO from "../components/layout/SEO";
 
 const About: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <article className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+      <SEO title={t.nav.about} description={t.about.p1} />
       <div className="max-w-3xl mx-auto space-y-8">
         <section>
           <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-6">

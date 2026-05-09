@@ -14,6 +14,7 @@ import BotMessage from "../components/chat/BotMessage";
 import { motion, AnimatePresence } from "framer-motion";
 import { hapticFeedback } from "../../lib/haptic";
 import { useSpeech } from "../../lib/hooks/useSpeech";
+import SEO from "../components/layout/SEO";
 
 interface Message {
   role: "user" | "assistant";
@@ -338,6 +339,7 @@ const Home: React.FC = () => {
 
   return (
     <section className="flex-1 flex flex-col h-full overflow-hidden">
+      <SEO />
       {/* Chat Messages Area - This scrolls */}
       <div
         ref={scrollRef}

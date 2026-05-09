@@ -2,12 +2,14 @@ import React from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { projects } from "../../lib/mocks";
 import { ExternalLink, Link as LinkIcon, Code } from "lucide-react";
+import SEO from "../components/layout/SEO";
 
 const Projects: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+      <SEO title={t.nav.projects} />
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-8">
           {t.projects.title}

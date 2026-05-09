@@ -2,12 +2,14 @@ import React from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { experience } from "../../lib/mocks";
 import { Calendar, Briefcase } from "lucide-react";
+import SEO from "../components/layout/SEO";
 
 const Experience: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+      <SEO title={t.nav.experience} />
       <div className="max-w-3xl mx-auto space-y-8">
         <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-8">
           {t.experience.title}

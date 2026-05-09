@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import SEO from "../components/layout/SEO";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -39,8 +40,12 @@ const Blog: React.FC = () => {
   };
 
   if (selectedPost) {
+    const title = getLocalizedValue(selectedPost, "title");
+    const excerpt = getLocalizedValue(selectedPost, "excerpt");
+
     return (
       <section className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 animate-fade-in bg-bg">
+        <SEO title={title} description={excerpt} type="article" />
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => setSelectedPost(null)}
@@ -109,6 +114,7 @@ const Blog: React.FC = () => {
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 animate-fade-in bg-bg">
+      <SEO title={t.nav.blog} />
       <div className="max-w-5xl mx-auto">
         <header className="mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-text-header mb-4 tracking-tighter">
