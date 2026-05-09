@@ -23,7 +23,7 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Version 0.1.2: Platform & Analytics**.
+The project is currently in **Version 0.1.5: Lightweight CMS & Content Management**.
 
 ### Major Milestones Completed
 
@@ -32,6 +32,8 @@ The project is currently in **Version 0.1.2: Platform & Analytics**.
 - **Version 0.0.5-8**: Web3Forms integration, mobile UX refinements, a localized trigger-based chatbot persona, and final polish/optimization.
 - **Version 0.0.9-0.1.0**: AI persona expansion (Technical & HR), Markdown support, Blog module, and Motion/Visual polish.
 - **Version 0.1.1**: Global Command Palette (Cmd+K), Haptic feedback, accessibility (a11y) improvements, and SEO optimization.
+- **Version 0.1.2-0.1.4**: Vercel integration, toast notifications, voice interaction (PTT), fuzzy matching, and hardened CI hooks.
+- **Version 0.1.5**: Hidden Admin CMS (`/admin`), database-driven Chatbot and Blog content, and content migration.
 
 ## Building and Running
 

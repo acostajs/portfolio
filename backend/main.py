@@ -11,30 +11,21 @@ from rapidfuzz import fuzz
 # Add the current directory to sys.path to ensure local imports work on Vercel
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from fastapi import BackgroundTasks, FastAPI
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlmodel import Session, select, desc
 
 from config import settings
 from database import create_db_and_tables, engine
-from models import ChatMessage, ChatFeedback
-from responses import (
-    about,
-    experience,
-    projects,
-    contact,
-    fallback,
-    greetings,
-    thanks,
-    fun,
-    technical_core,
-    technical_frontend,
-    technical_backend,
-    technical_devops,
-    technical_behavioral,
-    hr_assessment,
+from models import (
+    ChatMessage,
+    ChatFeedback,
+    ChatbotResponseModel,
+    BlogPostModel,
+    PageContent,
 )
+from responses import fallback
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -152,42 +143,31 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     user_message = request.message.lower()
     lang = request.language if request.language in ["en", "es", "fr"] else "en"
 
-    # List of response modules to check against in priority order (Specific -> General)
-    response_modules = [
-        technical_core,
-        technical_frontend,
-        technical_backend,
-        technical_devops,
-        technical_behavioral,
-        hr_assessment,
-        experience,
-        projects,
-        contact,
-        greetings,
-        thanks,
-        about,
-        fun,
-    ]
-
     reply = None
-    # Determine response based on triggers with improved NLU matching
-    for module in response_modules:
-        # Check if the module has categorized responses (for expert-level technical answers)
-        if "categories" in module.data:
-            for category in module.data["categories"]:
-                if is_trigger_match(user_message, category["triggers"]):
-                    reply = random.choice(category["answers"][lang])
-                    break
-            if reply:
-                break
-        # Fallback to flat trigger matching
-        elif "triggers" in module.data and is_trigger_match(
-            user_message, module.data["triggers"]
-        ):
-            reply = random.choice(module.data["answers"][lang])
-            break
 
-    # If no trigger matched, use fallback
+    with Session(engine) as session:
+        # Fetch all responses (in a real app, we might want to optimize this,
+        # but for a portfolio it's fine to check them all or use a smarter query)
+        statement = select(ChatbotResponseModel)
+        db_responses = session.exec(statement).all()
+
+        # Iterate through db responses and check for trigger matches
+        for resp in db_responses:
+            if is_trigger_match(user_message, resp.triggers):
+                # Select correct language field
+                answers = []
+                if lang == "en":
+                    answers = resp.answers_en
+                elif lang == "es":
+                    answers = resp.answers_es
+                elif lang == "fr":
+                    answers = resp.answers_fr
+
+                if answers:
+                    reply = random.choice(answers)
+                    break
+
+    # If no trigger matched, use fallback from the hardcoded module for now
     if not reply:
         reply = random.choice(fallback.data["answers"][lang])
 
@@ -206,6 +186,96 @@ async def chat_feedback(request: FeedbackRequest, background_tasks: BackgroundTa
         request.is_helpful,
     )
     return {"status": "success"}
+
+
+# --- Auth ---
+def verify_admin(x_admin_password: str = Header(None)):
+    if x_admin_password != settings.ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Invalid admin password")
+
+
+# --- CMS Routes ---
+@app.get("/api/v1/cms/chatbot", dependencies=[Depends(verify_admin)])
+async def get_cms_chatbot():
+    with Session(engine) as session:
+        return session.exec(select(ChatbotResponseModel)).all()
+
+
+@app.post("/api/v1/cms/chatbot", dependencies=[Depends(verify_admin)])
+async def update_cms_chatbot(response: ChatbotResponseModel):
+    with Session(engine) as session:
+        if response.id:
+            db_resp = session.get(ChatbotResponseModel, response.id)
+            if db_resp:
+                # Update existing
+                for key, value in response.model_dump(exclude={"id"}).items():
+                    setattr(db_resp, key, value)
+                session.add(db_resp)
+                session.commit()
+                return {"status": "updated", "id": db_resp.id}
+
+        # Create new
+        session.add(response)
+        session.commit()
+        session.refresh(response)
+        return {"status": "created", "id": response.id}
+
+
+@app.get("/api/v1/cms/blog", dependencies=[Depends(verify_admin)])
+async def get_cms_blog():
+    with Session(engine) as session:
+        return session.exec(select(BlogPostModel)).all()
+
+
+@app.post("/api/v1/cms/blog", dependencies=[Depends(verify_admin)])
+async def update_cms_blog(post: BlogPostModel):
+    with Session(engine) as session:
+        if post.id:
+            db_post = session.get(BlogPostModel, post.id)
+            if db_post:
+                for key, value in post.model_dump(exclude={"id"}).items():
+                    setattr(db_post, key, value)
+                session.add(db_post)
+                session.commit()
+                return {"status": "updated", "id": db_post.id}
+
+        session.add(post)
+        session.commit()
+        session.refresh(post)
+        return {"status": "created", "id": post.id}
+
+
+@app.get("/api/v1/cms/pages", dependencies=[Depends(verify_admin)])
+async def get_cms_pages():
+    with Session(engine) as session:
+        return session.exec(select(PageContent)).all()
+
+
+@app.post("/api/v1/cms/pages", dependencies=[Depends(verify_admin)])
+async def update_cms_pages(content: PageContent):
+    with Session(engine) as session:
+        if content.id:
+            db_content = session.get(PageContent, content.id)
+            if db_content:
+                for key, value in content.model_dump(exclude={"id"}).items():
+                    setattr(db_content, key, value)
+                session.add(db_content)
+                session.commit()
+                return {"status": "updated", "id": db_content.id}
+
+        session.add(content)
+        session.commit()
+        session.refresh(content)
+        return {"status": "created", "id": content.id}
+
+
+# --- Public CMS Routes ---
+@app.get("/api/v1/blog")
+async def get_blog():
+    with Session(engine) as session:
+        return session.exec(
+            select(BlogPostModel).order_by(desc(BlogPostModel.date))
+        ).all()
 
 
 # Optional: Endpoint to retrieve history as mentioned in API.md

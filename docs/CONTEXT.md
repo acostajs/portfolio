@@ -14,4 +14,5 @@ A multilingual (EN, FR, ES) interactive portfolio where the "Home" page is a Cha
 ## Data Strategy
 
 - **Frontend:** High-performance UI using Bun and React. Web3Forms handles contact logic.
-- **Backend:** FastAPI service focused on visitor analytics. It captures interaction data to build a profile of how users engage with the portfolio.
+- **Backend:** FastAPI service with a SQLModel (SQLAlchemy) data layer. It manages both visitor analytics and a lightweight CMS for Chatbot responses and Blog content.
+- **CMS:** An Admin Dashboard (/admin) allows for real-time updates to the portfolio's knowledge base and technical notes without redeploying code.
