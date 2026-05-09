@@ -1,13 +1,10 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Lightweight CMS & Content Management (0.1.5)
+## 🎯 Current Version: SEO, Performance & Social (0.1.6)
 
-- [ ] **Admin Section Foundation**: Create a hidden, password-protected `/admin` route (not visible in the sidebar or navigation).
-- [ ] **Lightweight CMS Features**: Build a user-friendly interface within the Admin section to manage:
-  - Page Content (About, Experience, etc.)
-  - Chatbot Responses and Triggers
-  - Blog Posts
-  - (This will involve migrating content currently hardcoded in files to the database).
+- [ ] **Dynamic Meta Tags**: Implement `react-helmet-async` to provide unique titles and descriptions for blog posts and pages.
+- [ ] **OpenGraph Image Generation**: Add support for dynamic OG images for blog posts.
+- [ ] **Twitter/X Sharing**: Add share buttons to blog posts.
 
 ## ⏳ Backlog & Future Ideas
 
@@ -15,8 +12,18 @@
 
 - [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [ ] **Voice Preference Persistence**: Save the user's Speech-to-Text and TTS toggle preferences in `localStorage`.
+- [ ] **Page Content CMS Migration**: Complete the migration of static translations to the database for full CMS control.
 
 ## ✅ Archive (Completed)
+
+### Version 0.1.5: Lightweight CMS & Content Management
+
+- [x] **Admin Section Foundation**: Created a hidden, password-protected `/admin` route with a secure login dashboard.
+- [x] **Lightweight CMS Features**: Built a user-friendly interface within the Admin section to manage:
+  - Chatbot Responses and Triggers (Database-driven).
+  - Blog Posts (Database-driven).
+- [x] **Content Migration**: Migrated hardcoded chatbot responses and blog posts to the database using a custom seed script.
+- [x] **CMS API Integration**: Refactored the chatbot logic and Blog page to fetch data from the newly implemented CMS endpoints.
 
 ### Version 0.1.4: Chatbot Intelligence & Voice Interaction
 
