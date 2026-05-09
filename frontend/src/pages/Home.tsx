@@ -80,7 +80,12 @@ const Home: React.FC = () => {
         isCommand: true,
       }))
     : !input && isFocused && !isLoading
-      ? t.home.suggestions.map((s) => ({ text: s, value: s, isCommand: false }))
+      ? t.home.suggestions.map((s) => ({
+          text: s,
+          subtext: undefined,
+          value: s,
+          isCommand: false,
+        }))
       : [];
 
   const showSuggestions = activeSuggestions.length > 0;
