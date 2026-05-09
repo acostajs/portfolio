@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import {
   Home,
@@ -22,32 +23,41 @@ export type PageId =
   | "experience"
   | "projects"
   | "blog"
-  | "contact"
-  | "analytics";
+  | "contact";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   activePage: PageId;
-  onPageChange: (page: PageId) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
-  isOpen,
-  onClose,
-  activePage,
-  onPageChange,
-}) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const navLinks = [
-    { id: "home" as PageId, name: t.nav.home, icon: Home },
-    { id: "about" as PageId, name: t.nav.about, icon: User },
-    { id: "experience" as PageId, name: t.nav.experience, icon: Briefcase },
-    { id: "projects" as PageId, name: t.nav.projects, icon: Code },
-    { id: "blog" as PageId, name: t.nav.blog, icon: Newspaper },
-    { id: "contact" as PageId, name: t.nav.contact, icon: Mail },
+    { id: "home" as PageId, name: t.nav.home, icon: Home, path: "/" },
+    { id: "about" as PageId, name: t.nav.about, icon: User, path: "/about" },
+    {
+      id: "experience" as PageId,
+      name: t.nav.experience,
+      icon: Briefcase,
+      path: "/experience",
+    },
+    {
+      id: "projects" as PageId,
+      name: t.nav.projects,
+      icon: Code,
+      path: "/projects",
+    },
+    { id: "blog" as PageId, name: t.nav.blog, icon: Newspaper, path: "/blog" },
+    {
+      id: "contact" as PageId,
+      name: t.nav.contact,
+      icon: Mail,
+      path: "/contact",
+    },
   ];
 
   const contactInfo = [
@@ -70,9 +80,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   ];
 
-  const handleLinkClick = (id: PageId) => {
+  const handleLinkClick = (path: string) => {
     hapticFeedback(10);
-    onPageChange(id);
+    navigate(path);
     onClose(); // Close sidebar on mobile after clicking
   };
 
@@ -138,7 +148,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               {navLinks.map((link) => (
                 <li key={link.id}>
                   <button
-                    onClick={() => handleLinkClick(link.id)}
+                    onClick={() => handleLinkClick(link.path)}
                     className={`flex items-center w-full px-4 py-2.5 rounded-xl transition-all duration-200 group ${
                       activePage === link.id
                         ? "bg-accent text-white shadow-md shadow-accent/20"

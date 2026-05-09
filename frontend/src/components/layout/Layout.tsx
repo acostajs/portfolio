@@ -7,14 +7,9 @@ import CommandPalette from "./CommandPalette";
 interface LayoutProps {
   children: React.ReactNode;
   activePage: PageId;
-  onPageChange: (page: PageId) => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  activePage,
-  onPageChange,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ children, activePage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -22,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div className="flex h-dvh bg-bg transition-colors duration-300 overflow-hidden relative">
-      <CommandPalette onPageChange={onPageChange} />
+      <CommandPalette />
       <a
         href="#main-content"
         className="absolute left-4 top-4 z-[100] px-4 py-2 bg-accent text-white rounded-lg -translate-y-[200%] focus:translate-y-0 transition-transform font-bold shadow-2xl"
@@ -36,14 +31,10 @@ const Layout: React.FC<LayoutProps> = ({
         isOpen={isSidebarOpen}
         onClose={closeSidebar}
         activePage={activePage}
-        onPageChange={onPageChange}
       />
 
       <div className="flex flex-col flex-1 min-w-0 h-full relative z-10">
-        <Header
-          onMenuClick={toggleSidebar}
-          onLogoClick={() => onPageChange("home")}
-        />
+        <Header onMenuClick={toggleSidebar} />
 
         <main
           id="main-content"

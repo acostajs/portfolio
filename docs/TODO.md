@@ -1,13 +1,39 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Engagement & Community (0.1.3)
+## 🎯 Current Version: Chatbot Intelligence & Voice Interaction (0.1.4)
 
-- [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
-- [ ] **Chatbot Feedback Loop**: Allow users to rate chatbot responses to improve trigger logic.
+- [ ] **Revamp Initial Chat Message**: Update the translation files to provide a clearer, more engaging initial message explaining the chatbot's capabilities.
+- [ ] **Add Chat Suggestions**: Implement clickable suggestion chips above the chat input to guide users on what to ask.
+- [ ] **"New Chat" Functionality**: Add a dedicated UI button to start a fresh chat session without simply clearing the UI, ensuring session history is handled cleanly.
+- [ ] **Push-to-Talk Microphone (Desktop & Mobile)**: Refactor the voice input to require the user to press and hold the button to speak (like WhatsApp), ensuring robust support across mobile devices.
+- [ ] **Fuzzy Trigger Matching**: Upgrade backend logic to handle typos and varied phrasing when matching user questions.
+- [ ] **Chatbot Feedback Loop**: Add "Helpful/Not Helpful" buttons to assistant messages to track response quality.
 
 ## ⏳ Backlog & Future Ideas
 
+### Version 0.1.5: Lightweight CMS & Content Management
+
+- [ ] **Admin Section Foundation**: Create a hidden, password-protected `/admin` route (not visible in the sidebar or navigation).
+- [ ] **Lightweight CMS Features**: Build a user-friendly interface within the Admin section to manage:
+  - Page Content (About, Experience, etc.)
+  - Chatbot Responses and Triggers
+  - Blog Posts
+  - (This will involve migrating content currently hardcoded in files to the database).
+
+### Future Enhancements
+
+- [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
+- [ ] **Voice Preference Persistence**: Save the user's Speech-to-Text and TTS toggle preferences in `localStorage`.
+
 ## ✅ Archive (Completed)
+
+### Version 0.1.3: Core Architecture & UX Refinement
+
+- [x] **Remove Local Analytics**: Carefully remove the VisitorSession model, decouple it from ChatMessage, and delete the local /analytics page and backend endpoints.
+- [x] **Integrate Vercel Services**: Install and configure @vercel/analytics and @vercel/speed-insights in the frontend application.
+- [x] **Fix Deprecated UTC**: Update `backend/models.py` and `backend/main.py` to use Python 3.12+ compliant timezone-aware datetimes.
+- [x] **Implement react-router-dom**: Replace custom navigation with real URL routing to support direct links (e.g., /contact) and browser history.
+- [x] **Implement Toast Notifications**: Integrated `sonner`. Replaced the inline success/error messages on the Contact form and used it for UI feedback (e.g., copying emails).
 
 ### Version 0.1.2: Platform & Analytics
 

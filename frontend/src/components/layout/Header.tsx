@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContextUtils";
 import { Menu, Moon, Sun } from "lucide-react";
@@ -7,10 +8,9 @@ import { hapticFeedback } from "../../../lib/haptic";
 
 interface HeaderProps {
   onMenuClick: () => void;
-  onLogoClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { t, locale, setLocale } = useTranslation();
   const { setTheme, resolvedTheme } = useTheme();
 
@@ -22,11 +22,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
   const handleThemeToggle = () => {
     hapticFeedback(10);
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-
-  const handleLogoClick = () => {
-    hapticFeedback(15);
-    onLogoClick?.();
   };
 
   return (
@@ -45,8 +40,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
             <Menu className="w-6 h-6" />
           </button>
 
-          <button
-            onClick={handleLogoClick}
+          <Link
+            to="/"
+            onClick={() => hapticFeedback(15)}
             className="flex items-center min-w-0 group hover:opacity-80 transition-opacity"
             aria-label="Go to Home"
           >
@@ -65,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogoClick }) => {
                 {t.header.subtitle}
               </p>
             </div>
-          </button>
+          </Link>
         </div>
 
         {/* Right Section: Toggles */}
