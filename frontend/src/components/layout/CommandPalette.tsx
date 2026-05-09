@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -14,11 +15,9 @@ import {
   Sun,
   Globe,
   Command,
-  Shield,
 } from "lucide-react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { useTheme } from "../../../lib/context/ThemeContextUtils";
-import { type PageId } from "./Sidebar";
 import { hapticFeedback } from "../../../lib/haptic";
 
 interface CommandItem {
@@ -30,16 +29,13 @@ interface CommandItem {
   shortcut?: string;
 }
 
-interface CommandPaletteProps {
-  onPageChange: (page: PageId) => void;
-}
-
-const CommandPalette: React.FC<CommandPaletteProps> = ({ onPageChange }) => {
+const CommandPalette: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { t, setLocale } = useTranslation();
   const { setTheme, resolvedTheme } = useTheme();
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const toggleOpen = useCallback(() => {
@@ -76,49 +72,42 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onPageChange }) => {
       name: t.nav.home,
       section: "Navigation",
       icon: Home,
-      action: () => onPageChange("home"),
+      action: () => navigate("/"),
     },
     {
       id: "about",
       name: t.nav.about,
       section: "Navigation",
       icon: User,
-      action: () => onPageChange("about"),
+      action: () => navigate("/about"),
     },
     {
       id: "experience",
       name: t.nav.experience,
       section: "Navigation",
       icon: Briefcase,
-      action: () => onPageChange("experience"),
+      action: () => navigate("/experience"),
     },
     {
       id: "projects",
       name: t.nav.projects,
       section: "Navigation",
       icon: Code,
-      action: () => onPageChange("projects"),
+      action: () => navigate("/projects"),
     },
     {
       id: "blog",
       name: t.nav.blog,
       section: "Navigation",
       icon: Newspaper,
-      action: () => onPageChange("blog"),
+      action: () => navigate("/blog"),
     },
     {
       id: "contact",
       name: t.nav.contact,
       section: "Navigation",
       icon: Mail,
-      action: () => onPageChange("contact"),
-    },
-    {
-      id: "analytics",
-      name: "Analytics Dashboard",
-      section: "Navigation",
-      icon: Shield,
-      action: () => onPageChange("analytics"),
+      action: () => navigate("/contact"),
     },
     // External
     {

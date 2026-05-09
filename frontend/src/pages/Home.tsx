@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { Send, Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
-import { type PageId } from "../components/layout/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 import { hapticFeedback } from "../../lib/haptic";
 import { useSpeech } from "../../lib/hooks/useSpeech";
@@ -14,12 +14,9 @@ interface Message {
   shouldAnimate?: boolean;
 }
 
-interface HomeProps {
-  onNavigate?: (page: PageId) => void;
-}
-
-const Home: React.FC<HomeProps> = ({ onNavigate }) => {
+const Home: React.FC = () => {
   const { t, locale } = useTranslation();
+  const navigate = useNavigate();
   const {
     isListening,
     startListening,
@@ -165,8 +162,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       "/contact",
     ].find((n) => cleanCmd === n);
 
-    if (navMatch && onNavigate) {
-      onNavigate(navMatch.substring(1) as PageId);
+    if (navMatch) {
+      navigate(navMatch);
       return true;
     }
 

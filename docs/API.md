@@ -52,7 +52,7 @@ Retrieves the 50 most recent user messages saved to the database.
 ]
 ```
 
-## System & Analytics
+## System
 
 ### Root
 
@@ -64,31 +64,7 @@ Returns a simple JSON welcome message.
 
 `GET /health`
 
-Used for monitoring the service status. This endpoint is **excluded** from telemetry tracking.
-
-### Visitor Telemetry
-
-`GET /api/v1/analytics/telemetry`
-
-Retrieves a list of visitor sessions. Protected by `X-Analytics-Password` header.
-
-**Query Parameters**:
-
-- `limit` (int, default: 100): Maximum number of records to return.
-
-### Analytics Stats
-
-`GET /api/v1/analytics/stats`
-
-Retrieves high-level statistics about visitors and chat interactions. Protected by `X-Analytics-Password` header.
-
-## Telemetry & Tracking (Automated)
-
-The backend implements a global middleware that captures interaction data for **every request** (except `/health`).
-
-- **Data Captured**: IP Address, User-Agent, Request Path, and HTTP Method.
-- **Implementation**: Non-blocking `BackgroundTasks` ensure that tracking does not delay the API response.
-- **Storage**: Data is persisted in `portfolio.db` via SQLModel.
+Used for monitoring the service status.
 
 ## Contact (External Integration)
 
