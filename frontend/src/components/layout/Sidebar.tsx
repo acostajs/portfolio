@@ -23,7 +23,8 @@ export type PageId =
   | "experience"
   | "projects"
   | "blog"
-  | "contact";
+  | "contact"
+  | "admin";
 
 interface SidebarProps {
   isOpen: boolean;
