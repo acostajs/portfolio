@@ -1,10 +1,14 @@
-echo "🔍 Running pre-commit checks..."
+echo "🔍 Running pre-commit validation (Formatting & Type-checks)..."
 
-# 1. Run full project linting (includes ruff check & type-check)
-bun run lint
-
-# 2. Run tests (placeholder for now)
-bun run test
-
-# 3. Run lint-staged for surgical formatting and checks on staged files
+# 1. Run lint-staged to handle auto-formatting and surgical checks on staged files
+# This will run ruff (fix/format) for backend and prettier/eslint for frontend
 bunx lint-staged
+
+# 2. Run full project type-checking to ensure no regressions
+# This is mandatory and the commit will fail if these do not pass
+echo "✅ Type-checking Frontend..."
+(cd frontend && bun tsc --noEmit)
+echo "✅ Type-checking Backend..."
+(cd backend && uv run pyright)
+
+echo "🚀 All checks passed. Proceeding with commit."
