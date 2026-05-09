@@ -20,17 +20,33 @@ export const en = {
     contact: "Contact",
   },
   home: {
-    welcome: "Hi! I'm Juan Acosta's portfolio assistant. 👋",
+    welcome:
+      "Welcome! I'm Juan's virtual assistant. I'm here to help you navigate his portfolio and answer questions about his work. 👋",
     subwelcome:
-      "You can interact with me to learn about Juan's background. I can tell you about:",
+      "I've been trained on Juan's professional background, skills, and projects. Here's what we can discuss:",
     chatbotPlaceholder: "Ask me about Juan's skills, projects...",
+    newChat: "New Chat",
+    helpful: "Helpful",
+    notHelpful: "Not Helpful",
+    feedbackSuccess: "Thank you for your feedback!",
     features: [
-      "Skills & Technologies",
-      "Projects & Experience",
-      "Contact Information",
+      "Core Technical Skills",
+      "Professional Journey",
+      "Key Projects & Contributions",
+      "Work Philosophy & Soft Skills",
     ],
     closing:
-      "Juan speaks English, French, and Spanish—you can switch languages and themes using the buttons at the top! I also support /commands for quick navigation. What would you like to know?",
+      "Feel free to ask me anything, or use /commands to jump directly to specific sections. You can even try talking to me using the microphone button! How can I assist you today?",
+    suggestions: [
+      "What are your core technical skills?",
+      "Tell me about your most recent projects",
+      "How do you handle professional feedback?",
+      "What is your experience with remote work?",
+      "Can you tell me about your background?",
+      "How do you handle pressure and deadlines?",
+      "Where can I download your resume?",
+      "What are your professional motivations?",
+    ],
     commands: {
       help: "Available commands:",
       subjectsTitle: "I can also talk about:",

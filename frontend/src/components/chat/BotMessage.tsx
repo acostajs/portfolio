@@ -4,7 +4,9 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
+import { useTranslation } from "../../../lib/hooks/useTranslation";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -17,6 +19,7 @@ interface BotMessageProps {
   subwelcome?: string;
   closing?: string;
   skipTypewriter?: boolean;
+  onFeedback?: (isHelpful: boolean) => void;
 }
 
 const BotMessage: React.FC<BotMessageProps> = ({
@@ -26,7 +29,9 @@ const BotMessage: React.FC<BotMessageProps> = ({
   subwelcome,
   closing,
   skipTypewriter,
+  onFeedback,
 }) => {
+  const { t } = useTranslation();
   const [displayedContent, setDisplayedContent] = useState(
     skipTypewriter ? content : "",
   );
@@ -34,6 +39,12 @@ const BotMessage: React.FC<BotMessageProps> = ({
   const [showFeatures, setShowFeatures] = useState(
     skipTypewriter || !isInitial,
   );
+  const [feedbackGiven, setFeedbackGiven] = useState(false);
+
+  const handleFeedback = (isHelpful: boolean) => {
+    setFeedbackGiven(true);
+    if (onFeedback) onFeedback(isHelpful);
+  };
 
   useEffect(() => {
     if (skipTypewriter) return;
@@ -153,6 +164,50 @@ const BotMessage: React.FC<BotMessageProps> = ({
             </motion.p>
           )}
         </AnimatePresence>
+
+        {/* Feedback Buttons */}
+        {!isInitial && (
+          <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+            <p className="text-[10px] text-text opacity-40 uppercase tracking-widest font-bold">
+              {feedbackGiven ? t.home.feedbackSuccess : "Was this helpful?"}
+            </p>
+            <div className="flex items-center gap-2">
+              <AnimatePresence mode="wait">
+                {feedbackGiven ? (
+                  <motion.div
+                    key="thank-you"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="p-1.5 text-success bg-success/10 rounded-lg"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="buttons"
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    className="flex items-center gap-2"
+                  >
+                    <button
+                      onClick={() => handleFeedback(true)}
+                      className="p-1.5 text-text opacity-40 hover:opacity-100 hover:text-success hover:bg-success/10 rounded-lg transition-all"
+                      title={t.home.helpful}
+                    >
+                      <ThumbsUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleFeedback(false)}
+                      className="p-1.5 text-text opacity-40 hover:opacity-100 hover:text-error hover:bg-error/10 rounded-lg transition-all"
+                      title={t.home.notHelpful}
+                    >
+                      <ThumbsDown className="w-3.5 h-3.5" />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

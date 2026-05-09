@@ -22,17 +22,33 @@ export const es: TranslationType = {
     contact: "Contacto",
   },
   home: {
-    welcome: "¡Hola! Soy el asistente del portafolio de Juan Acosta. 👋",
+    welcome:
+      "¡Bienvenido! Soy el asistente virtual de Juan. Estoy aquí para ayudarte a navegar por su portafolio y responder preguntas sobre su trabajo. 👋",
     subwelcome:
-      "Puedes interactuar conmigo para conocer la trayectoria de Juan. Puedo contarte sobre:",
+      "He sido entrenado sobre la trayectoria profesional, habilidades y proyectos de Juan. Esto es lo que podemos discutir:",
     chatbotPlaceholder: "Pregúntame sobre Juan...",
+    newChat: "Nuevo Chat",
+    helpful: "Útil",
+    notHelpful: "No útil",
+    feedbackSuccess: "¡Gracias por tus comentarios!",
     features: [
-      "Habilidades y Tecnologías",
-      "Proyectos y Experiencia",
-      "Información de Contacto",
+      "Habilidades Técnicas Principales",
+      "Trayectoria Profesional",
+      "Proyectos y Contribuciones Clave",
+      "Filosofía de Trabajo y Habilidades Blandas",
     ],
     closing:
-      "Juan habla inglés, francés y español—¡puedes cambiar el idioma y el tema usando los botones superiores! También admito /comandos para navegación rápida. ¿Qué te gustaría saber?",
+      "No dudes en preguntarme cualquier cosa, o usa /comandos para ir directamente a secciones específicas. ¡Incluso puedes intentar hablar conmigo usando el botón del micrófono! ¿Cómo puedo ayudarte hoy?",
+    suggestions: [
+      "¿Cuáles son tus habilidades técnicas principales?",
+      "Cuéntame sobre tus proyectos más recientes",
+      "¿Cómo manejas la retroalimentación profesional?",
+      "¿Cuál es tu experiencia con el trabajo remoto?",
+      "¿Puedes contarme sobre tu trayectoria?",
+      "¿Cómo manejas la presión y los plazos?",
+      "¿Dónde puedo descargar tu currículum?",
+      "¿Cuáles son tus motivaciones profesionales?",
+    ],
     commands: {
       help: "Comandos disponibles:",
       subjectsTitle: "También puedo hablar sobre:",

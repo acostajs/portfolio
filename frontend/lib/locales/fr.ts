@@ -22,17 +22,33 @@ export const fr: TranslationType = {
     contact: "Contact",
   },
   home: {
-    welcome: "Salut ! Je suis l'assistant du portfolio de Juan Acosta. 👋",
+    welcome:
+      "Bienvenue ! Je suis l'assistant virtuel de Juan. Je suis ici pour vous aider à naviguer dans son portfolio et répondre à vos questions sur son travail. 👋",
     subwelcome:
-      "Vous pouvez interagir avec moi pour découvrir le parcours de Juan. Je peux vous parler de :",
+      "J'ai été formé sur le parcours professionnel, les compétences et les projets de Juan. Voici ce dont nous pouvons discuter :",
     chatbotPlaceholder: "Demandez-moi sur Juan...",
+    newChat: "Nouveau Chat",
+    helpful: "Utile",
+    notHelpful: "Pas utile",
+    feedbackSuccess: "Merci pour votre avis !",
     features: [
-      "Compétences et technologies",
-      "Projets et expérience",
-      "Informations de contact",
+      "Compétences techniques clés",
+      "Parcours professionnel",
+      "Projets et contributions majeures",
+      "Philosophie de travail et savoir-être",
     ],
     closing:
-      "Juan parle anglais, français et espagnol—vous pouvez changer de langue et de thème à l'aide des boutons en haut ! Je supporte aussi les /commandes pour une navigation rapide. Que aimeriez-vous savoir ?",
+      "N'hésitez pas à me poser des questions ou à utiliser /commandes pour accéder directement à des sections spécifiques. Vous pouvez même essayer de me parler en utilisant le bouton du micro ! Comment puis-je vous aider aujourd'hui ?",
+    suggestions: [
+      "Quelles sont vos compétences techniques clés ?",
+      "Parlez-moi de vos projets les plus récents",
+      "Comment gérez-vous les retours professionnels ?",
+      "Quelle est votre expérience du télétravail ?",
+      "Pouvez-vous me parler de votre parcours ?",
+      "Comment gérez-vous la pression et les délais ?",
+      "Où puis-je télécharger votre CV ?",
+      "Quelles sont vos motivations professionnelles ?",
+    ],
     commands: {
       help: "Commandes disponibles :",
       subjectsTitle: "Je peux aussi parler de :",

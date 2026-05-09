@@ -1,17 +1,6 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Chatbot Intelligence & Voice Interaction (0.1.4)
-
-- [ ] **Revamp Initial Chat Message**: Update the translation files to provide a clearer, more engaging initial message explaining the chatbot's capabilities.
-- [ ] **Add Chat Suggestions**: Implement clickable suggestion chips above the chat input to guide users on what to ask.
-- [ ] **"New Chat" Functionality**: Add a dedicated UI button to start a fresh chat session without simply clearing the UI, ensuring session history is handled cleanly.
-- [ ] **Push-to-Talk Microphone (Desktop & Mobile)**: Refactor the voice input to require the user to press and hold the button to speak (like WhatsApp), ensuring robust support across mobile devices.
-- [ ] **Fuzzy Trigger Matching**: Upgrade backend logic to handle typos and varied phrasing when matching user questions.
-- [ ] **Chatbot Feedback Loop**: Add "Helpful/Not Helpful" buttons to assistant messages to track response quality.
-
-## ⏳ Backlog & Future Ideas
-
-### Version 0.1.5: Lightweight CMS & Content Management
+## 🎯 Current Version: Lightweight CMS & Content Management (0.1.5)
 
 - [ ] **Admin Section Foundation**: Create a hidden, password-protected `/admin` route (not visible in the sidebar or navigation).
 - [ ] **Lightweight CMS Features**: Build a user-friendly interface within the Admin section to manage:
@@ -20,12 +9,25 @@
   - Blog Posts
   - (This will involve migrating content currently hardcoded in files to the database).
 
+## ⏳ Backlog & Future Ideas
+
 ### Future Enhancements
 
 - [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [ ] **Voice Preference Persistence**: Save the user's Speech-to-Text and TTS toggle preferences in `localStorage`.
 
 ## ✅ Archive (Completed)
+
+### Version 0.1.4: Chatbot Intelligence & Voice Interaction
+
+- [x] **Revamp Initial Chat Message**: Updated the translation files to provide a clearer, more engaging initial message explaining the chatbot's capabilities.
+- [x] **Add Chat Suggestions**: Implemented clickable suggestion chips above the chat input to guide users on what to ask.
+- [x] **"New Chat" Functionality**: Added a dedicated UI button to start a fresh chat session, ensuring session history is cleared properly.
+- [x] **Push-to-Talk Microphone (Desktop & Mobile)**: Refactored the voice input to require the user to press and hold the button to speak, ensuring robust support across mobile devices.
+- [x] **Fuzzy Trigger Matching**: Upgraded backend logic using `rapidfuzz` to handle typos and varied phrasing when matching user questions. Refined priority and triggers to avoid false positives from common words like "about".
+- [x] **Chatbot Feedback Loop**: Added "Helpful/Not Helpful" buttons to assistant messages and a backend tracking endpoint to monitor response quality.
+- [x] **Inline Chat Suggestions**: Moved suggestions from static buttons to a dynamic inline dropdown that appears when the input is focused, unified with the slash command system.
+- [x] **Hardened Pre-commit Hooks**: Configured Husky and `lint-staged` to enforce auto-formatting (Prettier/Ruff) and mandatory type-checking (TSC/Pyright) before every commit.
 
 ### Version 0.1.3: Core Architecture & UX Refinement
 
