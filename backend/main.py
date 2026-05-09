@@ -190,7 +190,7 @@ async def chat_feedback(request: FeedbackRequest, background_tasks: BackgroundTa
 
 # --- Auth ---
 def verify_admin(x_admin_password: str = Header(None)):
-    if x_admin_password != settings.ANALYTICS_PASSWORD:
+    if x_admin_password != settings.ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Invalid admin password")
 
 

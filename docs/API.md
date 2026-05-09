@@ -52,6 +52,34 @@ Retrieves the 50 most recent user messages saved to the database.
 ]
 ```
 
+## CMS (Admin Only)
+
+All CMS endpoints require the `X-Admin-Password` header.
+
+### Get Chatbot Data
+
+`GET /api/v1/cms/chatbot`
+
+### Update Chatbot Data
+
+`POST /api/v1/cms/chatbot`
+
+### Get Blog Posts (CMS)
+
+`GET /api/v1/cms/blog`
+
+### Update Blog Post
+
+`POST /api/v1/cms/blog`
+
+## Public CMS Content
+
+### Get Blog Posts
+
+`GET /api/v1/blog`
+
+Returns all blog posts ordered by date descending.
+
 ## System
 
 ### Root
