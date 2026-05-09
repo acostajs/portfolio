@@ -13,7 +13,6 @@ import {
   Newspaper,
   Copy,
   Check,
-  Plus,
 } from "lucide-react";
 import ProgressiveImage from "../chat/ProgressiveImage";
 import { hapticFeedback } from "../../../lib/haptic";
@@ -88,12 +87,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
     onClose(); // Close sidebar on mobile after clicking
   };
 
-  const handleNewChat = () => {
-    hapticFeedback(25);
-    localStorage.removeItem("portfolio-chat-history");
-    window.location.href = "/";
-  };
-
   const copyToClipboard = (text: string) => {
     hapticFeedback(15);
     navigator.clipboard.writeText(text);
@@ -130,14 +123,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
                 />
               </div>
             </div>
-
-            <button
-              onClick={handleNewChat}
-              className="flex items-center justify-center w-full py-2 px-4 bg-accent text-white rounded-full font-bold text-xs hover:brightness-110 transition-all shadow-md mb-2 group"
-            >
-              <Plus className="w-3.5 h-3.5 mr-2 group-hover:rotate-90 transition-transform" />
-              {t.home.newChat}
-            </button>
 
             <a
               href={t.common.resumePath}

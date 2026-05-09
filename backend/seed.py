@@ -19,15 +19,10 @@ import responses.hr_assessment as hr_ass
 def seed():
     create_db_and_tables()
     with Session(engine) as session:
-        # Clear existing triggers to allow re-seeding with new priorities
-        session.exec(select(ChatTriggerResponse)).all()
-        for tr in session.exec(select(ChatTriggerResponse)).all():
-            session.delete(tr)
-        session.commit()
-
         # Check if basic data already exists (About)
         if not session.exec(select(About)).first():
             # --- Seed About ---
+            print("Seeding About...")
             about = About(
                 p1_en="I'm a passionate Web Developer based in Montréal, dedicated to building clean, efficient, and user-centric web applications.",
                 p1_es="Soy un apasionado Desarrollador Web con sede en Montréal, dedicado a construir aplicaciones web limpias, eficientes y centradas en el usuario.",
@@ -48,7 +43,9 @@ def seed():
             )
             session.add(about)
 
-            # --- Seed Experience ---
+        # --- Seed Experience ---
+        if not session.exec(select(Experience)).first():
+            print("Seeding Experience...")
             exp1 = Experience(
                 company="Freelance",
                 role="Full-Stack Developer",
@@ -73,7 +70,9 @@ def seed():
             )
             session.add(exp1)
 
-            # --- Seed Project ---
+        # --- Seed Project ---
+        if not session.exec(select(Project)).first():
+            print("Seeding Projects...")
             proj1 = Project(
                 title="AI Portfolio",
                 description_en="A multilingual interactive portfolio with an AI chatbot assistant.",
@@ -85,7 +84,9 @@ def seed():
             )
             session.add(proj1)
 
-            # --- Seed Blog ---
+        # --- Seed Blog ---
+        if not session.exec(select(BlogPost)).first():
+            print("Seeding Blog...")
             post1 = BlogPost(
                 slug="mastering-react-19",
                 date="2026-05-01",
@@ -102,47 +103,50 @@ def seed():
             )
             session.add(post1)
 
-        # --- Seed Chat Triggers (Priority Order) ---
-        modules = [
-            ("technical_behavioral", tech_beh.data),
-            ("hr_assessment", hr_ass.data),
-            ("projects", proj_resp.data),
-            ("experience", exp_resp.data),
-            ("technical_frontend", tech_fe.data),
-            ("technical_backend", tech_be.data),
-            ("technical_devops", tech_dev.data),
-            ("technical_core", tech_core.data),
-            ("contact", contact_resp.data),
-            ("about", about_resp.data),
-            ("greetings", greetings_resp.data),
-            ("thanks", thanks_resp.data),
-            ("fun", fun_resp.data),
-        ]
+        # --- Seed Chat Triggers ---
+        # We only seed if the table is empty to avoid overwriting CMS changes
+        if not session.exec(select(ChatTriggerResponse)).first():
+            print("Seeding Chat Triggers...")
+            modules = [
+                ("technical_behavioral", tech_beh.data),
+                ("hr_assessment", hr_ass.data),
+                ("projects", proj_resp.data),
+                ("experience", exp_resp.data),
+                ("technical_frontend", tech_fe.data),
+                ("technical_backend", tech_be.data),
+                ("technical_devops", tech_dev.data),
+                ("technical_core", tech_core.data),
+                ("contact", contact_resp.data),
+                ("about", about_resp.data),
+                ("greetings", greetings_resp.data),
+                ("thanks", thanks_resp.data),
+                ("fun", fun_resp.data),
+            ]
 
-        for mod_name, mod_data in modules:
-            if "categories" in mod_data:
-                for cat in mod_data["categories"]:
+            for mod_name, mod_data in modules:
+                if "categories" in mod_data:
+                    for cat in mod_data["categories"]:
+                        tr = ChatTriggerResponse(
+                            module=mod_name,
+                            category=cat.get("name") or mod_name,
+                            triggers=cat["triggers"],
+                            answers_en=cat["answers"]["en"],
+                            answers_es=cat["answers"]["es"],
+                            answers_fr=cat["answers"]["fr"],
+                        )
+                        session.add(tr)
+                else:
                     tr = ChatTriggerResponse(
                         module=mod_name,
-                        category=cat.get("name") or mod_name,
-                        triggers=cat["triggers"],
-                        answers_en=cat["answers"]["en"],
-                        answers_es=cat["answers"]["es"],
-                        answers_fr=cat["answers"]["fr"],
+                        triggers=mod_data["triggers"],
+                        answers_en=mod_data["answers"]["en"],
+                        answers_es=mod_data["answers"]["es"],
+                        answers_fr=mod_data["answers"]["fr"],
                     )
                     session.add(tr)
-            else:
-                tr = ChatTriggerResponse(
-                    module=mod_name,
-                    triggers=mod_data["triggers"],
-                    answers_en=mod_data["answers"]["en"],
-                    answers_es=mod_data["answers"]["es"],
-                    answers_fr=mod_data["answers"]["fr"],
-                )
-                session.add(tr)
 
         session.commit()
-        print("Database seeded successfully with new priorities!")
+        print("Database seeded successfully!")
 
 
 if __name__ == "__main__":

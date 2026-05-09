@@ -1,12 +1,20 @@
-from fastapi import APIRouter, Depends, HTTPException, Header, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlmodel import Session, select, desc, col
 import os
 import shutil
 import re
-from typing import List, Optional
+from typing import List
 from database import engine
-from models import About, Experience, Project, BlogPost, ChatTriggerResponse
-from config import settings
+from models import (
+    About,
+    Experience,
+    Project,
+    BlogPost,
+    ChatTriggerResponse,
+    ChatMessage,
+    ChatFeedback,
+)
+from auth import verify_admin_password
 
 router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
 
@@ -15,13 +23,6 @@ def slugify(text: str) -> str:
     text = text.lower()
     text = re.sub(r"[^\w\s-]", "", text)
     return re.sub(r"[-\s]+", "-", text).strip("-")
-
-
-# --- Auth Middleware ---
-def verify_admin_password(x_admin_password: Optional[str] = Header(None)):
-    if x_admin_password != settings.ADMIN_PASSWORD:
-        raise HTTPException(status_code=401, detail="Invalid admin password")
-    return x_admin_password
 
 
 # --- About CRUD ---
@@ -282,3 +283,20 @@ async def delete_chat_trigger(
         session.delete(trigger)
         session.commit()
         return {"status": "success"}
+
+
+# --- Analytics ---
+@router.get("/analytics/messages", response_model=List[ChatMessage])
+async def get_analytics_messages(password: str = Depends(verify_admin_password)):
+    with Session(engine) as session:
+        return session.exec(
+            select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(100)
+        ).all()
+
+
+@router.get("/analytics/feedback", response_model=List[ChatFeedback])
+async def get_analytics_feedback(password: str = Depends(verify_admin_password)):
+    with Session(engine) as session:
+        return session.exec(
+            select(ChatFeedback).order_by(desc(ChatFeedback.timestamp)).limit(100)
+        ).all()

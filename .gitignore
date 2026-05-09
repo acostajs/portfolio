@@ -43,4 +43,5 @@ bun.lockb
 *.swo
 
 # Database
+*.db
 portfolio.db
