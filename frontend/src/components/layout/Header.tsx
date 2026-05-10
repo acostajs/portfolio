@@ -8,9 +8,13 @@ import { hapticFeedback } from "../../../lib/haptic";
 
 interface HeaderProps {
   onMenuClick: () => void;
+  hideMenuButton?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
+const Header: React.FC<HeaderProps> = ({
+  onMenuClick,
+  hideMenuButton = false,
+}) => {
   const { t, locale, setLocale } = useTranslation();
   const { setTheme, resolvedTheme } = useTheme();
 
@@ -29,16 +33,18 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
       <div className="flex items-center justify-between h-16 max-w-7xl mx-auto">
         {/* Left Section: Mobile Menu Toggle & Logo */}
         <div className="flex items-center min-w-0">
-          <button
-            onClick={() => {
-              hapticFeedback(10);
-              onMenuClick();
-            }}
-            className="p-2 mr-2 text-text hover:bg-accent-bg rounded-lg lg:hidden flex-none"
-            aria-label={t.header.toggleSidebar}
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          {!hideMenuButton && (
+            <button
+              onClick={() => {
+                hapticFeedback(10);
+                onMenuClick();
+              }}
+              className="p-2 mr-2 text-text hover:bg-accent-bg rounded-lg lg:hidden flex-none"
+              aria-label={t.header.toggleSidebar}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          )}
 
           <Link
             to="/"

@@ -19,6 +19,11 @@ from auth import verify_admin_password
 router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
 
 
+@router.get("/verify")
+async def verify_admin(password: str = Depends(verify_admin_password)):
+    return {"status": "authenticated"}
+
+
 def slugify(text: str) -> str:
     text = text.lower()
     text = re.sub(r"[^\w\s-]", "", text)

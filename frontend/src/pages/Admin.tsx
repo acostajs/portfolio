@@ -12,10 +12,8 @@ import { hapticFeedback } from "../../lib/haptic";
 
 const Admin: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Check if token exists. In a real app, we'd validate it with the backend.
-    const token = localStorage.getItem("admin-token");
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || "admin123";
-    return token === adminPassword;
+    // Check if token exists.
+    return !!localStorage.getItem("admin-token");
   });
 
   const [activeTab, setActiveTab] = useState<AdminTab>("about");

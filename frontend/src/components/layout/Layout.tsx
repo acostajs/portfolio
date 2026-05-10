@@ -7,9 +7,14 @@ import CommandPalette from "./CommandPalette";
 interface LayoutProps {
   children: React.ReactNode;
   activePage: PageId;
+  hideSidebar?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, activePage }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  activePage,
+  hideSidebar = false,
+}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -27,14 +32,16 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage }) => {
 
       <MeshBackground />
 
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={closeSidebar}
-        activePage={activePage}
-      />
+      {!hideSidebar && (
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={closeSidebar}
+          activePage={activePage}
+        />
+      )}
 
       <div className="flex flex-col flex-1 min-w-0 h-full relative z-10">
-        <Header onMenuClick={toggleSidebar} />
+        <Header onMenuClick={toggleSidebar} hideMenuButton={hideSidebar} />
 
         <main
           id="main-content"

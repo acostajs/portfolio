@@ -12,19 +12,26 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const { t } = useTranslation();
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     hapticFeedback(10);
 
-    // In a real app, we'd verify this against the backend.
-    // Here we use the env var as requested for Phase 1.
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || "admin123";
+    try {
+      const response = await fetch("/api/v1/admin/verify", {
+        headers: {
+          "X-Admin-Password": password,
+        },
+      });
 
-    if (password === adminPassword) {
-      onLogin(password);
-      toast.success("Welcome, Admin");
-    } else {
-      toast.error("Invalid password");
+      if (response.ok) {
+        onLogin(password);
+        toast.success("Welcome, Admin");
+      } else {
+        toast.error("Invalid password");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Connection error");
     }
   };
 
