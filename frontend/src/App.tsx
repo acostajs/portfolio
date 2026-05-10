@@ -23,9 +23,10 @@ function App() {
   };
 
   const activePage = getActivePage(location.pathname);
+  const isHideSidebar = location.pathname.startsWith("/admin");
 
   return (
-    <Layout activePage={activePage}>
+    <Layout activePage={activePage} hideSidebar={isHideSidebar}>
       <Toaster richColors position="top-center" />
       <AnimatePresence mode="wait">
         <motion.div

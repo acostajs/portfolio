@@ -4,7 +4,7 @@ import sys
 import os
 import re
 from contextlib import asynccontextmanager
-from typing import List
+from typing import List, Optional
 
 from rapidfuzz import fuzz
 
@@ -30,6 +30,7 @@ from models import (
 from responses import fallback
 from auth import verify_admin_password
 import admin as admin_api
+from seed import seed
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -41,6 +42,8 @@ logger = logging.getLogger("backend")
 async def lifespan(app: FastAPI):
     # Initialize database tables
     create_db_and_tables()
+    # Seed the database if empty
+    seed()
     yield
 
 
@@ -144,7 +147,7 @@ async def health():
 
 
 # --- Public CMS Endpoints ---
-@app.get("/api/v1/about", response_model=About)
+@app.get("/api/v1/about", response_model=Optional[About])
 async def get_public_about():
     with Session(engine) as session:
         return session.exec(select(About)).first()
