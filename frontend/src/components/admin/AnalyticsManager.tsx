@@ -13,7 +13,7 @@ const AnalyticsManager: React.FC = () => {
     const fetchData = async () => {
       try {
         const headers = {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         };
         const [msgRes, fbRes] = await Promise.all([
           fetch("/api/v1/admin/analytics/messages", { headers }),

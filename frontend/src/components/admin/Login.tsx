@@ -19,7 +19,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     try {
       const response = await fetch("/api/v1/admin/verify", {
         headers: {
-          "X-Admin-Password": password,
+          "X-Admin-Token": password,
         },
       });
 

@@ -20,7 +20,7 @@ router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
 
 
 @router.get("/verify")
-async def verify_admin(password: str = Depends(verify_admin_password)):
+async def verify_admin(admin_token: str = Depends(verify_admin_password)):
     return {"status": "authenticated"}
 
 
@@ -42,7 +42,7 @@ async def get_about():
 
 @router.post("/about", response_model=About)
 async def create_or_update_about(
-    about_data: About, password: str = Depends(verify_admin_password)
+    about_data: About, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         existing = session.exec(select(About)).first()
@@ -69,7 +69,7 @@ async def get_experience():
 
 @router.post("/experience", response_model=Experience)
 async def create_experience(
-    exp: Experience, password: str = Depends(verify_admin_password)
+    exp: Experience, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         session.add(exp)
@@ -80,7 +80,7 @@ async def create_experience(
 
 @router.put("/experience/{exp_id}", response_model=Experience)
 async def update_experience(
-    exp_id: int, exp_data: Experience, password: str = Depends(verify_admin_password)
+    exp_id: int, exp_data: Experience, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         exp = session.get(Experience, exp_id)
@@ -96,7 +96,7 @@ async def update_experience(
 
 @router.delete("/experience/{exp_id}")
 async def delete_experience(
-    exp_id: int, password: str = Depends(verify_admin_password)
+    exp_id: int, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         exp = session.get(Experience, exp_id)
@@ -116,7 +116,7 @@ async def get_projects():
 
 @router.post("/projects", response_model=Project)
 async def create_project(
-    project: Project, password: str = Depends(verify_admin_password)
+    project: Project, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         session.add(project)
@@ -129,7 +129,7 @@ async def create_project(
 async def update_project(
     project_id: int,
     project_data: Project,
-    password: str = Depends(verify_admin_password),
+    admin_token: str = Depends(verify_admin_password),
 ):
     with Session(engine) as session:
         project = session.get(Project, project_id)
@@ -145,7 +145,7 @@ async def update_project(
 
 @router.delete("/projects/{project_id}")
 async def delete_project(
-    project_id: int, password: str = Depends(verify_admin_password)
+    project_id: int, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         project = session.get(Project, project_id)
@@ -160,7 +160,7 @@ async def delete_project(
 async def upload_project_image(
     project_id: int,
     file: UploadFile = File(...),
-    password: str = Depends(verify_admin_password),
+    admin_token: str = Depends(verify_admin_password),
 ):
     with Session(engine) as session:
         project = session.get(Project, project_id)
@@ -221,7 +221,7 @@ async def get_blog_posts():
 
 @router.post("/blog", response_model=BlogPost)
 async def create_blog_post(
-    post: BlogPost, password: str = Depends(verify_admin_password)
+    post: BlogPost, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         session.add(post)
@@ -232,7 +232,7 @@ async def create_blog_post(
 
 @router.put("/blog/{post_id}", response_model=BlogPost)
 async def update_blog_post(
-    post_id: int, post_data: BlogPost, password: str = Depends(verify_admin_password)
+    post_id: int, post_data: BlogPost, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         post = session.get(BlogPost, post_id)
@@ -248,7 +248,7 @@ async def update_blog_post(
 
 @router.delete("/blog/{post_id}")
 async def delete_blog_post(
-    post_id: int, password: str = Depends(verify_admin_password)
+    post_id: int, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         post = session.get(BlogPost, post_id)
@@ -268,7 +268,7 @@ async def get_chat_triggers():
 
 @router.post("/chat-triggers", response_model=ChatTriggerResponse)
 async def create_chat_trigger(
-    trigger: ChatTriggerResponse, password: str = Depends(verify_admin_password)
+    trigger: ChatTriggerResponse, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         session.add(trigger)
@@ -281,7 +281,7 @@ async def create_chat_trigger(
 async def update_chat_trigger(
     trigger_id: int,
     trigger_data: ChatTriggerResponse,
-    password: str = Depends(verify_admin_password),
+    admin_token: str = Depends(verify_admin_password),
 ):
     with Session(engine) as session:
         trigger = session.get(ChatTriggerResponse, trigger_id)
@@ -297,7 +297,7 @@ async def update_chat_trigger(
 
 @router.delete("/chat-triggers/{trigger_id}")
 async def delete_chat_trigger(
-    trigger_id: int, password: str = Depends(verify_admin_password)
+    trigger_id: int, admin_token: str = Depends(verify_admin_password)
 ):
     with Session(engine) as session:
         trigger = session.get(ChatTriggerResponse, trigger_id)
@@ -310,7 +310,7 @@ async def delete_chat_trigger(
 
 # --- Analytics ---
 @router.get("/analytics/messages", response_model=List[ChatMessage])
-async def get_analytics_messages(password: str = Depends(verify_admin_password)):
+async def get_analytics_messages(admin_token: str = Depends(verify_admin_password)):
     with Session(engine) as session:
         return session.exec(
             select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(100)
@@ -318,7 +318,7 @@ async def get_analytics_messages(password: str = Depends(verify_admin_password))
 
 
 @router.get("/analytics/feedback", response_model=List[ChatFeedback])
-async def get_analytics_feedback(password: str = Depends(verify_admin_password)):
+async def get_analytics_feedback(admin_token: str = Depends(verify_admin_password)):
     with Session(engine) as session:
         return session.exec(
             select(ChatFeedback).order_by(desc(ChatFeedback.timestamp)).limit(100)

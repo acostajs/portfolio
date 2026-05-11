@@ -15,7 +15,7 @@ const ProjectsManager: React.FC = () => {
     try {
       const response = await fetch("/api/v1/admin/projects", {
         headers: {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
       });
       if (response.ok) {
@@ -48,7 +48,7 @@ const ProjectsManager: React.FC = () => {
         method,
         headers: {
           "Content-Type": "application/json",
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
         body: JSON.stringify(editingItem),
       });
@@ -69,7 +69,7 @@ const ProjectsManager: React.FC = () => {
       const response = await fetch(`/api/v1/admin/projects/${id}`, {
         method: "DELETE",
         headers: {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
       });
       if (response.ok) {
@@ -91,7 +91,7 @@ const ProjectsManager: React.FC = () => {
         {
           method: "POST",
           headers: {
-            "X-Admin-Password": localStorage.getItem("admin-token") || "",
+            "X-Admin-Token": localStorage.getItem("admin-token") || "",
           },
           body: formData,
         },

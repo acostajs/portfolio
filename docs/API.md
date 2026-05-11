@@ -37,7 +37,11 @@ Interacts with the portfolio assistant. Responses are determined by a trigger-ba
 
 `GET /api/v1/chat/history`
 
-Retrieves the 50 most recent user messages saved to the database.
+Retrieves the 50 most recent user messages saved to the database. Requires Admin authentication.
+
+**Headers**:
+
+- `X-Admin-Token`: Your admin password/token.
 
 **Response Body**:
 
@@ -54,25 +58,38 @@ Retrieves the 50 most recent user messages saved to the database.
 
 ## CMS (Admin Only)
 
-All CMS endpoints require the `X-Admin-Password` header.
+All CMS endpoints require the `X-Admin-Token` header.
 
-### Get Chatbot Data
+### Admin Verify
 
-`GET /api/v1/cms/chatbot`
+`GET /api/v1/admin/verify`
+Check if the provided token is valid.
 
-### Update Chatbot Data
+### CMS Endpoints
 
-`POST /api/v1/cms/chatbot`
+The following modules are managed via `/api/v1/admin/`:
 
-### Get Blog Posts (CMS)
-
-`GET /api/v1/cms/blog`
-
-### Update Blog Post
-
-`POST /api/v1/cms/blog`
+- `about`: GET, POST
+- `experience`: GET, POST, PUT (/{id}), DELETE (/{id})
+- `projects`: GET, POST, PUT (/{id}), DELETE (/{id}), POST (/{id}/upload-image)
+- `blog`: GET, POST, PUT (/{id}), DELETE (/{id})
+- `chat-triggers`: GET, POST, PUT (/{id}), DELETE (/{id})
+- `analytics/messages`: GET
+- `analytics/feedback`: GET
 
 ## Public CMS Content
+
+### Get About
+
+`GET /api/v1/about`
+
+### Get Experience
+
+`GET /api/v1/experience`
+
+### Get Projects
+
+`GET /api/v1/projects`
 
 ### Get Blog Posts
 

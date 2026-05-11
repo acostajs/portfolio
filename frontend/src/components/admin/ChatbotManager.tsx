@@ -15,7 +15,7 @@ const ChatbotManager: React.FC = () => {
     try {
       const response = await fetch("/api/v1/admin/chat-triggers", {
         headers: {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
       });
       if (response.ok) {
@@ -47,7 +47,7 @@ const ChatbotManager: React.FC = () => {
         method,
         headers: {
           "Content-Type": "application/json",
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
         body: JSON.stringify(editingItem),
       });
@@ -68,7 +68,7 @@ const ChatbotManager: React.FC = () => {
       const response = await fetch(`/api/v1/admin/chat-triggers/${id}`, {
         method: "DELETE",
         headers: {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
       });
       if (response.ok) {
