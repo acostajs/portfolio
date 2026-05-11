@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Plus, Edit, Trash2, Upload, Image as ImageIcon } from "lucide-react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Upload,
+  Image as ImageIcon,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import type { ProjectData } from "../../types/cms";
+import ProgressiveImage from "../chat/ProgressiveImage";
 
 const ProjectsManager: React.FC = () => {
   const { t } = useTranslation();
@@ -178,13 +186,24 @@ const ProjectsManager: React.FC = () => {
               {t.admin.projects.image}
             </label>
             <div className="flex items-center gap-6 p-4 bg-white/5 border border-border rounded-2xl">
-              <div className="w-32 h-20 bg-white/5 rounded-lg overflow-hidden flex items-center justify-center border border-border">
+              <div className="relative w-32 h-20 bg-white/5 rounded-lg overflow-hidden flex items-center justify-center border border-border group/preview">
                 {editingItem.image ? (
-                  <img
-                    src={editingItem.image}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
+                  <>
+                    <ProgressiveImage
+                      src={editingItem.image}
+                      alt="Preview"
+                      className="w-full h-full"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setEditingItem({ ...editingItem, image: undefined })
+                      }
+                      className="absolute top-1 right-1 p-1 bg-error text-white rounded-full opacity-0 group-hover/preview:opacity-100 transition-opacity shadow-lg"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </>
                 ) : (
                   <ImageIcon className="w-8 h-8 text-text opacity-20" />
                 )}
@@ -304,27 +323,42 @@ const ProjectsManager: React.FC = () => {
           {items.map((item) => (
             <div
               key={item.id}
-              className="p-6 bg-white/5 border border-border rounded-2xl group hover:border-accent/30 transition-all flex flex-col justify-between"
+              className="p-6 bg-white/5 border border-border rounded-2xl group hover:border-accent/30 transition-all flex flex-col gap-4"
             >
-              <div>
-                <h3 className="font-bold text-text-header text-lg mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-text opacity-60 text-sm line-clamp-2">
-                  {item.description_en}
-                </p>
+              <div className="flex gap-4">
+                <div className="w-20 h-16 bg-white/5 rounded-lg overflow-hidden border border-border flex-shrink-0">
+                  {item.image ? (
+                    <ProgressiveImage
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center opacity-20">
+                      <ImageIcon className="w-6 h-6" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-text-header text-lg mb-1 truncate">
+                    {item.title}
+                  </h3>
+                  <p className="text-text opacity-60 text-xs line-clamp-2">
+                    {item.description_en}
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center justify-end gap-2 mt-4">
+              <div className="flex items-center justify-end gap-2 mt-auto pt-2 border-t border-white/5">
                 <button
                   onClick={() => setEditingItem(item)}
-                  className="p-2 text-text hover:text-accent hover:bg-accent/10 rounded-lg"
+                  className="p-2 text-text hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 {item.id !== undefined && (
                   <button
                     onClick={() => handleDelete(item.id!)}
-                    className="p-2 text-text hover:text-error hover:bg-error/10 rounded-lg"
+                    className="p-2 text-text hover:text-error hover:bg-error/10 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

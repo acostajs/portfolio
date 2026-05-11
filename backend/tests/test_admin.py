@@ -104,6 +104,90 @@ async def test_admin_projects_crud(client: AsyncClient):
 
 
 @pytest.mark.asyncio
+async def test_admin_projects_missing_translations(client: AsyncClient):
+    # Create with only English description
+    project_data = {
+        "title": "Minimal Project",
+        "description_en": "only english",
+        "tech": ["Python"],
+        "order": 1,
+    }
+    # description_es and description_fr are missing, should default to "" and succeed
+    response = await client.post(
+        "/api/v1/admin/projects", json=project_data, headers=ADMIN_HEADERS
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["description_es"] == ""
+    assert data["description_fr"] == ""
+    project_id = data["id"]
+
+    # Cleanup
+    await client.delete(f"/api/v1/admin/projects/{project_id}", headers=ADMIN_HEADERS)
+
+
+@pytest.mark.asyncio
+async def test_admin_projects_image_upload(client: AsyncClient):
+    # 1. Create a project
+    project_data = {
+        "title": "Project with Image",
+        "description_en": "desc",
+        "description_es": "desc",
+        "description_fr": "desc",
+        "tech": ["Bun"],
+        "order": 1,
+    }
+    response = await client.post(
+        "/api/v1/admin/projects", json=project_data, headers=ADMIN_HEADERS
+    )
+    project_id = response.json()["id"]
+
+    # 2. Upload image (Mocked)
+    from unittest.mock import patch
+
+    fake_url = "https://storage.googleapis.com/test/img.png"
+    with patch("admin.storage.upload_file", return_value=fake_url):
+        # Create a fake file for upload
+        files = {"file": ("test.png", b"fake binary content", "image/png")}
+        response = await client.post(
+            f"/api/v1/admin/projects/{project_id}/upload-image",
+            files=files,
+            headers=ADMIN_HEADERS,
+        )
+
+        assert response.status_code == 200
+        assert response.json()["image_url"] == fake_url
+
+    # 3. Verify it was saved in DB
+    response = await client.get("/api/v1/admin/projects", headers=ADMIN_HEADERS)
+    project = next(p for p in response.json() if p["id"] == project_id)
+    assert project["image"] == fake_url
+
+    # 4. Cleanup
+    with patch("admin.storage.delete_file"):
+        await client.delete(
+            f"/api/v1/admin/projects/{project_id}", headers=ADMIN_HEADERS
+        )
+
+
+@pytest.mark.asyncio
+async def test_admin_general_upload(client: AsyncClient):
+    from unittest.mock import patch
+
+    fake_url = "https://drive.google.com/uc?id=fake_id"
+    with patch("admin.storage.upload_file", return_value=fake_url):
+        files = {"file": ("test.png", b"fake binary content", "image/png")}
+        response = await client.post(
+            "/api/v1/admin/upload",
+            files=files,
+            headers=ADMIN_HEADERS,
+        )
+
+        assert response.status_code == 200
+        assert response.json()["image_url"] == fake_url
+
+
+@pytest.mark.asyncio
 async def test_admin_blog_crud(client: AsyncClient):
     # Create
     post_data = {

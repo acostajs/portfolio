@@ -8,7 +8,7 @@ export const fetchCMS = async <T>(
     "Content-Type": "application/json",
   };
   if (password) {
-    headers["X-Admin-Password"] = password;
+    headers["X-Admin-Token"] = password;
   }
 
   const response = await fetch(`${API_BASE}${path}`, {
@@ -31,7 +31,7 @@ export const updateCMS = async <T>(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Admin-Password": password,
+      "X-Admin-Token": password,
     },
     body: JSON.stringify(data),
   });

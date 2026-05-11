@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlmodel import Session, select, desc, col
-import os
-import shutil
 import re
 from typing import List
 from database import engine
+import storage
 from models import (
     About,
     Experience,
@@ -107,6 +106,42 @@ async def delete_experience(
         return {"status": "success"}
 
 
+# --- General Upload ---
+@router.post("/upload")
+async def upload_general_image(
+    file: UploadFile = File(...),
+    admin_token: str = Depends(verify_admin_password),
+):
+    """
+    General purpose upload endpoint for images (e.g., used in Blog posts).
+    """
+    # 1. Validate File Extension
+    ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"}
+    import os
+
+    ext = os.path.splitext(file.filename or "image.jpg")[1].lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file extension. Allowed: {', '.join(ALLOWED_EXTENSIONS)}",
+        )
+
+    # 2. Validate File Size (max 5MB)
+    MAX_SIZE = 5 * 1024 * 1024
+    file.file.seek(0, os.SEEK_END)
+    file_size = file.file.tell()
+    file.file.seek(0)
+    if file_size > MAX_SIZE:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File too large. Maximum size allowed is {MAX_SIZE / 1024 / 1024}MB",
+        )
+
+    # Upload to Drive
+    image_url = await storage.upload_file(file, folder="general")
+    return {"image_url": image_url}
+
+
 # --- Project CRUD ---
 @router.get("/projects", response_model=List[Project])
 async def get_projects():
@@ -151,6 +186,11 @@ async def delete_project(
         project = session.get(Project, project_id)
         if not project:
             raise HTTPException(status_code=404, detail="Project not found")
+
+        # Delete image from Drive if it exists
+        if project.image:
+            storage.delete_file(project.image)
+
         session.delete(project)
         session.commit()
         return {"status": "success"}
@@ -169,8 +209,9 @@ async def upload_project_image(
 
         # 1. Validate File Extension
         ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"}
-        original_filename = file.filename or "image.jpg"
-        ext = os.path.splitext(original_filename)[1].lower()
+        import os
+
+        ext = os.path.splitext(file.filename or "image.jpg")[1].lower()
         if ext not in ALLOWED_EXTENSIONS:
             raise HTTPException(
                 status_code=400,
@@ -188,28 +229,20 @@ async def upload_project_image(
                 detail=f"File too large. Maximum size allowed is {MAX_SIZE / 1024 / 1024}MB",
             )
 
-        # Create directory if it doesn't exist
-        upload_dir = os.path.abspath(
-            os.path.join(os.getcwd(), "..", "frontend", "public", "images", "projects")
-        )
-        os.makedirs(upload_dir, exist_ok=True)
+        # Delete old image if it exists
+        if project.image:
+            storage.delete_file(project.image)
 
-        # Generate filename
-        filename = f"{slugify(project.title)}{ext}"
-        file_path = os.path.join(upload_dir, filename)
-
-        # Save file
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        # Upload to Drive
+        image_url = await storage.upload_file(file, folder="projects")
 
         # Update project in DB
-        relative_path = f"/images/projects/{filename}"
-        project.image = relative_path
+        project.image = image_url
         session.add(project)
         session.commit()
         session.refresh(project)
 
-        return {"image_url": relative_path}
+        return {"image_url": image_url}
 
 
 # --- Blog CRUD ---

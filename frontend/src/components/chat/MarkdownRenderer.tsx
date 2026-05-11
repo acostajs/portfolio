@@ -1,9 +1,14 @@
 import React, { Suspense, lazy } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import { Skeleton } from "../ui/Skeleton";
+
+const SyntaxHighlighter = lazy(() =>
+  import("react-syntax-highlighter").then((mod) => ({
+    default: mod.Prism,
+  })),
+);
 
 const Playground = lazy(() => import("../blog/Playground"));
 
@@ -35,11 +40,21 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
             );
           }
 
-          return !isInline ? (
-            <SyntaxHighlighter style={theme} language={match[1]} PreTag="div">
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
-          ) : (
+          if (!isInline) {
+            return (
+              <Suspense fallback={<Skeleton className="h-20 w-full my-2" />}>
+                <SyntaxHighlighter
+                  style={theme}
+                  language={match[1]}
+                  PreTag="div"
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              </Suspense>
+            );
+          }
+
+          return (
             <code className={className} {...props}>
               {children}
             </code>
