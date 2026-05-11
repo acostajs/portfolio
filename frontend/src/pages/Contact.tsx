@@ -75,12 +75,12 @@ const Contact: React.FC = () => {
             <div className="space-y-2">
               <label
                 htmlFor="contact-name"
-                className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1"
+                className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1"
               >
                 {t.contact.formName}
               </label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text opacity-50" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                 <input
                   id="contact-name"
                   type="text"
@@ -94,12 +94,12 @@ const Contact: React.FC = () => {
             <div className="space-y-2">
               <label
                 htmlFor="contact-email"
-                className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1"
+                className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1"
               >
                 {t.contact.formEmail}
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text opacity-50" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                 <input
                   id="contact-email"
                   type="email"
@@ -115,12 +115,12 @@ const Contact: React.FC = () => {
           <div className="space-y-2">
             <label
               htmlFor="contact-message"
-              className="text-xs font-bold uppercase tracking-widest text-text opacity-70 ml-1"
+              className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1"
             >
               {t.contact.formMessage}
             </label>
             <div className="relative">
-              <MessageSquare className="absolute left-4 top-5 w-4 h-4 text-text opacity-50" />
+              <MessageSquare className="absolute left-4 top-5 w-4 h-4 text-text-muted" />
               <textarea
                 id="contact-message"
                 name="message"

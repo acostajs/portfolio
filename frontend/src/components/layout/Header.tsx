@@ -63,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({
               <h1 className="text-[clamp(0.875rem,4vw,1rem)] font-bold text-text-header leading-tight truncate">
                 {t.header.title}
               </h1>
-              <p className="text-[10px] text-text opacity-70 truncate">
+              <p className="text-[10px] text-text-muted truncate">
                 {t.header.subtitle}
               </p>
             </div>

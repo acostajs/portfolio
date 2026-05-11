@@ -11,9 +11,9 @@
   - [x] Remove `mocks.ts` and unused `PageContent` models.
   - [x] Centralize `Project` and `Experience` types in `types/cms.ts`.
   - [x] Fix i18n violations in Admin section (ZERO Static Text).
-- [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
+- [x] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [x] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths and chat feedback.
-- [ ] **Performance Monitoring**: Set up automated Lighthouse CI checks.
+- [x] **Performance Monitoring**: Set up automated Lighthouse CI checks.
 
 ## ✅ Archive (Completed)
 

@@ -137,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
               <h2 className="text-xl font-bold text-text-header tracking-tight">
                 {t.common.name}
               </h2>
-              <p className="text-[13px] text-text mt-1 leading-snug opacity-80 max-w-[180px] mx-auto">
+              <p className="text-[13px] text-text-muted mt-1 leading-snug max-w-[180px] mx-auto">
                 {t.common.role}
               </p>
             </div>
@@ -157,7 +157,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
                     }`}
                   >
                     <link.icon
-                      className={`w-4.5 h-4.5 mr-3 transition-transform group-hover:scale-110 ${activePage === link.id ? "text-white" : "text-text opacity-70"}`}
+                      className={`w-4.5 h-4.5 mr-3 transition-transform group-hover:scale-110 ${activePage === link.id ? "text-white" : "text-text-muted"}`}
                     />
                     <span className="font-semibold text-sm">{link.name}</span>
                   </button>
@@ -177,7 +177,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
 
               const Content = (
                 <>
-                  <info.icon className="w-3.5 h-3.5 mr-3 opacity-60 group-hover:opacity-100 group-hover:text-accent transition-all shrink-0" />
+                  <info.icon className="w-3.5 h-3.5 mr-3 text-text-muted group-hover:text-accent transition-all shrink-0" />
                   <span className="truncate">{info.text}</span>
                 </>
               );
@@ -230,7 +230,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
 
           {/* Availability Status */}
           <div className="px-5 pb-6 mt-auto">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-text opacity-50 mb-2 ml-1">
+            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted mb-2 ml-1">
               {t.common.availabilityTitle}
             </p>
             <div className="p-3 bg-white/5 border border-border rounded-xl text-[11px] text-text-header leading-tight">

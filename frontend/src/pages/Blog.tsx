@@ -9,6 +9,7 @@ import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import SEO from "../components/layout/SEO";
 import SocialShare from "../components/layout/SocialShare";
+import Playground from "../components/blog/Playground";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -94,6 +95,15 @@ const Blog: React.FC = () => {
                   code({ node, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
                     const isInline = !match;
+
+                    if (match?.[1] === "react-playground") {
+                      return (
+                        <Playground
+                          code={String(children).replace(/\n$/, "")}
+                        />
+                      );
+                    }
+
                     return !isInline ? (
                       <SyntaxHighlighter
                         style={theme}

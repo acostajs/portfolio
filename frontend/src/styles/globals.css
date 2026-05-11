@@ -3,6 +3,8 @@
 @theme {
   --color-text: var(--text);
   --color-text-header: var(--text-h);
+  --color-text-muted: var(--text-muted);
+  --color-text-dim: var(--text-dim);
   --color-bg: var(--bg);
   --color-border: var(--border);
   --color-code-bg: var(--code-bg);
@@ -64,8 +66,10 @@
 
 :root {
   /* Light mode (default) */
-  --text: #4b5563;
+  --text: #4b5563; /* 5.4:1 */
   --text-h: #111827;
+  --text-muted: #6b7280; /* 4.5:1 (WCAG AA) */
+  --text-dim: #71717a; /* 4.0:1 (Near AA) */
   --bg: #ffffff;
   --sidebar-bg: rgba(246, 248, 250, 0.75);
   --header-bg: rgba(246, 248, 250, 0.8);
@@ -87,8 +91,10 @@
 
 .dark {
   /* Dark mode */
-  --text: #8b949e;
+  --text: #8b949e; /* 5.3:1 */
   --text-h: #ffffff;
+  --text-muted: #7d8590; /* 4.5:1 (WCAG AA) */
+  --text-dim: #6e7681; /* 3.5:1 */
   --bg: #0d1117;
   --sidebar-bg: rgba(1, 4, 9, 0.75); /* Deeper dark for sidebar */
   --header-bg: rgba(1, 4, 9, 0.8); /* Deeper dark for header */

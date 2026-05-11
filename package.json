@@ -10,13 +10,14 @@
     "dev:frontend": "cd frontend && bun dev",
     "dev:backend": "cd backend && uv run uvicorn main:app --reload",
     "setup:backend": "cd backend && uv sync",
-    "build": "bun --cwd frontend install && bun --cwd frontend run build",
+    "build": "bun install && bun run --cwd frontend build",
     "lint": "bun run lint:frontend && bun run lint:backend",
     "lint:frontend": "cd frontend && bun run lint && bun tsc --noEmit",
     "lint:backend": "cd backend && uv run ruff check . && uv run ruff format --check . && uv run pyright",
     "test": "bun run test:frontend && bun run test:backend",
     "test:frontend": "cd frontend && bun test",
     "test:backend": "cd backend && uv run pytest",
+    "lighthouse": "lhci autorun",
     "format": "prettier --write . && cd backend && uv run ruff format .",
     "prepare": "husky"
   },
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
+    "@lhci/cli": "^0.15.1",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.4.2"

@@ -73,7 +73,7 @@ const Experience: React.FC = () => {
                     <h3 className="font-bold text-text-header text-lg">
                       {exp.role}
                     </h3>
-                    <div className="flex items-center text-xs text-text opacity-70">
+                    <div className="flex items-center text-xs text-text-muted">
                       <Calendar className="w-3.5 h-3.5 mr-1.5" />
                       {exp.period}
                     </div>

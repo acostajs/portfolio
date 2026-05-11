@@ -167,16 +167,34 @@ async def upload_project_image(
         if not project:
             raise HTTPException(status_code=404, detail="Project not found")
 
+        # 1. Validate File Extension
+        ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"}
+        original_filename = file.filename or "image.jpg"
+        ext = os.path.splitext(original_filename)[1].lower()
+        if ext not in ALLOWED_EXTENSIONS:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid file extension. Allowed: {', '.join(ALLOWED_EXTENSIONS)}",
+            )
+
+        # 2. Validate File Size (e.g., max 5MB)
+        MAX_SIZE = 5 * 1024 * 1024  # 5MB
+        file.file.seek(0, os.SEEK_END)
+        file_size = file.file.tell()
+        file.file.seek(0)  # Reset for saving
+        if file_size > MAX_SIZE:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File too large. Maximum size allowed is {MAX_SIZE / 1024 / 1024}MB",
+            )
+
         # Create directory if it doesn't exist
-        # Path is relative to backend/
         upload_dir = os.path.abspath(
             os.path.join(os.getcwd(), "..", "frontend", "public", "images", "projects")
         )
         os.makedirs(upload_dir, exist_ok=True)
 
         # Generate filename
-        original_filename = file.filename or "image.jpg"
-        ext = os.path.splitext(original_filename)[1]
         filename = f"{slugify(project.title)}{ext}"
         file_path = os.path.join(upload_dir, filename)
 
