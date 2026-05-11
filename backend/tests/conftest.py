@@ -10,6 +10,12 @@ os.environ["ENVIRONMENT"] = "testing"
 from database import engine, create_db_and_tables
 from main import app
 from sqlmodel import Session
+from cache import clear_trigger_cache
+
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    clear_trigger_cache()
 
 
 @pytest.fixture(autouse=True)

@@ -50,3 +50,22 @@ export const fetchPublic = async <T>(path: string): Promise<T> => {
   }
   return response.json() as Promise<T>;
 };
+
+export const postPublic = async <T, R = unknown>(
+  path: string,
+  data: T,
+): Promise<R> => {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+
+  return response.json() as Promise<R>;
+};

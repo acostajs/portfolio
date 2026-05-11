@@ -2,18 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
 import { fetchPublic } from "../../lib/api";
 import type { BlogPost as DBBlogPost } from "../types/cms";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { ArrowLeft, Calendar, Tag, ChevronRight, Loader2 } from "lucide-react";
-import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import { ArrowLeft, Calendar, Tag, ChevronRight } from "lucide-react";
 import SEO from "../components/layout/SEO";
 import SocialShare from "../components/layout/SocialShare";
-import Playground from "../components/blog/Playground";
-
-const theme = vscDarkPlus as unknown as {
-  [key: string]: React.CSSProperties;
-};
+import SharedMarkdown from "../components/ui/SharedMarkdown";
+import PageLoader from "../components/ui/PageLoader";
 
 const Blog: React.FC = () => {
   const { t, locale } = useTranslation();
@@ -39,12 +32,7 @@ const Blog: React.FC = () => {
     return (item[k] as string) || (item[fallback] as string) || "";
   };
 
-  if (isLoading)
-    return (
-      <div className="flex-1 flex items-center justify-center bg-bg p-12">
-        <Loader2 className="w-10 h-10 animate-spin text-accent" />
-      </div>
-    );
+  if (isLoading) return <PageLoader variant="cards" />;
 
   if (selectedPost) {
     const title = getLocalized(selectedPost, "title");
@@ -87,42 +75,7 @@ const Blog: React.FC = () => {
               />
             </div>
 
-            <div className="prose prose-invert max-w-none markdown-content">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                  code({ node, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    const isInline = !match;
-
-                    if (match?.[1] === "react-playground") {
-                      return (
-                        <Playground
-                          code={String(children).replace(/\n$/, "")}
-                        />
-                      );
-                    }
-
-                    return !isInline ? (
-                      <SyntaxHighlighter
-                        style={theme}
-                        language={match[1]}
-                        PreTag="div"
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              >
-                {content}
-              </ReactMarkdown>
-            </div>
+            <SharedMarkdown content={content} className="max-w-none" />
           </article>
         </div>
       </section>

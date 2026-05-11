@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
+import { fetchPublic } from "../../lib/api";
+import type { ExperienceData } from "../types/cms";
 import { Calendar, Briefcase } from "lucide-react";
 import SEO from "../components/layout/SEO";
-
-interface ExperienceData {
-  id?: number;
-  company: string;
-  role: string;
-  period: string;
-  description_en: string[];
-  description_es?: string[];
-  description_fr?: string[];
-  tech: string[];
-  order: number;
-}
+import PageLoader from "../components/ui/PageLoader";
 
 const Experience: React.FC = () => {
   const { t, locale } = useTranslation();
@@ -21,19 +12,10 @@ const Experience: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/v1/experience");
-        if (response.ok) {
-          setItems(await response.json());
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    fetchPublic<ExperienceData[]>("/experience")
+      .then(setItems)
+      .catch((err) => console.error("Failed to fetch experience data:", err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const getLocalized = (item: ExperienceData, key: "description") => {
@@ -44,13 +26,12 @@ const Experience: React.FC = () => {
     );
   };
 
-  if (isLoading)
-    return <div className="p-8 animate-pulse text-text">Loading...</div>;
+  if (isLoading) return <PageLoader />;
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
       <SEO title={t.nav.experience} />
-      <div className="max-w-3xl mx-auto space-y-8">
+      <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
         <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-8">
           {t.experience.title}
         </h1>

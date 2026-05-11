@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "../../lib/hooks/useTranslation";
+import { postPublic } from "../../lib/api";
 import { Send, Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
 import { motion, AnimatePresence } from "framer-motion";
@@ -232,24 +233,22 @@ const Home: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/v1/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const data = await postPublic<
+        {
+          message: string;
+          language: string;
+          history: { role: string; content: string }[];
         },
-        body: JSON.stringify({
-          message: userMessage,
-          language: locale,
-          history: messagesRef.current.map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
+        { reply: string }
+      >("/chat", {
+        message: userMessage,
+        language: locale,
+        history: messagesRef.current.map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
       });
 
-      if (!response.ok) throw new Error("Failed to fetch");
-
-      const data = await response.json();
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: data.reply, shouldAnimate: true },
@@ -320,16 +319,10 @@ const Home: React.FC = () => {
     assistantReply: string,
   ) => {
     try {
-      await fetch("/api/v1/chat/feedback", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_message: userMessage,
-          assistant_reply: assistantReply,
-          is_helpful: isHelpful,
-        }),
+      await postPublic("/chat/feedback", {
+        user_message: userMessage,
+        assistant_reply: assistantReply,
+        is_helpful: isHelpful,
       });
     } catch (error) {
       console.error("Feedback error:", error);

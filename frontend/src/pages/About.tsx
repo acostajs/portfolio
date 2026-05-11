@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
+import { fetchPublic } from "../../lib/api";
+import type { AboutData } from "../types/cms";
 import SEO from "../components/layout/SEO";
-
-interface AboutData {
-  id?: number;
-  p1_en: string;
-  p1_es: string;
-  p1_fr: string;
-  p2_en: string;
-  p2_es: string;
-  p2_fr: string;
-  skills: string[];
-}
+import PageLoader from "../components/ui/PageLoader";
 
 const About: React.FC = () => {
   const { t, locale } = useTranslation();
@@ -19,19 +11,10 @@ const About: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/v1/about");
-        if (response.ok) {
-          setData(await response.json());
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    fetchPublic<AboutData>("/about")
+      .then(setData)
+      .catch((err) => console.error("Failed to fetch about data:", err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const getLocalized = (key: string) => {
@@ -43,13 +26,12 @@ const About: React.FC = () => {
     );
   };
 
-  if (isLoading)
-    return <div className="p-8 animate-pulse text-text">Loading...</div>;
+  if (isLoading) return <PageLoader />;
 
   return (
     <article className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
       <SEO title={t.nav.about} description={getLocalized("p1")} />
-      <div className="max-w-3xl mx-auto space-y-8">
+      <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
         <section>
           <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-6">
             {t.about.title}
