@@ -20,12 +20,12 @@ class ChatFeedback(SQLModel, table=True):
 
 class About(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    p1_en: str
-    p1_es: str
-    p1_fr: str
-    p2_en: str
-    p2_es: str
-    p2_fr: str
+    p1_en: str = Field(default="")
+    p1_es: str = Field(default="")
+    p1_fr: str = Field(default="")
+    p2_en: str = Field(default="")
+    p2_es: str = Field(default="")
+    p2_fr: str = Field(default="")
     skills: List[str] = Field(default=[], sa_column=Column(JSON))
 
 
@@ -44,9 +44,9 @@ class Experience(SQLModel, table=True):
 class Project(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
-    description_en: str
-    description_es: str
-    description_fr: str
+    description_en: str = Field(default="")
+    description_es: str = Field(default="")
+    description_fr: str = Field(default="")
     tech: List[str] = Field(default=[], sa_column=Column(JSON))
     link: Optional[str] = None
     github: Optional[str] = None
@@ -59,15 +59,15 @@ class BlogPost(SQLModel, table=True):
     slug: str = Field(index=True, unique=True)
     date: str
     category: str
-    title_en: str
-    title_es: str
-    title_fr: str
-    excerpt_en: str
-    excerpt_es: str
-    excerpt_fr: str
-    content_en: str
-    content_es: str
-    content_fr: str
+    title_en: str = Field(default="")
+    title_es: str = Field(default="")
+    title_fr: str = Field(default="")
+    excerpt_en: str = Field(default="")
+    excerpt_es: str = Field(default="")
+    excerpt_fr: str = Field(default="")
+    content_en: str = Field(default="")
+    content_es: str = Field(default="")
+    content_fr: str = Field(default="")
     published: bool = Field(default=True)
 
 

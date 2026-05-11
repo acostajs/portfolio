@@ -78,27 +78,22 @@ export const useSpeech = () => {
       recognition.interimResults = false;
 
       recognition.onstart = () => {
-        console.log("Speech recognition started");
         setIsListening(true);
         setError(null);
       };
 
       recognition.onend = () => {
-        console.log("Speech recognition ended");
         setIsListening(false);
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        console.error("Speech recognition error:", event.error);
         setError(event.error);
         setIsListening(false);
       };
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {
-        console.log("Speech recognition result event:", event);
         if (event.results && event.results.length > 0) {
           const result = event.results[0][0].transcript;
-          console.log("Speech recognized:", result);
           onResultRef.current(result);
         }
       };
@@ -106,8 +101,7 @@ export const useSpeech = () => {
       recognitionRef.current = recognition;
       try {
         recognition.start();
-      } catch (e) {
-        console.error("Failed to start recognition:", e);
+      } catch {
         setError("Failed to start recognition");
       }
     },

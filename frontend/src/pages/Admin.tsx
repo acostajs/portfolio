@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminHeader from "../components/admin/AdminHeader";
 import AdminSidebar, { type AdminTab } from "../components/admin/AdminSidebar";
 import Login from "../components/admin/Login";
@@ -18,15 +18,35 @@ const Admin: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<AdminTab>("about");
 
-  const handleLogin = (password: string) => {
-    setIsAuthenticated(true);
-    localStorage.setItem("admin-token", password);
-  };
-
   const handleLogout = () => {
     hapticFeedback(20);
     setIsAuthenticated(false);
     localStorage.removeItem("admin-token");
+  };
+
+  // Verify token on mount to prevent stale sessions
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem("admin-token");
+      if (!token) return;
+
+      try {
+        const response = await fetch("/api/v1/admin/verify", {
+          headers: { "X-Admin-Token": token },
+        });
+        if (!response.ok) {
+          handleLogout();
+        }
+      } catch (err) {
+        console.error("Token verification failed:", err);
+      }
+    };
+    void verifyToken();
+  }, []);
+
+  const handleLogin = (password: string) => {
+    setIsAuthenticated(true);
+    localStorage.setItem("admin-token", password);
   };
 
   if (!isAuthenticated) {

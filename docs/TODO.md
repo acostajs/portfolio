@@ -1,6 +1,39 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Performance & Security Hardening (0.1.7)
+## 🎯 Current Version: Advanced Architecture & Scalability (0.1.9)
+
+- [x] **Robust Data Seeding**:
+  - [x] Refactor `seed.py` to use an **Upsert (Update-or-Insert)** pattern.
+  - [x] Enable updating existing CMS records via seed script without wiping the database.
+- [ ] **Backend NLU Optimization**:
+  - [ ] Implement a **Two-Tier Matching System** for chatbot triggers.
+  - [ ] Use a hash-map for exact keyword matches before falling back to `rapidfuzz`.
+- [x] **Frontend Lazy Loading**:
+  - [x] Migrate `BotMessage.tsx` and `MarkdownRenderer.tsx` to lazy load `SyntaxHighlighter` and `ReactMarkdown`.
+  - [ ] Implement skeleton loaders for CMS-driven sections (Projects, Experience).
+- [ ] **Architecture Refactoring & Consolidation**:
+  - [ ] **Unified Data Fetching**: Migrate all page-level `fetch()` calls to use the `fetchPublic` utility in `lib/api.ts`.
+  - [ ] **Consolidated Markdown Rendering**: Create a `SharedMarkdown` component in `components/ui` to unify rendering between Chat and Blog and handle lazy-loaded `SyntaxHighlighter`.
+  - [ ] **Unified Skeleton Loaders**: Standardize loading states by leveraging `Suspense` fallbacks in `App.tsx` and removing local `isLoading` states across components.
+  - [x] **Debug Cleanup**: Remove all remaining `console.log` statements and debug artifacts from the production codebase.
+  - [x] **Code Quality**: Fixed `ProgressiveImage` hook dependency and unused vars in `useSpeech`.
+  - [x] **Backend Formatting**: Standardized codebase with Ruff.
+
+## ✅ Archive (Completed)
+
+### Version 0.1.8: Cloud Infrastructure & Storage
+
+- [x] **Google Cloud Storage Integration**:
+  - [x] Setup Google Cloud Project and Service Account.
+  - [x] Integrate **Google API Client** in backend to handle project image uploads.
+  - [x] Replace local filesystem storage in `admin.py` with GCS buckets to bypass Vercel's read-only FS.
+  - [x] Update frontend to fetch images from GCS signed URLs or public buckets.
+- [x] **Environment Hardening**:
+  - [x] Migrate all Google credentials to Vercel encrypted environment variables.
+  - [x] Implement secret rotation policy for Admin passwords. (Renamed `password` to `admin_token`, moved to `.env`).
+- [x] [Contract: 2026-05-11-v0.1.8-cloud-storage.md](contracts/2026-05-11-v0.1.8-cloud-storage.md)
+
+### Version 0.1.7: Performance & Security Hardening
 
 - [x] **Audit Remediation: Security & Architecture**:
   - [x] Secure public `/api/v1/chat/history` endpoint.
@@ -23,31 +56,6 @@
   - [x] Rename `password` parameter to `admin_token` in `main.py` and `auth.py`.
   - [x] Implement `prefers-reduced-motion` in `MeshBackground.tsx`.
   - [x] [Contract: 2026-05-11-v0.1.7-hardening.md](contracts/2026-05-11-v0.1.7-hardening.md)
-
-## 🚀 Version 0.1.8: Cloud Infrastructure & Storage
-
-- [ ] **Google Cloud Storage Integration**:
-  - [ ] Setup Google Cloud Project and Service Account.
-  - [ ] Integrate **Google API Client** in backend to handle project image uploads.
-  - [ ] Replace local filesystem storage in `admin.py` with GCS buckets to bypass Vercel's read-only FS.
-  - [ ] Update frontend to fetch images from GCS signed URLs or public buckets.
-- [ ] **Environment Hardening**:
-  - [ ] Migrate all Google credentials to Vercel encrypted environment variables.
-  - [ ] Implement secret rotation policy for Admin passwords.
-
-## 🏗️ Version 0.1.9: Advanced Architecture & Scalability
-
-- [ ] **Robust Data Seeding**:
-  - [ ] Refactor `seed.py` to use an **Upsert (Update-or-Insert)** pattern.
-  - [ ] Enable updating existing CMS records via seed script without wiping the database.
-- [ ] **Backend NLU Optimization**:
-  - [ ] Implement a **Two-Tier Matching System** for chatbot triggers.
-  - [ ] Use a hash-map for exact keyword matches before falling back to `rapidfuzz`.
-- [ ] **Frontend Lazy Loading**:
-  - [ ] Migrate `BotMessage.tsx` to lazy load `SyntaxHighlighter` and `ReactMarkdown`.
-  - [ ] Implement skeleton loaders for CMS-driven sections (Projects, Experience).
-
-## ✅ Archive (Completed)
 
 ### Version 0.1.6: SEO, Performance & Social
 
