@@ -14,6 +14,7 @@ from models import (
     ChatFeedback,
 )
 from auth import verify_admin_password
+from cache import clear_trigger_cache
 
 router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
 
@@ -307,6 +308,7 @@ async def create_chat_trigger(
         session.add(trigger)
         session.commit()
         session.refresh(trigger)
+        clear_trigger_cache()
         return trigger
 
 
@@ -325,6 +327,7 @@ async def update_chat_trigger(
         session.add(trigger)
         session.commit()
         session.refresh(trigger)
+        clear_trigger_cache()
         return trigger
 
 
@@ -338,6 +341,7 @@ async def delete_chat_trigger(
             raise HTTPException(status_code=404, detail="Chat trigger not found")
         session.delete(trigger)
         session.commit()
+        clear_trigger_cache()
         return {"status": "success"}
 
 

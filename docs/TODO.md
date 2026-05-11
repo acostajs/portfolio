@@ -5,16 +5,16 @@
 - [x] **Robust Data Seeding**:
   - [x] Refactor `seed.py` to use an **Upsert (Update-or-Insert)** pattern.
   - [x] Enable updating existing CMS records via seed script without wiping the database.
-- [ ] **Backend NLU Optimization**:
-  - [ ] Implement a **Two-Tier Matching System** for chatbot triggers.
-  - [ ] Use a hash-map for exact keyword matches before falling back to `rapidfuzz`.
+- [x] **Backend NLU Optimization**:
+  - [x] Implement a **Two-Tier Matching System** for chatbot triggers.
+  - [x] Use a hash-map for exact keyword matches before falling back to `rapidfuzz`.
 - [x] **Frontend Lazy Loading**:
   - [x] Migrate `BotMessage.tsx` and `MarkdownRenderer.tsx` to lazy load `SyntaxHighlighter` and `ReactMarkdown`.
-  - [ ] Implement skeleton loaders for CMS-driven sections (Projects, Experience).
-- [ ] **Architecture Refactoring & Consolidation**:
-  - [ ] **Unified Data Fetching**: Migrate all page-level `fetch()` calls to use the `fetchPublic` utility in `lib/api.ts`.
-  - [ ] **Consolidated Markdown Rendering**: Create a `SharedMarkdown` component in `components/ui` to unify rendering between Chat and Blog and handle lazy-loaded `SyntaxHighlighter`.
-  - [ ] **Unified Skeleton Loaders**: Standardize loading states by leveraging `Suspense` fallbacks in `App.tsx` and removing local `isLoading` states across components.
+  - [x] Implement skeleton loaders for CMS-driven sections (Projects, Experience).
+- [x] **Architecture Refactoring & Consolidation**:
+  - [x] **Unified Data Fetching**: Migrate all page-level `fetch()` calls to use the `fetchPublic` utility in `lib/api.ts`.
+  - [x] **Consolidated Markdown Rendering**: Create a `SharedMarkdown` component in `components/ui` to unify rendering between Chat and Blog and handle lazy-loaded `SyntaxHighlighter`.
+  - [x] **Unified Skeleton Loaders**: Standardize loading states by leveraging `Suspense` fallbacks in `App.tsx` and removing local `isLoading` states across components.
   - [x] **Debug Cleanup**: Remove all remaining `console.log` statements and debug artifacts from the production codebase.
   - [x] **Code Quality**: Fixed `ProgressiveImage` hook dependency and unused vars in `useSpeech`.
   - [x] **Backend Formatting**: Standardized codebase with Ruff.

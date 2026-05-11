@@ -31,6 +31,7 @@ from responses import fallback
 from auth import verify_admin_password
 import admin as admin_api
 from seed import seed
+from cache import get_cached_triggers
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -44,18 +45,23 @@ async def lifespan(app: FastAPI):
     create_db_and_tables()
     # Seed the database if empty
     seed()
+    # Pre-populate trigger cache
+    get_cached_triggers()
     yield
 
 
 # --- Models ---
+from pydantic import BaseModel, Field
+
+
 class ChatMessageBase(BaseModel):
     role: str
     content: str
 
 
 class ChatRequest(BaseModel):
-    message: str
-    language: str = "en"
+    message: str = Field(..., max_length=1000)
+    language: str = Field("en", max_length=5)
     history: List[ChatMessageBase] = []
 
 
@@ -64,9 +70,12 @@ class ChatResponse(BaseModel):
 
 
 class FeedbackRequest(BaseModel):
-    user_message: str
-    assistant_reply: str
+    user_message: str = Field(..., max_length=1000)
+    assistant_reply: str = Field(..., max_length=5000)
     is_helpful: bool
+
+
+# --- Global Cache logic moved to cache.py ---
 
 
 # --- App Initialization ---
@@ -112,27 +121,53 @@ def save_chat_feedback(user_msg: str, assistant_reply: str, is_helpful: bool):
         logger.error(f"Failed to save chat feedback: {e}")
 
 
-def is_trigger_match(
-    user_message: str, triggers: List[str], threshold: int = 85
-) -> bool:
-    """Helper to check if any trigger matches the user message with fuzzy matching."""
-    user_message = user_message.lower()
+def find_trigger_match(
+    user_message: str, threshold: int = 85
+) -> Optional[ChatTriggerResponse]:
+    """
+    Two-tier matching system for NLU.
+    Tier 1: Exact lookup via Hash-Map (fast) or substring for multi-word.
+    Tier 2: Fuzzy matching fallback (accurate but slower).
+    """
+    cached_triggers, flat_map = get_cached_triggers()
+    user_message_lower = user_message.lower()
 
-    # 1. Priority: Exact word/phrase match with word boundaries
-    for trigger in triggers:
-        pattern = rf"\b{re.escape(trigger.lower())}\b"
-        if re.search(pattern, user_message):
-            return True
+    matches = []
 
-    # 2. Secondary: Fuzzy matching to handle typos and varied phrasing
-    for trigger in triggers:
-        # token_set_ratio is excellent for checking if a trigger (even a multi-word one)
-        # exists within a larger sentence, ignoring order and extra words.
-        score = fuzz.token_set_ratio(trigger.lower(), user_message)
-        if score >= threshold:
-            return True
+    # --- Tier 1: Exact Hash-Map & Substring ---
+    # 1.1 Tokenized exact lookup
+    tokens = re.findall(r"\b\w+\b", user_message_lower)
+    for token in tokens:
+        if token in flat_map:
+            matches.append(flat_map[token])
 
-    return False
+    # 1.2 Multi-word substring matching (exact boundary)
+    for t_text, item in flat_map.items():
+        if " " in t_text and t_text in user_message_lower:
+            if re.search(rf"\b{re.escape(t_text)}\b", user_message_lower):
+                matches.append(item)
+
+    if matches:
+        # Return the one with the lowest ID (highest priority)
+        return min(matches, key=lambda x: x.id)
+
+    # --- Tier 2: Fuzzy Matching Fallback ---
+    for item in cached_triggers:
+        for trigger in item.triggers:
+            trigger_lower = trigger.lower()
+            # 2.1 token_set_ratio: handles keyword in sentence (exact tokens)
+            score = fuzz.token_set_ratio(trigger_lower, user_message_lower)
+            if score >= threshold:
+                return item
+            
+            # 2.2 partial_ratio: handles typo-ed keyword in sentence
+            # Only for triggers >= 4 chars to avoid false positives for very short words
+            if len(trigger_lower) >= 4:
+                score = fuzz.partial_ratio(trigger_lower, user_message_lower)
+                if score >= threshold:
+                    return item
+
+    return None
 
 
 # --- Routes ---
@@ -175,27 +210,21 @@ async def get_public_blog():
 
 @app.post("/api/v1/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
-    user_message = request.message.lower()
+    user_message = request.message
     lang = request.language if request.language in ["en", "es", "fr"] else "en"
 
     reply = None
 
-    with Session(engine) as session:
-        # Fetch all triggers from database, ordered by ID to maintain priority
-        db_triggers = session.exec(
-            select(ChatTriggerResponse).order_by(col(ChatTriggerResponse.id))
-        ).all()
+    # Priority-based matching using the Two-Tier system
+    matched_item = find_trigger_match(user_message)
 
-        # Priority-based matching
-        for item in db_triggers:
-            if is_trigger_match(user_message, item.triggers):
-                logger.info(
-                    f"Matched trigger: module={item.module}, category={item.category}"
-                )
-                answers = getattr(item, f"answers_{lang}")
-                if answers:
-                    reply = random.choice(answers)
-                    break
+    if matched_item:
+        logger.info(
+            f"Matched trigger: module={matched_item.module}, category={matched_item.category}"
+        )
+        answers = getattr(matched_item, f"answers_{lang}")
+        if answers:
+            reply = random.choice(answers)
 
     # If no trigger matched, use fallback
     if not reply:

@@ -5,7 +5,7 @@ import ProgressiveImage from "./ProgressiveImage";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import { Skeleton } from "../ui/Skeleton";
 
-const MarkdownRenderer = lazy(() => import("./MarkdownRenderer"));
+const SharedMarkdown = lazy(() => import("../ui/SharedMarkdown"));
 
 interface BotMessageProps {
   content: string;
@@ -99,7 +99,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
               </div>
             }
           >
-            <MarkdownRenderer content={displayedContent} />
+            <SharedMarkdown content={displayedContent} />
           </Suspense>
         </div>
 

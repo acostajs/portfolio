@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
+import { fetchPublic } from "../../lib/api";
+import type { ProjectData } from "../types/cms";
 import { ExternalLink, Link as LinkIcon, Code } from "lucide-react";
 import SEO from "../components/layout/SEO";
 import SocialShare from "../components/layout/SocialShare";
 import ProgressiveImage from "../components/chat/ProgressiveImage";
-
-interface ProjectData {
-  id?: number;
-  title: string;
-  description_en: string;
-  description_es?: string;
-  description_fr?: string;
-  tech: string[];
-  link?: string;
-  github?: string;
-  image?: string;
-  order: number;
-}
+import PageLoader from "../components/ui/PageLoader";
 
 const Projects: React.FC = () => {
   const { t, locale } = useTranslation();
@@ -24,19 +14,10 @@ const Projects: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/v1/projects");
-        if (response.ok) {
-          setItems(await response.json());
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    fetchPublic<ProjectData[]>("/projects")
+      .then(setItems)
+      .catch((err) => console.error("Failed to fetch projects data:", err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const getLocalized = (item: ProjectData, key: "description") => {
@@ -47,13 +28,12 @@ const Projects: React.FC = () => {
     );
   };
 
-  if (isLoading)
-    return <div className="p-8 animate-pulse text-text">Loading...</div>;
+  if (isLoading) return <PageLoader variant="cards" />;
 
   return (
     <section className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
       <SEO title={t.nav.projects} />
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto animate-fade-in">
         <h1 className="text-3xl md:text-4xl font-bold text-text-header mb-8">
           {t.projects.title}
         </h1>
