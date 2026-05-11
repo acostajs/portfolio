@@ -11,9 +11,15 @@
   - [x] Remove `mocks.ts` and unused `PageContent` models.
   - [x] Centralize `Project` and `Experience` types in `types/cms.ts`.
   - [x] Fix i18n violations in Admin section (ZERO Static Text).
-- [ ] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
+- [x] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [x] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths and chat feedback.
-- [ ] **Performance Monitoring**: Set up automated Lighthouse CI checks.
+- [x] **Performance Monitoring**: Set up automated Lighthouse CI checks.
+- [ ] **Performance Optimization (Target 95+)**:
+  - [ ] **Code Splitting**: Implement dynamic imports for heavy routes and components (e.g., `react-syntax-highlighter`, `framer-motion`).
+  - [ ] **Dependency Audit**: Reduce bundle size (currently ~1.9MB) by replacing or optimizing heavy libraries.
+  - [ ] **Asset Compression**: Optimize `hero.png` and PDF resumes for web delivery.
+  - [ ] **Resource Priority**: Implement preloading for critical fonts and the Mesh Gradient background.
+  - [ ] **Bundle Analysis**: Integrate `rollup-plugin-visualizer` to identify and eliminate duplicate or unnecessary dependencies.
 
 ## ✅ Archive (Completed)
 

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
+import Playground from "../blog/Playground";
 
 const theme = vscDarkPlus as unknown as {
   [key: string]: React.CSSProperties;
@@ -103,6 +104,13 @@ const BotMessage: React.FC<BotMessageProps> = ({
               code({ node, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "");
                 const isInline = !match;
+
+                if (match?.[1] === "react-playground") {
+                  return (
+                    <Playground code={String(children).replace(/\n$/, "")} />
+                  );
+                }
+
                 return !isInline ? (
                   <SyntaxHighlighter
                     style={theme}
@@ -130,7 +138,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4"
             >
-              <p className="text-sm text-text font-semibold uppercase tracking-wider opacity-70">
+              <p className="text-sm text-text-muted font-semibold uppercase tracking-wider">
                 {subwelcome}
               </p>
               {showFeatures && features && features.length > 0 && (
@@ -168,7 +176,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
         {/* Feedback Buttons */}
         {!isInitial && (
           <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-            <p className="text-[10px] text-text opacity-40 uppercase tracking-widest font-bold">
+            <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">
               {feedbackGiven ? t.home.feedbackSuccess : "Was this helpful?"}
             </p>
             <div className="flex items-center gap-2">
@@ -190,14 +198,14 @@ const BotMessage: React.FC<BotMessageProps> = ({
                   >
                     <button
                       onClick={() => handleFeedback(true)}
-                      className="p-1.5 text-text opacity-40 hover:opacity-100 hover:text-success hover:bg-success/10 rounded-lg transition-all"
+                      className="p-1.5 text-text-muted hover:text-success hover:bg-success/10 rounded-lg transition-all"
                       title={t.home.helpful}
                     >
                       <ThumbsUp className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleFeedback(false)}
-                      className="p-1.5 text-text opacity-40 hover:opacity-100 hover:text-error hover:bg-error/10 rounded-lg transition-all"
+                      className="p-1.5 text-text-muted hover:text-error hover:bg-error/10 rounded-lg transition-all"
                       title={t.home.notHelpful}
                     >
                       <ThumbsDown className="w-3.5 h-3.5" />

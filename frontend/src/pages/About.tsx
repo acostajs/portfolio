@@ -61,7 +61,7 @@ const About: React.FC = () => {
         </section>
 
         <section className="pt-8">
-          <h2 className="text-xl font-bold text-text-header uppercase tracking-widest mb-6 opacity-70">
+          <h2 className="text-xl font-bold text-text-header uppercase tracking-widest mb-6 text-text-muted">
             {t.about.skillsTitle}
           </h2>
           <div className="flex flex-wrap gap-2">

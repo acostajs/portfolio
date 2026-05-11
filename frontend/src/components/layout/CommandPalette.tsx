@@ -244,7 +244,7 @@ const CommandPalette: React.FC = () => {
                 className="flex-1 bg-transparent border-none outline-none text-text-header placeholder:text-text/40 text-lg"
               />
               <div className="flex items-center space-x-1">
-                <kbd className="px-2 py-1 bg-white/10 border border-border rounded text-[10px] font-mono text-text opacity-70">
+                <kbd className="px-2 py-1 bg-white/10 border border-border rounded text-[10px] font-mono text-text-muted">
                   ESC
                 </kbd>
               </div>
@@ -255,7 +255,7 @@ const CommandPalette: React.FC = () => {
               {filteredCommands.length > 0 ? (
                 sections.map((section) => (
                   <div key={section}>
-                    <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-text opacity-40">
+                    <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-text-muted">
                       {section}
                     </div>
                     {filteredCommands
@@ -302,7 +302,7 @@ const CommandPalette: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-3 border-t border-border bg-white/5 flex items-center justify-between text-[10px] text-text opacity-50 font-medium">
+            <div className="px-4 py-3 border-t border-border bg-white/5 flex items-center justify-between text-[10px] text-text-muted font-medium">
               <div className="flex items-center space-x-4">
                 <span className="flex items-center">
                   <kbd className="px-1.5 py-0.5 bg-white/10 border border-border rounded mr-1.5 font-mono">

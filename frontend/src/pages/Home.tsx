@@ -443,7 +443,7 @@ const Home: React.FC = () => {
                 className="absolute bottom-full left-0 w-full mb-4 bg-bg border border-border rounded-2xl shadow-2xl overflow-hidden z-50"
               >
                 <div className="px-4 py-2 border-b border-border bg-white/5">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text opacity-40">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
                     {input.startsWith("/") ? "Commands" : "Suggestions"}
                   </span>
                 </div>
