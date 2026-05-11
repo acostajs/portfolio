@@ -3,7 +3,8 @@ from httpx import AsyncClient
 from sqlmodel import Session, select
 from seed import seed
 from models import About, Experience, Project, BlogPost, ChatTriggerResponse
-from database import engine
+from database import create_db_and_tables
+from conftest import test_engine as engine
 
 
 @pytest.mark.asyncio
@@ -14,7 +15,10 @@ async def test_health_endpoint(client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_seed_functionality():
+async def test_seed_functionality(monkeypatch):
+    # Ensure tables exist on the test engine
+    create_db_and_tables()
+    
     # Run seed
     seed()
 

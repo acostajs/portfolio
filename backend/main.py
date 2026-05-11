@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import BackgroundTasks, FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlmodel import Session, select, desc, col
 
 from config import settings
@@ -51,7 +51,6 @@ async def lifespan(app: FastAPI):
 
 
 # --- Models ---
-from pydantic import BaseModel, Field
 
 
 class ChatMessageBase(BaseModel):
@@ -159,7 +158,7 @@ def find_trigger_match(
             score = fuzz.token_set_ratio(trigger_lower, user_message_lower)
             if score >= threshold:
                 return item
-            
+
             # 2.2 partial_ratio: handles typo-ed keyword in sentence
             # Only for triggers >= 4 chars to avoid false positives for very short words
             if len(trigger_lower) >= 4:
