@@ -108,10 +108,11 @@ async def test_trigger_priority(client: AsyncClient, db_session: Session):
     db_session.add(t1)
     db_session.add(t2)
     db_session.commit()
-    
+
     # Message "react development" matches both "react" and "react development"
     response = await client.post(
-        "/api/v1/chat", json={"message": "tell me about react development", "language": "en"}
+        "/api/v1/chat",
+        json={"message": "tell me about react development", "language": "en"},
     )
     # Should pick t1 because it was added first (lower ID)
     assert response.json()["reply"] == "High Priority"
@@ -164,7 +165,7 @@ async def test_language_answer_fallback(client: AsyncClient, db_session: Session
         category="test",
         triggers=["secret"],
         answers_en=["I have no secrets."],
-        answers_es=[], # Empty answers for Spanish
+        answers_es=[],  # Empty answers for Spanish
         answers_fr=["Je n'ai pas de secrets."],
     )
     db_session.add(trigger)
@@ -178,4 +179,5 @@ async def test_language_answer_fallback(client: AsyncClient, db_session: Session
     assert response.json()["reply"] != "I have no secrets."
     # It should be one of the fallbacks
     from responses import fallback
+
     assert response.json()["reply"] in fallback.data["answers"]["es"]
