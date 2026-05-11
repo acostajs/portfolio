@@ -1,8 +1,13 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./frontend/dist",
-      "url": ["/", "/about", "/projects", "/blog"],
+      "startServerCommand": "bun run --cwd frontend preview",
+      "url": [
+        "http://localhost:4173/",
+        "http://localhost:4173/about",
+        "http://localhost:4173/projects",
+        "http://localhost:4173/blog"
+      ],
       "numberOfRuns": 3
     },
     "assert": {
