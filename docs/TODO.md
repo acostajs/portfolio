@@ -1,6 +1,6 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Post-Launch & Scaling (0.1.7)
+## 🎯 Current Version: Performance & Security Hardening (0.1.7)
 
 - [x] **Audit Remediation: Security & Architecture**:
   - [x] Secure public `/api/v1/chat/history` endpoint.
@@ -14,12 +14,38 @@
 - [x] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [x] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths and chat feedback.
 - [x] **Performance Monitoring**: Set up automated Lighthouse CI checks.
-- [ ] **Performance Optimization (Target 95+)**:
-  - [ ] **Code Splitting**: Implement dynamic imports for heavy routes and components (e.g., `react-syntax-highlighter`, `framer-motion`).
-  - [ ] **Dependency Audit**: Reduce bundle size (currently ~1.9MB) by replacing or optimizing heavy libraries.
-  - [ ] **Asset Compression**: Optimize `hero.png` and PDF resumes for web delivery.
-  - [ ] **Resource Priority**: Implement preloading for critical fonts and the Mesh Gradient background.
-  - [ ] **Bundle Analysis**: Integrate `rollup-plugin-visualizer` to identify and eliminate duplicate or unnecessary dependencies.
+- [x] **Performance Optimization (Target 95+)**:
+  - [x] **Code Splitting**: Implement `React.lazy()` for `BlogManager` and `BotMessage` to reduce 1.9MB bundle.
+  - [x] **Dependency Audit**: Analyze bundle with `rollup-plugin-visualizer`.
+  - [x] **Asset Compression**: Optimize `hero.png` and PDF resumes.
+  - [x] **Resource Priority**: Preload critical fonts and the `hero.png` asset.
+- [x] **Security & DX Hardening**:
+  - [x] Rename `password` parameter to `admin_token` in `main.py` and `auth.py`.
+  - [x] Implement `prefers-reduced-motion` in `MeshBackground.tsx`.
+  - [x] [Contract: 2026-05-11-v0.1.7-hardening.md](contracts/2026-05-11-v0.1.7-hardening.md)
+
+## 🚀 Version 0.1.8: Cloud Infrastructure & Storage
+
+- [ ] **Google Cloud Storage Integration**:
+  - [ ] Setup Google Cloud Project and Service Account.
+  - [ ] Integrate **Google API Client** in backend to handle project image uploads.
+  - [ ] Replace local filesystem storage in `admin.py` with GCS buckets to bypass Vercel's read-only FS.
+  - [ ] Update frontend to fetch images from GCS signed URLs or public buckets.
+- [ ] **Environment Hardening**:
+  - [ ] Migrate all Google credentials to Vercel encrypted environment variables.
+  - [ ] Implement secret rotation policy for Admin passwords.
+
+## 🏗️ Version 0.1.9: Advanced Architecture & Scalability
+
+- [ ] **Robust Data Seeding**:
+  - [ ] Refactor `seed.py` to use an **Upsert (Update-or-Insert)** pattern.
+  - [ ] Enable updating existing CMS records via seed script without wiping the database.
+- [ ] **Backend NLU Optimization**:
+  - [ ] Implement a **Two-Tier Matching System** for chatbot triggers.
+  - [ ] Use a hash-map for exact keyword matches before falling back to `rapidfuzz`.
+- [ ] **Frontend Lazy Loading**:
+  - [ ] Migrate `BotMessage.tsx` to lazy load `SyntaxHighlighter` and `ReactMarkdown`.
+  - [ ] Implement skeleton loaders for CMS-driven sections (Projects, Experience).
 
 ## ✅ Archive (Completed)
 

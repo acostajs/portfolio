@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
-import Playground from "../blog/Playground";
+import { Skeleton } from "../ui/Skeleton";
 
-const theme = vscDarkPlus as unknown as {
-  [key: string]: React.CSSProperties;
-};
+const MarkdownRenderer = lazy(() => import("./MarkdownRenderer"));
 
 interface BotMessageProps {
   content: string;
@@ -95,40 +89,18 @@ const BotMessage: React.FC<BotMessageProps> = ({
           className="w-full h-full grayscale"
         />
       </motion.div>
-      <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm">
-        <div className="text-text-header font-medium mb-4 leading-relaxed markdown-content">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              code({ node, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || "");
-                const isInline = !match;
-
-                if (match?.[1] === "react-playground") {
-                  return (
-                    <Playground code={String(children).replace(/\n$/, "")} />
-                  );
-                }
-
-                return !isInline ? (
-                  <SyntaxHighlighter
-                    style={theme}
-                    language={match[1]}
-                    PreTag="div"
-                  >
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-            }}
+      <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm w-full">
+        <div className="text-text-header font-medium mb-4 leading-relaxed markdown-content min-h-[1.5em]">
+          <Suspense
+            fallback={
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
+            }
           >
-            {displayedContent}
-          </ReactMarkdown>
+            <MarkdownRenderer content={displayedContent} />
+          </Suspense>
         </div>
 
         <AnimatePresence>

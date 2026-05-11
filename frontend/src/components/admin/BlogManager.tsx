@@ -15,7 +15,7 @@ const BlogManager: React.FC = () => {
     try {
       const response = await fetch("/api/v1/admin/blog", {
         headers: {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
       });
       if (response.ok) {
@@ -48,7 +48,7 @@ const BlogManager: React.FC = () => {
         method,
         headers: {
           "Content-Type": "application/json",
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
         body: JSON.stringify(editingItem),
       });
@@ -69,7 +69,7 @@ const BlogManager: React.FC = () => {
       const response = await fetch(`/api/v1/admin/blog/${id}`, {
         method: "DELETE",
         headers: {
-          "X-Admin-Password": localStorage.getItem("admin-token") || "",
+          "X-Admin-Token": localStorage.getItem("admin-token") || "",
         },
       });
       if (response.ok) {

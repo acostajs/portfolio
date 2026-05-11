@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const MeshBackground: React.FC = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handler = (e: MediaQueryListEvent) =>
+      setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
       <div className="absolute inset-0 bg-bg transition-colors duration-300" />
 
       {/* Primary Blob */}
       <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, 100, 0],
-          y: [0, 50, 0],
-        }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                scale: [1, 1.2, 1],
+                x: [0, 100, 0],
+                y: [0, 50, 0],
+              }
+        }
         transition={{
           duration: 20,
           repeat: Infinity,
@@ -23,11 +40,15 @@ const MeshBackground: React.FC = () => {
 
       {/* Secondary Blob */}
       <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, -80, 0],
-          y: [0, 100, 0],
-        }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                scale: [1, 1.3, 1],
+                x: [0, -80, 0],
+                y: [0, 100, 0],
+              }
+        }
         transition={{
           duration: 25,
           repeat: Infinity,
@@ -38,11 +59,15 @@ const MeshBackground: React.FC = () => {
 
       {/* Tertiary Blob */}
       <motion.div
-        animate={{
-          scale: [1.2, 1, 1.2],
-          x: [0, 50, 0],
-          y: [0, -100, 0],
-        }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                scale: [1.2, 1, 1.2],
+                x: [0, 50, 0],
+                y: [0, -100, 0],
+              }
+        }
         transition={{
           duration: 18,
           repeat: Infinity,

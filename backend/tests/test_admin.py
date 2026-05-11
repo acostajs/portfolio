@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-ADMIN_HEADERS = {"X-Admin-Password": "testpass"}
+ADMIN_HEADERS = {"X-Admin-Token": "testpass"}
 
 
 @pytest.mark.asyncio

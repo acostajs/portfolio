@@ -221,7 +221,7 @@ async def chat_feedback(request: FeedbackRequest, background_tasks: BackgroundTa
 
 # Optional: Endpoint to retrieve history as mentioned in API.md
 @app.get("/api/v1/chat/history")
-async def get_chat_history(password: str = Depends(verify_admin_password)):
+async def get_chat_history(admin_token: str = Depends(verify_admin_password)):
     with Session(engine) as session:
         statement = select(ChatMessage).order_by(desc(ChatMessage.timestamp)).limit(50)
         results = session.exec(statement).all()
