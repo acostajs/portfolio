@@ -7,7 +7,7 @@ os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 os.environ["ADMIN_PASSWORD"] = "testpass"
 os.environ["ENVIRONMENT"] = "testing"
 
-from database import engine, create_db_and_tables
+from database import create_db_and_tables
 from main import app
 from sqlmodel import Session, create_engine
 from cache import clear_trigger_cache
