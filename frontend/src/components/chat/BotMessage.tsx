@@ -149,7 +149,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
         {!isInitial && (
           <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
             <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">
-              {feedbackGiven ? t.home.feedbackSuccess : "Was this helpful?"}
+              {feedbackGiven ? t.home.feedbackSuccess : t.home.wasThisHelpful}
             </p>
             <div className="flex items-center gap-2">
               <AnimatePresence mode="wait">

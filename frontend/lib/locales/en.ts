@@ -28,6 +28,7 @@ export const en = {
     newChat: "New Chat",
     helpful: "Helpful",
     notHelpful: "Not Helpful",
+    wasThisHelpful: "Was this helpful?",
     feedbackSuccess: "Thank you for your feedback!",
     features: [],
     closing:

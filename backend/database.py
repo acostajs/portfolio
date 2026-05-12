@@ -26,6 +26,21 @@ else:
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
+    # Manual migration for chatfeedback columns if they are missing
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(engine)
+    columns = [c["name"] for c in inspector.get_columns("chatfeedback")]
+    if "module" not in columns:
+        with Session(engine) as session:
+            session.execute(text("ALTER TABLE chatfeedback ADD COLUMN module VARCHAR"))
+            session.commit()
+    if "category" not in columns:
+        with Session(engine) as session:
+            session.execute(
+                text("ALTER TABLE chatfeedback ADD COLUMN category VARCHAR")
+            )
+            session.commit()
 
 
 def get_session() -> Generator[Session, None, None]:

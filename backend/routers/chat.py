@@ -42,22 +42,21 @@ class ChatResponse(BaseModel):
 
 
 class FeedbackRequest(BaseModel):
-    user_message: str = Field(..., max_length=1000)
-    assistant_reply: str = Field(..., max_length=5000)
+    user_message: str = Field(..., max_length=2000)
+    assistant_reply: str = Field(..., max_length=10000)
     is_helpful: bool
     module: Optional[str] = None
     category: Optional[str] = None
 
 
 # --- Background Tasks ---
-def save_chat_interaction(user_msg: str):
+def save_chat_interaction(role: str, content: str):
     try:
         with Session(engine) as session:
-            # Only save the user message to streamline database usage
-            user_entry = ChatMessage(role="user", content=user_msg)
-            session.add(user_entry)
+            msg_entry = ChatMessage(role=role, content=content)
+            session.add(msg_entry)
             session.commit()
-            logger.info("User chat message saved to database")
+            logger.info(f"Chat message ({role}) saved to database")
     except Exception as e:
         logger.error(f"Failed to save chat interaction: {e}")
 
@@ -166,7 +165,9 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
         module = "fallback"
 
     # Save user message to history in background
-    background_tasks.add_task(save_chat_interaction, request.message)
+    background_tasks.add_task(save_chat_interaction, "user", user_message)
+    # Save assistant reply to history in background
+    background_tasks.add_task(save_chat_interaction, "assistant", reply)
 
     return ChatResponse(reply=reply, module=module, category=category)
 

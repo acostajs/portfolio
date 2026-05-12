@@ -247,14 +247,17 @@ async def test_admin_chat_triggers_crud(client: AsyncClient):
 async def test_admin_analytics(client: AsyncClient, db_session: Session):
     # Seed some data
     from models import ChatFeedback, ChatMessage
+
     db_session.add(ChatMessage(role="user", content="hello"))
-    db_session.add(ChatFeedback(
-        user_message="hello",
-        assistant_reply="Hi!",
-        is_helpful=True,
-        module="greetings",
-        category="welcome"
-    ))
+    db_session.add(
+        ChatFeedback(
+            user_message="hello",
+            assistant_reply="Hi!",
+            is_helpful=True,
+            module="greetings",
+            category="welcome",
+        )
+    )
     db_session.commit()
 
     response = await client.get(

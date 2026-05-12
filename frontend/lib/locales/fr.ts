@@ -30,6 +30,7 @@ export const fr: TranslationType = {
     newChat: "Nouveau Chat",
     helpful: "Utile",
     notHelpful: "Pas utile",
+    wasThisHelpful: "Était-ce utile ?",
     feedbackSuccess: "Merci pour votre avis !",
     features: [],
     closing:

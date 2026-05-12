@@ -29,7 +29,8 @@ export const es: TranslationType = {
     chatbotPlaceholder: "Pregúntame sobre mis habilidades, proyectos...",
     newChat: "Nuevo Chat",
     helpful: "Útil",
-    notHelpful: "No útil",
+    notHelpful: "No es útil",
+    wasThisHelpful: "¿Fue útil?",
     feedbackSuccess: "¡Gracias por tus comentarios!",
     features: [],
     closing:
