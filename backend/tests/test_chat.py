@@ -21,7 +21,10 @@ async def test_chat_trigger_match(client: AsyncClient, db_session: Session):
         "/api/v1/chat", json={"message": "hello", "language": "en"}
     )
     assert response.status_code == 200
-    assert response.json()["reply"] == "Hi there!"
+    data = response.json()
+    assert data["reply"] == "Hi there!"
+    assert data["module"] == "test"
+    assert data["category"] == "test"
 
 
 @pytest.mark.asyncio
@@ -31,7 +34,9 @@ async def test_chat_fallback(client: AsyncClient):
         "/api/v1/chat", json={"message": "unknown query", "language": "en"}
     )
     assert response.status_code == 200
-    assert "reply" in response.json()
+    data = response.json()
+    assert "reply" in data
+    assert data["module"] == "fallback"
 
 
 @pytest.mark.asyncio
@@ -93,10 +98,28 @@ async def test_chat_language_selection(client: AsyncClient, db_session: Session)
 
 
 @pytest.mark.asyncio
-async def test_chat_feedback(client: AsyncClient):
-    response = await client.post(
-        "/api/v1/chat/feedback",
-        json={"user_message": "hello", "assistant_reply": "Hi!", "is_helpful": True},
-    )
+async def test_chat_feedback(client: AsyncClient, db_session: Session):
+    feedback_data = {
+        "user_message": "hello",
+        "assistant_reply": "Hi!",
+        "is_helpful": False,
+        "module": "greetings",
+        "category": "welcome",
+    }
+    response = await client.post("/api/v1/chat/feedback", json=feedback_data)
     assert response.status_code == 200
     assert response.json() == {"status": "success"}
+
+    # Verify storage
+    from models import ChatFeedback
+    from sqlmodel import select
+    import asyncio
+
+    await asyncio.sleep(0.1)  # Brief wait for background task
+
+    statement = select(ChatFeedback).where(ChatFeedback.user_message == "hello")
+    result = db_session.exec(statement).first()
+    assert result is not None
+    assert result.is_helpful is False
+    assert result.module == "greetings"
+    assert result.category == "welcome"

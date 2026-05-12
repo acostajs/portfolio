@@ -14,6 +14,8 @@ interface Message {
   content: string;
   isInitial?: boolean;
   shouldAnimate?: boolean;
+  module?: string;
+  category?: string;
 }
 
 const Home: React.FC = () => {
@@ -239,7 +241,7 @@ const Home: React.FC = () => {
           language: string;
           history: { role: string; content: string }[];
         },
-        { reply: string }
+        { reply: string; module?: string; category?: string }
       >("/chat", {
         message: userMessage,
         language: locale,
@@ -251,7 +253,12 @@ const Home: React.FC = () => {
 
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.reply, shouldAnimate: true },
+        {
+          role: "assistant",
+          content: data.reply,
+          module: data.module,
+          category: data.category,
+        },
       ]);
 
       if (isVoiceEnabled) {
@@ -317,12 +324,16 @@ const Home: React.FC = () => {
     isHelpful: boolean,
     userMessage: string,
     assistantReply: string,
+    module?: string,
+    category?: string,
   ) => {
     try {
       await postPublic("/chat/feedback", {
         user_message: userMessage,
         assistant_reply: assistantReply,
         is_helpful: isHelpful,
+        module,
+        category,
       });
     } catch (error) {
       console.error("Feedback error:", error);
@@ -364,7 +375,13 @@ const Home: React.FC = () => {
                     onFeedback={(isHelpful) => {
                       const userMsg =
                         idx > 0 ? messages[idx - 1].content : "initial";
-                      handleFeedback(isHelpful, userMsg, msg.content);
+                      handleFeedback(
+                        isHelpful,
+                        userMsg,
+                        msg.content,
+                        msg.module,
+                        msg.category,
+                      );
                     }}
                   />
                 ) : (

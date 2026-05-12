@@ -39,6 +39,29 @@ const AnalyticsManager: React.FC = () => {
   const helpfulRatio =
     feedback.length > 0 ? (helpfulCount / feedback.length) * 100 : 0;
 
+  // Feedback analysis by module
+  const moduleFeedback = feedback.reduce(
+    (acc, f) => {
+      const key = f.module || "unknown";
+      if (!acc[key]) acc[key] = { helpful: 0, unhelpful: 0 };
+      if (f.is_helpful) acc[key].helpful++;
+      else acc[key].unhelpful++;
+      return acc;
+    },
+    {} as Record<string, { helpful: number; unhelpful: number }>,
+  );
+
+  const weakestModules = Object.entries(moduleFeedback)
+    .map(([module, stats]) => ({
+      module,
+      unhelpfulRatio:
+        (stats.unhelpful / (stats.helpful + stats.unhelpful)) * 100,
+      total: stats.helpful + stats.unhelpful,
+      unhelpful: stats.unhelpful,
+    }))
+    .filter((m) => m.unhelpful > 0)
+    .sort((a, b) => b.unhelpfulRatio - a.unhelpfulRatio);
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -68,6 +91,51 @@ const AnalyticsManager: React.FC = () => {
           color={helpfulRatio >= 80 ? "accent" : "error"}
         />
       </div>
+
+      {/* Weakest Modules Alert */}
+      {weakestModules.length > 0 && (
+        <section
+          className="bg-error/5 border border-error/20 rounded-3xl p-6 space-y-4"
+          aria-labelledby="improvement-areas-title"
+        >
+          <h3
+            id="improvement-areas-title"
+            className="text-lg font-bold text-error flex items-center gap-2"
+          >
+            <ThumbsDown className="w-5 h-5" aria-hidden="true" />
+            Areas for Improvement
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {weakestModules.slice(0, 6).map((m) => (
+              <div
+                key={m.module}
+                className="bg-white/5 border border-border/50 p-4 rounded-2xl flex justify-between items-center hover:bg-white/10 transition-colors"
+                role="status"
+              >
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-text opacity-50 mb-1">
+                    {m.module}
+                  </p>
+                  <p className="text-xl font-bold text-text-header tabular-nums">
+                    {m.unhelpfulRatio.toFixed(0)}%
+                    <span className="text-[10px] text-text opacity-40 ml-2 font-normal uppercase tracking-wider">
+                      negative
+                    </span>
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] text-text opacity-40 uppercase font-bold tracking-widest">
+                    Count
+                  </p>
+                  <p className="text-sm font-bold text-error tabular-nums">
+                    {m.unhelpful} / {m.total}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Messages */}

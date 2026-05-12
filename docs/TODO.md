@@ -1,6 +1,24 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: Advanced Architecture & Scalability (0.1.9)
+## 🎯 Current Version: System Hardening & Final Polish (0.2.0)
+
+- [x] **FastAPI Architectural Refactoring**:
+  - [x] **Dependency Injection**: Refactor all routes to use `Depends(get_session)` for database sessions instead of manual context managers.
+  - [x] **Modular Routers**: Split the monolith `admin.py` into a modular structure: `backend/routers/admin/` (e.g., `projects.py`, `blog.py`, `chat.py`).
+- [x] **Feedback & Analytics Expansion**:
+  - [x] **Enhanced Feedback Tracking**: Ensure `ChatFeedback` records are fully linked to specific assistant responses and categorized by "Negative" vs "Positive".
+  - [x] **Analytics Visualization**: Update the Admin Analytics dashboard to display trends for negative feedback to identify weak NLU triggers.
+- [x] **Contact Form Fixes**:
+  - [x] **Email Delivery**: Troubleshoot and fix the Web3Forms integration to ensure submissions are successfully delivered to the target email address.
+- [x] **Image Workflow Completion**:
+  - [x] **Storage Sync**: Verify that the Google Drive URL returned after upload is correctly persisted in the `Project` record.
+  - [x] **Frontend Integration**: Ensure `ProjectCard.tsx` and related components use the database-stored Drive URL for rendering.
+- [x] **CI/CD Hardening**:
+  - [x] **Lighthouse CI**: Fix `.lighthouserc.json` and GitHub Actions workflow to ensure Lighthouse checks pass reliably in the CI pipeline.
+
+## ✅ Archive (Completed)
+
+### Version 0.1.9: Advanced Architecture & Scalability
 
 - [x] **Robust Data Seeding**:
   - [x] Refactor `seed.py` to use an **Upsert (Update-or-Insert)** pattern.
@@ -18,8 +36,6 @@
   - [x] **Debug Cleanup**: Remove all remaining `console.log` statements and debug artifacts from the production codebase.
   - [x] **Code Quality**: Fixed `ProgressiveImage` hook dependency and unused vars in `useSpeech`.
   - [x] **Backend Formatting**: Standardized codebase with Ruff.
-
-## ✅ Archive (Completed)
 
 ### Version 0.1.8: Cloud Infrastructure & Storage
 

@@ -169,16 +169,28 @@ const BotMessage: React.FC<BotMessageProps> = ({
                     className="flex items-center gap-2"
                   >
                     <button
-                      onClick={() => handleFeedback(true)}
-                      className="p-1.5 text-text-muted hover:text-success hover:bg-success/10 rounded-lg transition-all"
+                      onClick={() => {
+                        handleFeedback(true);
+                        import("../../../lib/haptic").then(
+                          ({ hapticFeedback }) => hapticFeedback(10),
+                        );
+                      }}
+                      className="p-1.5 text-text-muted hover:text-success hover:bg-success/10 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-success"
                       title={t.home.helpful}
+                      aria-label={t.home.helpful}
                     >
                       <ThumbsUp className="w-3.5 h-3.5" />
                     </button>
                     <button
-                      onClick={() => handleFeedback(false)}
-                      className="p-1.5 text-text-muted hover:text-error hover:bg-error/10 rounded-lg transition-all"
+                      onClick={() => {
+                        handleFeedback(false);
+                        import("../../../lib/haptic").then(
+                          ({ hapticFeedback }) => hapticFeedback(10),
+                        );
+                      }}
+                      className="p-1.5 text-text-muted hover:text-error hover:bg-error/10 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-error"
                       title={t.home.notHelpful}
+                      aria-label={t.home.notHelpful}
                     >
                       <ThumbsDown className="w-3.5 h-3.5" />
                     </button>

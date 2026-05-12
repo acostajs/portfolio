@@ -31,8 +31,8 @@ def clear_cache():
 def setup_database(monkeypatch):
     # Patch the engine used in the app to use the test engine
     monkeypatch.setattr("database.engine", test_engine)
-    monkeypatch.setattr("main.engine", test_engine)
-    monkeypatch.setattr("admin.engine", test_engine)
+    # main.py no longer has engine, but routers.chat does for background tasks
+    monkeypatch.setattr("routers.chat.engine", test_engine)
     monkeypatch.setattr("seed.engine", test_engine)
     monkeypatch.setattr("cache.engine", test_engine)
 
