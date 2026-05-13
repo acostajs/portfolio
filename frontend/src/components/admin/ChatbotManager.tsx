@@ -3,6 +3,7 @@ import { Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
+import type { ChatbotResponse } from "../../types/cms";
 import TagInput from "../ui/TagInput";
 
 const ChatbotManager: React.FC = () => {
