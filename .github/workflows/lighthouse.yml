@@ -41,8 +41,8 @@ jobs:
           cd backend
           nohup uv run uvicorn main:app --port 8000 > uvicorn.log 2>&1 &
           echo "BACKEND_PID=$!" >> $GITHUB_ENV
-
           timeout 30s bash -c 'until curl -s http://localhost:8000/api/v1/health > /dev/null; do sleep 1; done'
+
         env:
           ENVIRONMENT: development
           DATABASE_URL: sqlite:///./database.db
