@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminHeader from "../components/admin/AdminHeader";
 import AdminSidebar, { type AdminTab } from "../components/admin/AdminSidebar";
 import Login from "../components/admin/Login";
@@ -9,8 +9,11 @@ import BlogManager from "../components/admin/BlogManager";
 import ChatbotManager from "../components/admin/ChatbotManager";
 import AnalyticsManager from "../components/admin/AnalyticsManager";
 import { hapticFeedback } from "../../lib/haptic";
+import { toast } from "sonner";
+import { useTranslation } from "../../lib/hooks/useTranslation";
 
 const Admin: React.FC = () => {
+  const { t } = useTranslation();
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Check if token exists.
     return !!localStorage.getItem("admin-token");
@@ -18,11 +21,12 @@ const Admin: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<AdminTab>("about");
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     hapticFeedback(20);
     setIsAuthenticated(false);
     localStorage.removeItem("admin-token");
-  };
+    toast.success(t.admin.logoutSuccess);
+  }, [t.admin.logoutSuccess]);
 
   // Verify token on mount to prevent stale sessions
   useEffect(() => {
@@ -42,7 +46,7 @@ const Admin: React.FC = () => {
       }
     };
     void verifyToken();
-  }, []);
+  }, [handleLogout]);
 
   const handleLogin = (password: string) => {
     setIsAuthenticated(true);

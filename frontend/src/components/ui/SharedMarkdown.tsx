@@ -1,20 +1,37 @@
 import React, { Suspense, lazy } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
-import { Skeleton } from "./Skeleton";
+import PageLoader from "./PageLoader";
 
-const SyntaxHighlighter = lazy(() =>
-  import("react-syntax-highlighter").then((mod) => ({
-    default: mod.Prism,
-  })),
-);
+const SyntaxHighlighter = lazy(async () => {
+  const [mod, themeMod] = await Promise.all([
+    import("react-syntax-highlighter").then((m) => m.Prism),
+    import("react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus").then(
+      (m) => m.default,
+    ),
+  ]);
+  return {
+    default: (props: Record<string, unknown>) => (
+      <SyntaxHighlighterBase {...props} style={themeMod} Prism={mod} />
+    ),
+  };
+});
+
+// A small wrapper to handle the Prism prop correctly
+interface SyntaxHighlighterBaseProps {
+  Prism: React.ElementType;
+  [key: string]: unknown;
+}
+
+const SyntaxHighlighterBase: React.FC<SyntaxHighlighterBaseProps> = ({
+  Prism,
+  ...props
+}) => {
+  const Component = Prism;
+  return <Component {...props} />;
+};
 
 const Playground = lazy(() => import("../blog/Playground"));
-
-const theme = vscDarkPlus as unknown as {
-  [key: string]: React.CSSProperties;
-};
 
 interface SharedMarkdownProps {
   content: string;
@@ -37,9 +54,7 @@ const SharedMarkdown: React.FC<SharedMarkdownProps> = ({
 
             if (match?.[1] === "react-playground") {
               return (
-                <Suspense
-                  fallback={<Skeleton className="h-[400px] w-full my-8" />}
-                >
+                <Suspense fallback={<PageLoader />}>
                   <Playground code={String(children).replace(/\n$/, "")} />
                 </Suspense>
               );
@@ -47,9 +62,8 @@ const SharedMarkdown: React.FC<SharedMarkdownProps> = ({
 
             if (!isInline) {
               return (
-                <Suspense fallback={<Skeleton className="h-20 w-full my-2" />}>
+                <Suspense fallback={<PageLoader />}>
                   <SyntaxHighlighter
-                    style={theme}
                     language={match[1]}
                     PreTag="div"
                     className="rounded-xl border border-white/5 !bg-white/5"

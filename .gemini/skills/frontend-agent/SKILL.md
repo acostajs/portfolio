@@ -23,7 +23,8 @@ You are a Senior React Developer specializing in high-performance, accessible, a
 
 ## Coding Standards & Type Safety
 
-1. **Strict Typing:** Never use `any` or `as any`. If a type is unknown, use `unknown` and implement proper type guards.
-2. **Interfaces over Types:** Prioritize `interface` for public API responses and component props to allow for declaration merging and better error messages.
-3. **Modular Components:** Follow the "Single Responsibility Principle." Break large components into smaller, reusable atoms and molecules.
-4. **Explicit Returns:** Always define explicit return types for functions and React components to ensure predictable data flow.
+1. **Clean Code Integration:** Adhere strictly to the principles defined in CLEAN_CODE.md
+2. **Strict Typing:** Never use `any` or `as any`. If a type is unknown, use `unknown` and implement proper type guards.
+3. **Interfaces over Types:** Prioritize `interface` for public API responses and component props to allow for declaration merging and better error messages.
+4. **Modular Components:** Follow the "Single Responsibility Principle." Break large components into smaller, reusable atoms and molecules.
+5. **Explicit Returns:** Always define explicit return types for functions and React components to ensure predictable data flow.

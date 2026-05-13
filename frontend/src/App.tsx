@@ -5,7 +5,7 @@ import Layout from "./components/layout/Layout";
 import { type PageId } from "./components/layout/Sidebar";
 import { useTranslation } from "../lib/hooks/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSkeleton, CardSkeleton } from "./components/ui/Skeleton";
+import PageLoader from "./components/ui/PageLoader";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -29,28 +29,9 @@ function App() {
   const activePage = getActivePage(location.pathname);
   const isHideSidebar = location.pathname.startsWith("/admin");
 
-  // Determine which skeleton to show based on the route
+  // Determine which loader to show based on the route
   const getFallback = () => {
-    if (location.pathname === "/" || location.pathname === "/home") {
-      return (
-        <div className="max-w-5xl mx-auto p-4 md:p-8 space-y-8">
-          <MessageSkeleton />
-        </div>
-      );
-    }
-    if (location.pathname === "/blog" || location.pathname === "/projects") {
-      return (
-        <div className="max-w-5xl mx-auto p-6 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CardSkeleton />
-          <CardSkeleton />
-        </div>
-      );
-    }
-    return (
-      <div className="flex-1 flex items-center justify-center p-12">
-        <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <PageLoader />;
   };
 
   return (

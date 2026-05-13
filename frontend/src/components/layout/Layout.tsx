@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import Header from "./Header";
 import Sidebar, { type PageId } from "./Sidebar";
-import MeshBackground from "./MeshBackground";
-import CommandPalette from "./CommandPalette";
+
+const MeshBackground = lazy(() => import("./MeshBackground"));
+const CommandPalette = lazy(() => import("./CommandPalette"));
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,13 +17,30 @@ const Layout: React.FC<LayoutProps> = ({
   hideSidebar = false,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <div className="flex h-dvh bg-bg transition-colors duration-300 overflow-hidden relative">
-      <CommandPalette />
+      <Suspense fallback={null}>
+        {isCommandPaletteOpen && (
+          <CommandPalette onClose={() => setIsCommandPaletteOpen(false)} />
+        )}
+      </Suspense>
       <a
         href="#main-content"
         className="absolute left-4 top-4 z-[100] px-4 py-2 bg-accent text-white rounded-lg -translate-y-[200%] focus:translate-y-0 transition-transform font-bold shadow-2xl"
@@ -30,7 +48,9 @@ const Layout: React.FC<LayoutProps> = ({
         Skip to content
       </a>
 
-      <MeshBackground />
+      <Suspense fallback={<div className="fixed inset-0 bg-bg -z-10" />}>
+        <MeshBackground />
+      </Suspense>
 
       {!hideSidebar && (
         <Sidebar

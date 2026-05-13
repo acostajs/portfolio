@@ -23,17 +23,14 @@ export const fr: TranslationType = {
   },
   home: {
     welcome:
-      "Salut ! Je suis Juan Acosta. Bienvenue sur mon portfolio ! Je suis ravi de partager mon parcours, mes projets et mon expertise technique avec vous. 👋",
-    subwelcome:
-      "N'hésitez pas à me poser des questions sur mon parcours, les technologies que j'utilise ou comment je peux aider votre équipe. Nous pouvons discuter de mon stack technique, de mes projets récents, de mon parcours professionnel ou de ma philosophie de travail.",
+      "Salut ! Je suis Juan Acosta. Bienvenue sur mon portfolio ! Je suis ravi de partager mon parcours, mes projets et mon expertise technique avec vous. N'hésitez pas à me poser des questions sur mon parcours, les technologies que j'utilise ou comment je peux aider votre équipe. Nous pouvons discuter de mon stack technique, de mes projets récents, de mon parcours professionnel ou de ma philosophie de travail. Vous pouvez également utiliser /commandes pour naviguer, ou simplement taper votre question ci-dessous. Comment puis-je vous aider aujourd'hui ?",
     chatbotPlaceholder: "Demandez-moi sur mes compétences, projets...",
     newChat: "Nouveau Chat",
     helpful: "Utile",
     notHelpful: "Pas utile",
+    wasThisHelpful: "Était-ce utile ?",
     feedbackSuccess: "Merci pour votre avis !",
     features: [],
-    closing:
-      "Vous pouvez également utiliser /commandes pour naviguer, ou simplement taper votre question ci-dessous. Comment puis-je vous aider aujourd'hui ?",
     suggestions: [
       "Quelles sont vos compétences techniques clés ?",
       "Parlez-moi de vos projets les plus récents",
@@ -116,6 +113,7 @@ export const fr: TranslationType = {
     passwordPlaceholder: "Mot de passe",
     loginButton: "Connexion",
     logoutButton: "Déconnexion",
+    logoutSuccess: "Déconnexion réussie",
     dashboardTitle: "Tableau de bord CMS",
     tabs: {
       about: "À propos",
@@ -135,6 +133,7 @@ export const fr: TranslationType = {
       add: "Ajouter nouveau",
       update: "Mettre à jour",
       create: "Créer",
+      refresh: "Actualiser",
       published: "Publié",
       draft: "Brouillon",
       confirmDelete: "Êtes-vous sûr de vouloir supprimer cet élément ?",

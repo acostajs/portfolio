@@ -19,7 +19,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ onLogout }) => {
       </div>
       <button
         onClick={onLogout}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-text hover:text-error transition-colors"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-text hover:bg-error/10 hover:text-error active:scale-95 transition-all rounded-lg"
       >
         <LogOut className="w-4 h-4" />
         {t.admin.logoutButton}

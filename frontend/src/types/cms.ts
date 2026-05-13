@@ -73,6 +73,8 @@ export interface ChatFeedback {
   user_message: string;
   assistant_reply: string;
   is_helpful: boolean;
+  module?: string;
+  category?: string;
   timestamp: string;
 }
 

@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { MessageSquare, ThumbsUp, ThumbsDown, BarChart3 } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  MessageSquare,
+  ThumbsUp,
+  ThumbsDown,
+  BarChart3,
+  RotateCw,
+} from "lucide-react";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import type { ChatMessage, ChatFeedback } from "../../types/cms";
 
@@ -9,35 +15,59 @@ const AnalyticsManager: React.FC = () => {
   const [feedback, setFeedback] = useState<ChatFeedback[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const headers = {
-          "X-Admin-Token": localStorage.getItem("admin-token") || "",
-        };
-        const [msgRes, fbRes] = await Promise.all([
-          fetch("/api/v1/admin/analytics/messages", { headers }),
-          fetch("/api/v1/admin/analytics/feedback", { headers }),
-        ]);
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const headers = {
+        "X-Admin-Token": localStorage.getItem("admin-token") || "",
+      };
+      const [msgRes, fbRes] = await Promise.all([
+        fetch("/api/v1/admin/analytics/messages", { headers }),
+        fetch("/api/v1/admin/analytics/feedback", { headers }),
+      ]);
 
-        if (msgRes.ok) setMessages(await msgRes.json());
-        if (fbRes.ok) setFeedback(await fbRes.json());
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    void fetchData();
+      if (msgRes.ok) setMessages(await msgRes.json());
+      if (fbRes.ok) setFeedback(await fbRes.json());
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  if (isLoading)
+  useEffect(() => {
+    void Promise.resolve().then(() => fetchData());
+  }, [fetchData]);
+
+  if (isLoading && messages.length === 0)
     return <div className="text-text">{t.admin.common.loading}</div>;
 
   const helpfulCount = feedback.filter((f) => f.is_helpful).length;
   const helpfulRatio =
     feedback.length > 0 ? (helpfulCount / feedback.length) * 100 : 0;
+
+  // Feedback analysis by module
+  const moduleFeedback = feedback.reduce(
+    (acc, f) => {
+      const key = f.module || "unknown";
+      if (!acc[key]) acc[key] = { helpful: 0, unhelpful: 0 };
+      if (f.is_helpful) acc[key].helpful++;
+      else acc[key].unhelpful++;
+      return acc;
+    },
+    {} as Record<string, { helpful: number; unhelpful: number }>,
+  );
+
+  const weakestModules = Object.entries(moduleFeedback)
+    .map(([module, stats]) => ({
+      module,
+      unhelpfulRatio:
+        (stats.unhelpful / (stats.helpful + stats.unhelpful)) * 100,
+      total: stats.helpful + stats.unhelpful,
+      unhelpful: stats.unhelpful,
+    }))
+    .filter((m) => m.unhelpful > 0)
+    .sort((a, b) => b.unhelpfulRatio - a.unhelpfulRatio);
 
   return (
     <div className="space-y-8">
@@ -45,6 +75,14 @@ const AnalyticsManager: React.FC = () => {
         <h2 className="text-2xl font-bold text-text-header">
           {t.admin.analytics.title}
         </h2>
+        <button
+          onClick={() => void fetchData()}
+          disabled={isLoading}
+          className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-border rounded-xl hover:bg-white/10 transition-all text-sm font-bold text-text-header disabled:opacity-50"
+        >
+          <RotateCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+          {t.admin.common.refresh || "Refresh"}
+        </button>
       </div>
 
       {/* Stats Overview */}
@@ -68,6 +106,51 @@ const AnalyticsManager: React.FC = () => {
           color={helpfulRatio >= 80 ? "accent" : "error"}
         />
       </div>
+
+      {/* Weakest Modules Alert */}
+      {weakestModules.length > 0 && (
+        <section
+          className="bg-error/5 border border-error/20 rounded-3xl p-6 space-y-4"
+          aria-labelledby="improvement-areas-title"
+        >
+          <h3
+            id="improvement-areas-title"
+            className="text-lg font-bold text-error flex items-center gap-2"
+          >
+            <ThumbsDown className="w-5 h-5" aria-hidden="true" />
+            Areas for Improvement
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {weakestModules.slice(0, 6).map((m) => (
+              <div
+                key={m.module}
+                className="bg-white/5 border border-border/50 p-4 rounded-2xl flex justify-between items-center hover:bg-white/10 transition-colors"
+                role="status"
+              >
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-text opacity-50 mb-1">
+                    {m.module}
+                  </p>
+                  <p className="text-xl font-bold text-text-header tabular-nums">
+                    {m.unhelpfulRatio.toFixed(0)}%
+                    <span className="text-[10px] text-text opacity-40 ml-2 font-normal uppercase tracking-wider">
+                      negative
+                    </span>
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] text-text opacity-40 uppercase font-bold tracking-widest">
+                    Count
+                  </p>
+                  <p className="text-sm font-bold text-error tabular-nums">
+                    {m.unhelpful} / {m.total}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Messages */}
@@ -136,6 +219,16 @@ const AnalyticsManager: React.FC = () => {
                             ? t.admin.analytics.helpful
                             : t.admin.analytics.notHelpful}
                         </span>
+                        {f.module && (
+                          <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/10 text-text ml-2">
+                            {f.module}
+                          </span>
+                        )}
+                        {f.category && (
+                          <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-accent/10 text-accent ml-1">
+                            {f.category}
+                          </span>
+                        )}
                       </div>
                       <span className="text-[10px] text-text opacity-40">
                         {new Date(f.timestamp).toLocaleString()}

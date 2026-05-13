@@ -1,5 +1,6 @@
 import pytest
 from httpx import AsyncClient
+from sqlmodel import Session
 
 ADMIN_HEADERS = {"X-Admin-Token": "testpass"}
 
@@ -146,7 +147,7 @@ async def test_admin_projects_image_upload(client: AsyncClient):
     from unittest.mock import patch
 
     fake_url = "https://storage.googleapis.com/test/img.png"
-    with patch("admin.storage.upload_file", return_value=fake_url):
+    with patch("routers.admin.projects.storage.upload_file", return_value=fake_url):
         # Create a fake file for upload
         files = {"file": ("test.png", b"fake binary content", "image/png")}
         response = await client.post(
@@ -164,7 +165,7 @@ async def test_admin_projects_image_upload(client: AsyncClient):
     assert project["image"] == fake_url
 
     # 4. Cleanup
-    with patch("admin.storage.delete_file"):
+    with patch("routers.admin.projects.storage.delete_file"):
         await client.delete(
             f"/api/v1/admin/projects/{project_id}", headers=ADMIN_HEADERS
         )
@@ -175,7 +176,7 @@ async def test_admin_general_upload(client: AsyncClient):
     from unittest.mock import patch
 
     fake_url = "https://drive.google.com/uc?id=fake_id"
-    with patch("admin.storage.upload_file", return_value=fake_url):
+    with patch("routers.admin.uploads.storage.upload_file", return_value=fake_url):
         files = {"file": ("test.png", b"fake binary content", "image/png")}
         response = await client.post(
             "/api/v1/admin/upload",
@@ -243,13 +244,33 @@ async def test_admin_chat_triggers_crud(client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_admin_analytics(client: AsyncClient):
+async def test_admin_analytics(client: AsyncClient, db_session: Session):
+    # Seed some data
+    from models import ChatFeedback, ChatMessage
+
+    db_session.add(ChatMessage(role="user", content="hello"))
+    db_session.add(
+        ChatFeedback(
+            user_message="hello",
+            assistant_reply="Hi!",
+            is_helpful=True,
+            module="greetings",
+            category="welcome",
+        )
+    )
+    db_session.commit()
+
     response = await client.get(
         "/api/v1/admin/analytics/messages", headers=ADMIN_HEADERS
     )
     assert response.status_code == 200
+    assert len(response.json()) >= 1
 
     response = await client.get(
         "/api/v1/admin/analytics/feedback", headers=ADMIN_HEADERS
     )
     assert response.status_code == 200
+    data = response.json()
+    assert len(data) >= 1
+    assert data[0]["module"] == "greetings"
+    assert data[0]["category"] == "welcome"

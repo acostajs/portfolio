@@ -165,8 +165,11 @@ def upsert_chat_triggers(session: Session):
 
     for mod_name, mod_data in modules:
         if "categories" in mod_data:
-            for cat in mod_data["categories"]:
-                cat_name = cat.get("name") or mod_name
+            for idx, cat in enumerate(mod_data["categories"]):
+                # Use provided name, or fallback to first trigger, or module_index
+                cat_name = cat.get("name") or (
+                    cat["triggers"][0] if cat["triggers"] else f"{mod_name}_{idx}"
+                )
                 existing = session.exec(
                     select(ChatTriggerResponse).where(
                         ChatTriggerResponse.module == mod_name,

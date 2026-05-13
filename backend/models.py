@@ -15,6 +15,8 @@ class ChatFeedback(SQLModel, table=True):
     user_message: str
     assistant_reply: str
     is_helpful: bool
+    module: Optional[str] = None
+    category: Optional[str] = None
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 

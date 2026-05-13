@@ -18,7 +18,7 @@ async def test_health_endpoint(client: AsyncClient):
 async def test_seed_functionality(monkeypatch):
     # Ensure tables exist on the test engine
     create_db_and_tables()
-    
+
     # Run seed
     seed()
 

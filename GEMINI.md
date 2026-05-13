@@ -23,7 +23,7 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Version 0.1.6: SEO, Performance & Social**.
+The project is currently in **Version 0.2.1: Post-Audit Refinements**.
 
 ### Major Milestones Completed
 
@@ -35,6 +35,11 @@ The project is currently in **Version 0.1.6: SEO, Performance & Social**.
 - **Version 0.1.2-3**: Platform & Analytics, Vercel services integration, and UX refinement.
 - **Version 0.1.4**: Chatbot Intelligence & Voice Interaction (PTT, Fuzzy Matching).
 - **Version 0.1.5**: Lightweight CMS & Content Management.
+- **Version 0.1.6**: SEO, Performance & Social.
+- **Version 0.1.7-8**: Security Hardening & Cloud Storage (Google Drive Integration).
+- **Version 0.1.9**: Advanced Architecture (NLU Optimization, Lazy Loading).
+- **Version 0.2.0**: System Hardening (Dependency Injection, Router Modularization).
+- **Version 0.2.1**: Post-Audit Refinements (Asset cleanup, Dependency sync).
 
 ## Building and Running
 
