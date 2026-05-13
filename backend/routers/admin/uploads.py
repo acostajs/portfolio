@@ -1,7 +1,6 @@
 import os
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File
 import storage
-from auth import verify_admin_password
 
 router = APIRouter(prefix="/upload", tags=["admin-uploads"])
 
@@ -9,7 +8,6 @@ router = APIRouter(prefix="/upload", tags=["admin-uploads"])
 @router.post("")
 async def upload_general_image(
     file: UploadFile = File(...),
-    admin_token: str = Depends(verify_admin_password),
 ):
     """
     General purpose upload endpoint for images (e.g., used in Blog posts).

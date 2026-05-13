@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import type { ExperienceData } from "../../types/cms";
+import TagInput from "../ui/TagInput";
 
 const ExperienceManager: React.FC = () => {
   const { t } = useTranslation();
@@ -13,11 +14,7 @@ const ExperienceManager: React.FC = () => {
 
   const fetchItems = useCallback(async () => {
     try {
-      const response = await fetch("/api/v1/admin/experience", {
-        headers: {
-          "X-Admin-Token": localStorage.getItem("admin-token") || "",
-        },
-      });
+      const response = await fetch("/api/v1/experience");
       if (response.ok) {
         const json = await response.json();
         setItems(json);
@@ -191,18 +188,12 @@ const ExperienceManager: React.FC = () => {
             <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
               {t.admin.experience.tech}
             </label>
-            <input
-              value={editingItem.tech.join(", ")}
-              onChange={(e) =>
-                setEditingItem({
-                  ...editingItem,
-                  tech: e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter((s) => s),
-                })
+            <TagInput
+              tags={editingItem.tech}
+              onChange={(newTech) =>
+                setEditingItem({ ...editingItem, tech: newTech })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+              placeholder="e.g. FastAPI, Docker, AWS"
             />
           </div>
 

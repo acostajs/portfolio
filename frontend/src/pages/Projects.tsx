@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { fetchPublic } from "../../lib/api";
+import { useSuspenseFetch } from "../../lib/api";
 import type { ProjectData } from "../types/cms";
 import { ExternalLink, Link as LinkIcon, Code } from "lucide-react";
 import SEO from "../components/layout/SEO";
 import SocialShare from "../components/layout/SocialShare";
 import ProgressiveImage from "../components/chat/ProgressiveImage";
-import PageLoader from "../components/ui/PageLoader";
 
 const Projects: React.FC = () => {
   const { t, locale } = useTranslation();
-  const [items, setItems] = useState<ProjectData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchPublic<ProjectData[]>("/projects")
-      .then(setItems)
-      .catch((err) => console.error("Failed to fetch projects data:", err))
-      .finally(() => setIsLoading(false));
-  }, []);
+  const items = useSuspenseFetch<ProjectData[]>("/projects");
 
   const getLocalized = (item: ProjectData, key: "description") => {
     const localizedKey = `${key}_${locale}` as keyof ProjectData;
@@ -36,85 +27,81 @@ const Projects: React.FC = () => {
           {t.projects.title}
         </h1>
 
-        {isLoading ? (
-          <PageLoader />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {items.map((project, idx) => (
-              <article
-                key={idx}
-                aria-labelledby={`project-title-${idx}`}
-                className="group bg-white/5 border border-border rounded-2xl overflow-hidden hover:border-accent/50 transition-all flex flex-col shadow-xl backdrop-blur-sm"
-              >
-                <div className="h-48 bg-gradient-to-br from-accent/20 to-bg flex items-center justify-center relative overflow-hidden">
-                  {project.image ? (
-                    <ProgressiveImage
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <Code className="w-20 h-20 text-accent opacity-20 group-hover:scale-110 transition-transform duration-500" />
-                  )}
-                  <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {items.map((project, idx) => (
+            <article
+              key={idx}
+              aria-labelledby={`project-title-${idx}`}
+              className="group bg-white/5 border border-border rounded-2xl overflow-hidden hover:border-accent/50 transition-all flex flex-col shadow-xl backdrop-blur-sm"
+            >
+              <div className="h-48 bg-gradient-to-br from-accent/20 to-bg flex items-center justify-center relative overflow-hidden">
+                {project.image ? (
+                  <ProgressiveImage
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <Code className="w-20 h-20 text-accent opacity-20 group-hover:scale-110 transition-transform duration-500" />
+                )}
+                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              </div>
 
-                <div className="p-6 flex-1 flex flex-col">
-                  <header>
-                    <h3
-                      id={`project-title-${idx}`}
-                      className="text-xl font-bold text-text-header mb-2"
+              <div className="p-6 flex-1 flex flex-col">
+                <header>
+                  <h3
+                    id={`project-title-${idx}`}
+                    className="text-xl font-bold text-text-header mb-2"
+                  >
+                    {project.title}
+                  </h3>
+                </header>
+                <p className="text-text text-sm mb-6 leading-relaxed flex-1">
+                  {getLocalized(project, "description")}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tech.map((techItem: string) => (
+                    <span
+                      key={techItem}
+                      className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-white/5 border border-border rounded-lg text-text opacity-80"
                     >
-                      {project.title}
-                    </h3>
-                  </header>
-                  <p className="text-text text-sm mb-6 leading-relaxed flex-1">
-                    {getLocalized(project, "description")}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map((techItem: string) => (
-                      <span
-                        key={techItem}
-                        className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-white/5 border border-border rounded-lg text-text opacity-80"
-                      >
-                        {techItem}
-                      </span>
-                    ))}
-                  </div>
-
-                  <footer className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
-                    <div className="flex items-center gap-4">
-                      {project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-sm font-bold text-accent hover:underline"
-                        >
-                          <ExternalLink className="w-4 h-4 mr-1.5" />
-                          {t.projects.viewProject}
-                        </a>
-                      )}
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-sm font-bold text-text hover:text-text-header"
-                        >
-                          <LinkIcon className="w-4 h-4 mr-1.5" />
-                          {t.projects.viewGithub}
-                        </a>
-                      )}
-                    </div>
-                    <SocialShare title={project.title} url="/projects" />
-                  </footer>
+                      {techItem}
+                    </span>
+                  ))}
                 </div>
-              </article>
-            ))}
-          </div>
-        )}
+
+                <footer className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
+                  <div className="flex items-center gap-4">
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-sm font-bold text-accent hover:underline"
+                      >
+                        <ExternalLink className="w-4 h-4 mr-1.5" />
+                        {t.projects.viewProject}
+                      </a>
+                    )}
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-sm font-bold text-text hover:text-text-header"
+                      >
+                        <LinkIcon className="w-4 h-4 mr-1.5" />
+                        {t.projects.viewGithub}
+                      </a>
+                    )}
+                  </div>
+                  <SocialShare title={project.title} url="/projects" />
+                </footer>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

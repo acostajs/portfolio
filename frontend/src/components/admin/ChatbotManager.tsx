@@ -3,7 +3,7 @@ import { Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
-import type { ChatbotResponse } from "../../types/cms";
+import TagInput from "../ui/TagInput";
 
 const ChatbotManager: React.FC = () => {
   const { t } = useTranslation();
@@ -143,19 +143,12 @@ const ChatbotManager: React.FC = () => {
             <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
               {t.admin.chatbot.triggers}
             </label>
-            <textarea
-              required
-              value={editingItem.triggers.join(", ")}
-              onChange={(e) =>
-                setEditingItem({
-                  ...editingItem,
-                  triggers: e.target.value
-                    .split(",")
-                    .map((s) => s.trim().toLowerCase())
-                    .filter((s) => s),
-                })
+            <TagInput
+              tags={editingItem.triggers}
+              onChange={(newTriggers) =>
+                setEditingItem({ ...editingItem, triggers: newTriggers })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header min-h-[60px]"
+              placeholder="e.g. hello, hi, greetings"
             />
           </div>
 

@@ -1,4 +1,15 @@
+import { use } from "react";
+
 const API_BASE = "/api/v1";
+
+const promiseCache = new Map<string, Promise<unknown>>();
+
+export const useSuspenseFetch = <T>(path: string): T => {
+  if (!promiseCache.has(path)) {
+    promiseCache.set(path, fetchPublic<T>(path));
+  }
+  return use(promiseCache.get(path)! as Promise<T>);
+};
 
 export const fetchCMS = async <T>(
   path: string,

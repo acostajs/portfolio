@@ -12,6 +12,7 @@ import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import type { ProjectData } from "../../types/cms";
 import ProgressiveImage from "../chat/ProgressiveImage";
+import TagInput from "../ui/TagInput";
 
 const ProjectsManager: React.FC = () => {
   const { t } = useTranslation();
@@ -21,11 +22,7 @@ const ProjectsManager: React.FC = () => {
 
   const fetchItems = useCallback(async () => {
     try {
-      const response = await fetch("/api/v1/admin/projects", {
-        headers: {
-          "X-Admin-Token": localStorage.getItem("admin-token") || "",
-        },
-      });
+      const response = await fetch("/api/v1/projects");
       if (response.ok) {
         const json = await response.json();
         setItems(json);
@@ -287,18 +284,12 @@ const ProjectsManager: React.FC = () => {
             <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
               {t.admin.projects.tech}
             </label>
-            <input
-              value={editingItem.tech.join(", ")}
-              onChange={(e) =>
-                setEditingItem({
-                  ...editingItem,
-                  tech: e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter((s) => s),
-                })
+            <TagInput
+              tags={editingItem.tech}
+              onChange={(newTech) =>
+                setEditingItem({ ...editingItem, tech: newTech })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+              placeholder="e.g. React, Bun, Tailwind"
             />
           </div>
 

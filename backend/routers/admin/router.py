@@ -8,11 +8,15 @@ from .chat import router as chat_router
 from .analytics import router as analytics_router
 from .uploads import router as uploads_router
 
-router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
+router = APIRouter(
+    prefix="/api/v1/admin",
+    tags=["admin"],
+    dependencies=[Depends(verify_admin_password)],
+)
 
 
 @router.get("/verify")
-async def verify_admin(admin_token: str = Depends(verify_admin_password)):
+async def verify_admin():
     return {"status": "authenticated"}
 
 
