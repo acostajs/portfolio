@@ -1,6 +1,28 @@
 # Project Roadmap (TODO.md)
 
-## 🎯 Current Version: System Hardening & Final Polish (0.2.0)
+## 🎯 Current Version: Post-Audit Refinements (0.2.1)
+
+- [x] **Technical Audit & Cleanup**:
+  - [x] **Unused Asset Removal**: Deleted `Typewriter.tsx` component and `hero.png` asset.
+  - [x] **Dependency Cleanup**: Removed `google-cloud-storage` from backend.
+  - [x] **Requirements Sync**: Updated `requirements.txt` to match `pyproject.toml`.
+  - [x] **Performance Optimization**: Refactored `MeshBackground.tsx` to use CSS animations.
+- [x] **Bug Fixes**:
+  - [x] **Admin Analytics**: Added missing `refresh` translation string to prevent build failure.
+- [x] **Post-Audit Refinements**:
+  - [x] **Blog Playground Optimization**: Investigate code-splitting for `@codesandbox/sandpack-react`.
+  - [x] **Speech Recognition Removal**: Eliminated `useSpeech.ts` and associated UI logic to resolve mobile compatibility issues.
+  - [x] **Admin Logout UX**: Add hover states, click feedback, and a toast message for the admin logout action.
+- [x] **UI/UX Refinements**:
+  - [x] **Unified Loading**: Replace specific skeleton loaders with a simplified generic loading state for all pages.
+  - [x] **Typewriter Integration**: Re-implement the `Typewriter` component and integrate it into the chatbot for a more dynamic feel.
+  - [x] **Chatbot Welcome Simplification**: Consolidate the initial chatbot welcome into a single message containing all necessary information and remove the "subwelcome" component/string.
+- [x] **Quality Assurance**:
+  - [x] **Lighthouse CI**: Verified that all assertions pass (Performance >= 0.85, others >= 0.95).
+
+## ✅ Archive (Completed)
+
+### Version 0.2.0: System Hardening & Final Polish
 
 - [x] **FastAPI Architectural Refactoring**:
   - [x] **Dependency Injection**: Refactor all routes to use `Depends(get_session)` for database sessions instead of manual context managers.
@@ -15,8 +37,6 @@
   - [x] **Frontend Integration**: Ensure `ProjectCard.tsx` and related components use the database-stored Drive URL for rendering.
 - [x] **CI/CD Hardening**:
   - [x] **Lighthouse CI**: Fix `.lighthouserc.json` and GitHub Actions workflow to ensure Lighthouse checks pass reliably in the CI pipeline.
-
-## ✅ Archive (Completed)
 
 ### Version 0.1.9: Advanced Architecture & Scalability
 

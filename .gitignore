@@ -44,4 +44,7 @@ bun.lockb
 
 # Database
 *.db
-portfolio.db
+
+
+# lighthouse 
+.lighthouseci/

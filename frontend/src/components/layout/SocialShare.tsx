@@ -67,6 +67,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url, text }) => {
           onClick={() => hapticFeedback(5)}
           className={`p-2 rounded-lg bg-white/5 border border-border text-text transition-all ${link.color} hover:bg-white/10`}
           title={`Share on ${link.name}`}
+          aria-label={`Share on ${link.name}`}
         >
           <link.icon className="w-4 h-4" />
         </a>
@@ -75,6 +76,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url, text }) => {
         onClick={handleCopyLink}
         className="p-2 rounded-lg bg-white/5 border border-border text-text transition-all hover:text-accent hover:bg-white/10"
         title="Copy Link"
+        aria-label="Copy link to clipboard"
       >
         <LinkIcon className="w-4 h-4" />
       </button>
@@ -82,6 +84,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url, text }) => {
         onClick={handleNativeShare}
         className="p-2 rounded-lg bg-accent/10 border border-accent/20 text-accent transition-all hover:bg-accent/20 sm:hidden"
         title="Share"
+        aria-label="Share via system dialog"
       >
         <Share2 className="w-4 h-4" />
       </button>

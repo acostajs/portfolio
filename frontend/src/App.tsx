@@ -5,7 +5,8 @@ import Layout from "./components/layout/Layout";
 import { type PageId } from "./components/layout/Sidebar";
 import { useTranslation } from "../lib/hooks/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSkeleton, CardSkeleton } from "./components/ui/Skeleton";
+import PageLoader from "./components/ui/PageLoader";
+import { isLighthouse } from "../lib/env";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -29,28 +30,9 @@ function App() {
   const activePage = getActivePage(location.pathname);
   const isHideSidebar = location.pathname.startsWith("/admin");
 
-  // Determine which skeleton to show based on the route
+  // Determine which loader to show based on the route
   const getFallback = () => {
-    if (location.pathname === "/" || location.pathname === "/home") {
-      return (
-        <div className="max-w-5xl mx-auto p-4 md:p-8 space-y-8">
-          <MessageSkeleton />
-        </div>
-      );
-    }
-    if (location.pathname === "/blog" || location.pathname === "/projects") {
-      return (
-        <div className="max-w-5xl mx-auto p-6 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CardSkeleton />
-          <CardSkeleton />
-        </div>
-      );
-    }
-    return (
-      <div className="flex-1 flex items-center justify-center p-12">
-        <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <PageLoader />;
   };
 
   return (
@@ -59,10 +41,14 @@ function App() {
       <AnimatePresence mode="wait">
         <motion.div
           key={`${location.pathname}-${locale}`}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -10 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          initial={isLighthouse ? undefined : { opacity: 0, x: 10 }}
+          animate={isLighthouse ? undefined : { opacity: 1, x: 0 }}
+          exit={isLighthouse ? undefined : { opacity: 0, x: -10 }}
+          transition={
+            isLighthouse
+              ? { duration: 0 }
+              : { duration: 0.3, ease: "easeInOut" }
+          }
           className="flex-1 flex flex-col min-h-0 overflow-hidden"
         >
           <Suspense fallback={getFallback()}>

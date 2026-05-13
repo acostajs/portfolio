@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, create_engine, Session
 from config import settings
 
 # Default to SQLite for local development if no DATABASE_URL is provided
-sqlite_url = "sqlite:///./portfolio.db"
+sqlite_url = "sqlite:///./database.db"
 database_url = settings.DATABASE_URL or sqlite_url
 
 # connect_args={"check_same_thread": False} is required for SQLite

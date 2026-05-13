@@ -1,71 +1,42 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
-import { Skeleton } from "../ui/Skeleton";
 
-const SharedMarkdown = lazy(() => import("../ui/SharedMarkdown"));
+import { isLighthouse } from "../../../lib/env";
+import SharedMarkdown from "../ui/SharedMarkdown";
+import Typewriter from "../ui/Typewriter";
 
 interface BotMessageProps {
   content: string;
   isInitial?: boolean;
-  features?: string[];
-  subwelcome?: string;
-  closing?: string;
   skipTypewriter?: boolean;
   onFeedback?: (isHelpful: boolean) => void;
 }
 
 const BotMessage: React.FC<BotMessageProps> = ({
   content,
-  isInitial,
-  features,
-  subwelcome,
-  closing,
   skipTypewriter,
   onFeedback,
 }) => {
   const { t } = useTranslation();
-  const [displayedContent, setDisplayedContent] = useState(
-    skipTypewriter ? content : "",
-  );
-  const [showSub, setShowSub] = useState(skipTypewriter || !isInitial);
-  const [showFeatures, setShowFeatures] = useState(
-    skipTypewriter || !isInitial,
-  );
   const [feedbackGiven, setFeedbackGiven] = useState(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(
+    skipTypewriter || isLighthouse,
+  );
 
   const handleFeedback = (isHelpful: boolean) => {
     setFeedbackGiven(true);
     if (onFeedback) onFeedback(isHelpful);
   };
 
-  useEffect(() => {
-    if (skipTypewriter) return;
-
-    let i = 0;
-    const interval = setInterval(() => {
-      setDisplayedContent(content.slice(0, i));
-      i++;
-      if (i > content.length) {
-        clearInterval(interval);
-        if (isInitial) {
-          setShowSub(true);
-          // Sequential show for features after a small delay
-          setTimeout(() => setShowFeatures(true), 500);
-        }
-      }
-    }, 15);
-    return () => clearInterval(interval);
-  }, [content, isInitial, skipTypewriter]);
-
   return (
     <div className="flex items-start max-w-3xl">
       <motion.div
         initial={false}
         animate={
-          !skipTypewriter
+          !isTypingComplete
             ? {
                 scale: [1, 1.05, 1],
                 borderColor: [
@@ -90,63 +61,21 @@ const BotMessage: React.FC<BotMessageProps> = ({
         />
       </motion.div>
       <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm w-full">
-        <div className="text-text-header font-medium mb-4 leading-relaxed markdown-content min-h-[1.5em]">
-          <Suspense
-            fallback={
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-              </div>
-            }
-          >
-            <SharedMarkdown content={displayedContent} />
-          </Suspense>
+        <div className="flex flex-col space-y-6">
+          <div className="text-text-header font-medium leading-relaxed markdown-content min-h-[1.5em]">
+            {skipTypewriter || isLighthouse ? (
+              <SharedMarkdown content={content} />
+            ) : (
+              <Typewriter
+                text={content}
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )}
+          </div>
         </div>
 
-        <AnimatePresence>
-          {isInitial && showSub && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
-            >
-              <p className="text-sm text-text-muted font-semibold uppercase tracking-wider">
-                {subwelcome}
-              </p>
-              {showFeatures && features && features.length > 0 && (
-                <ul className="space-y-2">
-                  {features.map((feature, idx) => (
-                    <motion.li
-                      key={idx}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="flex items-center text-text-header"
-                    >
-                      <span className="w-1.5 h-1.5 bg-accent rounded-full mr-3 shadow-[0_0_8px_rgba(9,105,218,0.8)]"></span>
-                      {feature}
-                    </motion.li>
-                  ))}
-                </ul>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {isInitial && showFeatures && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              className="text-text mt-8 leading-relaxed italic"
-            >
-              {closing}
-            </motion.p>
-          )}
-        </AnimatePresence>
-
         {/* Feedback Buttons */}
-        {!isInitial && (
+        {isTypingComplete && (
           <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
             <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">
               {feedbackGiven ? t.home.feedbackSuccess : t.home.wasThisHelpful}

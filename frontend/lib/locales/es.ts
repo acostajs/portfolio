@@ -23,9 +23,7 @@ export const es: TranslationType = {
   },
   home: {
     welcome:
-      "¡Hola! Soy Juan Acosta. ¡Bienvenido a mi portafolio! Estoy aquí para compartir mi trayectoria, proyectos y experiencia técnica contigo. 👋",
-    subwelcome:
-      "Siéntete libre de preguntarme sobre mi formación, las tecnologías que utilizo o cómo puedo ayudar a tu equipo. Podemos hablar de mi stack técnico, proyectos recientes, mi recorrido profesional o mi filosofía de trabajo.",
+      "¡Hola! Soy Juan Acosta. ¡Bienvenido a mi portafolio! Estoy aquí para compartir mi trayectoria, proyectos y experiencia técnica contigo. Siéntete libre de preguntarme sobre mi formación, las tecnologías que utilizo o cómo puedo ayudar a tu equipo. Podemos hablar de mi stack técnico, proyectos recientes, mi recorrido profesional o mi filosofía de trabajo. También puedes usar /comandos para navegar, o simplemente escribe tu pregunta abajo. ¿Cómo puedo ayudarte hoy?",
     chatbotPlaceholder: "Pregúntame sobre mis habilidades, proyectos...",
     newChat: "Nuevo Chat",
     helpful: "Útil",
@@ -33,8 +31,6 @@ export const es: TranslationType = {
     wasThisHelpful: "¿Fue útil?",
     feedbackSuccess: "¡Gracias por tus comentarios!",
     features: [],
-    closing:
-      "También puedes usar /comandos para navegar, o simplemente escribe tu pregunta abajo. ¿Cómo puedo ayudarte hoy?",
     suggestions: [
       "¿Cuáles son tus habilidades técnicas principales?",
       "Cuéntame sobre tus proyectos más recientes",
@@ -115,6 +111,7 @@ export const es: TranslationType = {
     passwordPlaceholder: "Contraseña",
     loginButton: "Entrar",
     logoutButton: "Salir",
+    logoutSuccess: "Sesión cerrada exitosamente",
     dashboardTitle: "Panel CMS",
     tabs: {
       about: "Sobre mí",
@@ -134,6 +131,7 @@ export const es: TranslationType = {
       add: "Añadir Nuevo",
       update: "Actualizar",
       create: "Crear",
+      refresh: "Actualizar",
       published: "Publicado",
       draft: "Borrador",
       confirmDelete: "¿Estás seguro de que quieres eliminar este elemento?",

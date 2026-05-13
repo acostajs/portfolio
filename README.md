@@ -1,4 +1,4 @@
-# Multilingual Chatbot Portfolio
+# Multilingual Chatbot Portfolio (v0.2.1)
 
 An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trigger-based) chatbot assistant.
 

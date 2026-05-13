@@ -32,8 +32,6 @@ const Blog: React.FC = () => {
     return (item[k] as string) || (item[fallback] as string) || "";
   };
 
-  if (isLoading) return <PageLoader variant="cards" />;
-
   if (selectedPost) {
     const title = getLocalized(selectedPost, "title");
     const excerpt = getLocalized(selectedPost, "excerpt");
@@ -93,38 +91,49 @@ const Blog: React.FC = () => {
           <div className="h-1.5 w-20 bg-accent rounded-full mb-6" />
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {posts.map((post) => (
-            <div
-              key={post.slug}
-              className="group bg-white/5 border border-border p-8 rounded-3xl hover:border-accent transition-all duration-300 shadow-xl flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="px-3 py-1 bg-accent/10 text-accent text-[10px] font-bold uppercase tracking-widest rounded-full border border-accent/20">
-                    {post.category}
-                  </span>
-                  <span className="text-[11px] text-text opacity-60 font-medium">
-                    {post.date}
-                  </span>
-                </div>
-                <h2 className="text-2xl font-bold text-text-header mb-4 group-hover:text-accent transition-colors leading-snug">
-                  {getLocalized(post, "title")}
-                </h2>
-                <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
-                  {getLocalized(post, "excerpt")}
-                </p>
-              </div>
-              <button
-                onClick={() => setSelectedPost(post)}
-                className="flex items-center text-sm font-bold text-text-header hover:text-accent transition-all group/btn"
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <PageLoader />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {posts.map((post, idx) => (
+              <article
+                key={post.slug}
+                aria-labelledby={`blog-title-${idx}`}
+                className="group bg-white/5 border border-border p-8 rounded-3xl hover:border-accent transition-all duration-300 shadow-xl flex flex-col justify-between"
               >
-                {t.blog.readMore}
-                <ChevronRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform text-accent" />
-              </button>
-            </div>
-          ))}
-        </div>
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="px-3 py-1 bg-accent/10 text-accent text-[10px] font-bold uppercase tracking-widest rounded-full border border-accent/20">
+                      {post.category}
+                    </span>
+                    <span className="text-[11px] text-text opacity-60 font-medium">
+                      {post.date}
+                    </span>
+                  </div>
+                  <h2
+                    id={`blog-title-${idx}`}
+                    className="text-2xl font-bold text-text-header mb-4 group-hover:text-accent transition-colors leading-snug"
+                  >
+                    {getLocalized(post, "title")}
+                  </h2>
+                  <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
+                    {getLocalized(post, "excerpt")}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedPost(post)}
+                  className="flex items-center text-sm font-bold text-text-header hover:text-accent transition-all group/btn"
+                  aria-label={`${t.blog.readMore}: ${getLocalized(post, "title")}`}
+                >
+                  {t.blog.readMore}
+                  <ChevronRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform text-accent" />
+                </button>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

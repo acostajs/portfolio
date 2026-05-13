@@ -7,4 +7,3 @@ __pycache__/
 .uv/
 *.py[cod]
 *.db
-portfolio.db

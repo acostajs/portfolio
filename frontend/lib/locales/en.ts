@@ -21,9 +21,7 @@ export const en = {
   },
   home: {
     welcome:
-      "Hi! I'm Juan Acosta. Welcome to my portfolio! I'm here to share my journey, projects, and technical expertise with you. 👋",
-    subwelcome:
-      "Feel free to ask me about my background, the technologies I use, or how I can help your team. We can dive into my technical stack, recent projects, professional journey, or work philosophy.",
+      "Hi! I'm Juan Acosta. Welcome to my portfolio! I'm here to share my journey, projects, and technical expertise with you. Feel free to ask me about my background, the technologies I use, or how I can help your team. We can dive into my technical stack, recent projects, or work philosophy. You can also use /commands to navigate, or just type your question below. How can I help you today?",
     chatbotPlaceholder: "Ask me about my skills, projects...",
     newChat: "New Chat",
     helpful: "Helpful",
@@ -31,8 +29,6 @@ export const en = {
     wasThisHelpful: "Was this helpful?",
     feedbackSuccess: "Thank you for your feedback!",
     features: [],
-    closing:
-      "You can also use /commands to navigate, or just type your question below. How can I help you today?",
     suggestions: [
       "What are your core technical skills?",
       "Tell me about your most recent projects",
@@ -113,6 +109,7 @@ export const en = {
     passwordPlaceholder: "Password",
     loginButton: "Login",
     logoutButton: "Logout",
+    logoutSuccess: "Logged out successfully",
     dashboardTitle: "CMS Dashboard",
     tabs: {
       about: "About",
@@ -132,6 +129,7 @@ export const en = {
       add: "Add New",
       update: "Update",
       create: "Create",
+      refresh: "Refresh",
       published: "Published",
       draft: "Draft",
       confirmDelete: "Are you sure you want to delete this item?",
