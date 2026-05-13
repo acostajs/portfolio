@@ -17,8 +17,6 @@
   - [x] **Unified Loading**: Replace specific skeleton loaders with a simplified generic loading state for all pages.
   - [x] **Typewriter Integration**: Re-implement the `Typewriter` component and integrate it into the chatbot for a more dynamic feel.
   - [x] **Chatbot Welcome Simplification**: Consolidate the initial chatbot welcome into a single message containing all necessary information and remove the "subwelcome" component/string.
-- [x] **Quality Assurance**:
-  - [x] **Lighthouse CI**: Verified that all assertions pass (Performance >= 0.85, others >= 0.95).
 
 ## ✅ Archive (Completed)
 
@@ -30,13 +28,6 @@
 - [x] **Feedback & Analytics Expansion**:
   - [x] **Enhanced Feedback Tracking**: Ensure `ChatFeedback` records are fully linked to specific assistant responses and categorized by "Negative" vs "Positive".
   - [x] **Analytics Visualization**: Update the Admin Analytics dashboard to display trends for negative feedback to identify weak NLU triggers.
-- [x] **Contact Form Fixes**:
-  - [x] **Email Delivery**: Troubleshoot and fix the Web3Forms integration to ensure submissions are successfully delivered to the target email address.
-- [x] **Image Workflow Completion**:
-  - [x] **Storage Sync**: Verify that the Google Drive URL returned after upload is correctly persisted in the `Project` record.
-  - [x] **Frontend Integration**: Ensure `ProjectCard.tsx` and related components use the database-stored Drive URL for rendering.
-- [x] **CI/CD Hardening**:
-  - [x] **Lighthouse CI**: Fix `.lighthouserc.json` and GitHub Actions workflow to ensure Lighthouse checks pass reliably in the CI pipeline.
 
 ### Version 0.1.9: Advanced Architecture & Scalability
 
@@ -82,7 +73,6 @@
   - [x] Fix i18n violations in Admin section (ZERO Static Text).
 - [x] **Interactive Code Playgrounds**: Embed interactive snippets in blog posts.
 - [x] **Analytics Dashboard Expansion**: Add more detailed visualizations for visitor paths and chat feedback.
-- [x] **Performance Monitoring**: Set up automated Lighthouse CI checks.
 - [x] **Performance Optimization (Target 95+)**:
   - [x] **Code Splitting**: Implement `React.lazy()` for `BlogManager` and `BotMessage` to reduce 1.9MB bundle.
   - [x] **Dependency Audit**: Analyze bundle with `rollup-plugin-visualizer`.
@@ -106,9 +96,6 @@
   - [x] Revamp initial welcome message: change "Juan's virtual assistant" to first-person, remove bullet points, and maintain a warm tone while keeping the core introductory information.
 - [x] **Open Graph & Twitter Cards**: Implement dynamic meta tags for better social sharing.
 - [x] **Sitemap & robots.txt**: Generate automated sitemap and robots.txt for search engines.
-- [x] **Lighthouse Performance Audit**: Reach 95+ in all Lighthouse metrics. (Optimized with theme FOUC prevention, preloading, and meta cleanup).
-- [x] **Social Sharing Components**: Add easy-to-use sharing buttons for blog posts and projects.
-- [x] **Voice Preference Persistence**: Save the user's Speech-to-Text and TTS toggle preferences in `localStorage`.
 - [x] **Project Image Management**: Support uploading and displaying project-specific images via the CMS.
 
 ### Version 0.1.5: Lightweight CMS & Content Management
@@ -185,7 +172,6 @@
 ### Version 0.0.8: Final Polish & Optimization
 
 - [x] **Trigger Refinement**: Expanded greeting, fallback, and "fun" responses for a more varied and natural persona.
-- [x] **Lighthouse Optimization**: Implemented SEO metadata, accessibility (ARIA), and performance (lazy-loading) best practices.
 - [x] **Chat Commands**: Implemented local slash commands (/clear, /help, /about, /experience, /projects, /contact).
 - [x] **Session Persistence**: Implemented `localStorage` to preserve chat history across refreshes.
 - [x] **API Documentation Sync**: Synchronized `docs/API.md` with FastAPI implementation and telemetry logic.

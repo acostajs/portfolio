@@ -4,7 +4,6 @@ import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 
-import { isLighthouse } from "../../../lib/env";
 import SharedMarkdown from "../ui/SharedMarkdown";
 import Typewriter from "../ui/Typewriter";
 
@@ -22,9 +21,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
 }) => {
   const { t } = useTranslation();
   const [feedbackGiven, setFeedbackGiven] = useState(false);
-  const [isTypingComplete, setIsTypingComplete] = useState(
-    skipTypewriter || isLighthouse,
-  );
+  const [isTypingComplete, setIsTypingComplete] = useState(!!skipTypewriter);
 
   const handleFeedback = (isHelpful: boolean) => {
     setFeedbackGiven(true);
@@ -63,7 +60,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
       <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm w-full">
         <div className="flex flex-col space-y-6">
           <div className="text-text-header font-medium leading-relaxed markdown-content min-h-[1.5em]">
-            {skipTypewriter || isLighthouse ? (
+            {skipTypewriter ? (
               <SharedMarkdown content={content} />
             ) : (
               <Typewriter

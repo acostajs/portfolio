@@ -44,7 +44,3 @@ bun.lockb
 
 # Database
 *.db
-
-
-# lighthouse 
-.lighthouseci/

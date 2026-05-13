@@ -6,7 +6,6 @@ import { type PageId } from "./components/layout/Sidebar";
 import { useTranslation } from "../lib/hooks/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import PageLoader from "./components/ui/PageLoader";
-import { isLighthouse } from "../lib/env";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -41,14 +40,10 @@ function App() {
       <AnimatePresence mode="wait">
         <motion.div
           key={`${location.pathname}-${locale}`}
-          initial={isLighthouse ? undefined : { opacity: 0, x: 10 }}
-          animate={isLighthouse ? undefined : { opacity: 1, x: 0 }}
-          exit={isLighthouse ? undefined : { opacity: 0, x: -10 }}
-          transition={
-            isLighthouse
-              ? { duration: 0 }
-              : { duration: 0.3, ease: "easeInOut" }
-          }
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           className="flex-1 flex flex-col min-h-0 overflow-hidden"
         >
           <Suspense fallback={getFallback()}>

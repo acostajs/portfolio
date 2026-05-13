@@ -7,7 +7,6 @@ import BotMessage from "../components/chat/BotMessage";
 import { motion, AnimatePresence } from "framer-motion";
 import { hapticFeedback } from "../../lib/haptic";
 import SEO from "../components/layout/SEO";
-import { isLighthouse } from "../../lib/env";
 
 interface Message {
   role: "user" | "assistant";
@@ -300,21 +299,13 @@ const Home: React.FC = () => {
             {messages.map((msg, idx) => (
               <motion.div
                 key={idx}
-                initial={
-                  isLighthouse ? undefined : { opacity: 0, y: 20, scale: 0.95 }
-                }
-                animate={
-                  isLighthouse ? undefined : { opacity: 1, y: 0, scale: 1 }
-                }
-                transition={
-                  isLighthouse
-                    ? { duration: 0 }
-                    : {
-                        duration: 0.4,
-                        ease: [0.23, 1, 0.32, 1],
-                        delay: msg.shouldAnimate ? 0 : 0.05,
-                      }
-                }
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.23, 1, 0.32, 1],
+                  delay: msg.shouldAnimate ? 0 : 0.05,
+                }}
                 className={`flex ${
                   msg.role === "user" ? "justify-end" : "justify-start"
                 }`}
