@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from database import get_session
 from models import ChatTriggerResponse
-from auth import verify_admin_password
 from cache import clear_trigger_cache
 
 router = APIRouter(prefix="/chat-triggers", tags=["admin-chat"])
@@ -19,7 +18,6 @@ async def get_chat_triggers(session: Session = Depends(get_session)):
 async def create_chat_trigger(
     trigger: ChatTriggerResponse,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     session.add(trigger)
     session.commit()
@@ -33,7 +31,6 @@ async def update_chat_trigger(
     trigger_id: int,
     trigger_data: ChatTriggerResponse,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     trigger = session.get(ChatTriggerResponse, trigger_id)
     if not trigger:
@@ -51,7 +48,6 @@ async def update_chat_trigger(
 async def delete_chat_trigger(
     trigger_id: int,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     trigger = session.get(ChatTriggerResponse, trigger_id)
     if not trigger:

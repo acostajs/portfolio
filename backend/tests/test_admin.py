@@ -15,7 +15,7 @@ async def test_admin_verify_success(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_admin_verify_unauthorized(client: AsyncClient):
     response = await client.get(
-        "/api/v1/admin/verify", headers={"X-Admin-Password": "wrong"}
+        "/api/v1/admin/verify", headers={"X-Admin-Token": "wrong"}
     )
     assert response.status_code == 401
 
@@ -38,8 +38,8 @@ async def test_admin_about_crud(client: AsyncClient):
     assert response.status_code == 200
     assert response.json()["p1_en"] == "Updated P1"
 
-    # Get
-    response = await client.get("/api/v1/admin/about", headers=ADMIN_HEADERS)
+    # Get via Public API
+    response = await client.get("/api/v1/about")
     assert response.status_code == 200
     assert response.json()["p1_en"] == "Updated P1"
 
@@ -159,8 +159,8 @@ async def test_admin_projects_image_upload(client: AsyncClient):
         assert response.status_code == 200
         assert response.json()["image_url"] == fake_url
 
-    # 3. Verify it was saved in DB
-    response = await client.get("/api/v1/admin/projects", headers=ADMIN_HEADERS)
+    # 3. Verify it was saved in DB via Public API
+    response = await client.get("/api/v1/projects")
     project = next(p for p in response.json() if p["id"] == project_id)
     assert project["image"] == fake_url
 

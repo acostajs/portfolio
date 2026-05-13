@@ -1,25 +1,17 @@
 import os
-from typing import List
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
-from sqlmodel import Session, select, col
+from sqlmodel import Session
 from database import get_session
 import storage
 from models import Project
-from auth import verify_admin_password
 
 router = APIRouter(prefix="/projects", tags=["admin-projects"])
-
-
-@router.get("", response_model=List[Project])
-async def get_projects(session: Session = Depends(get_session)):
-    return session.exec(select(Project).order_by(col(Project.order))).all()
 
 
 @router.post("", response_model=Project)
 async def create_project(
     project: Project,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     session.add(project)
     session.commit()
@@ -32,7 +24,6 @@ async def update_project(
     project_id: int,
     project_data: Project,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     project = session.get(Project, project_id)
     if not project:
@@ -49,7 +40,6 @@ async def update_project(
 async def delete_project(
     project_id: int,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     project = session.get(Project, project_id)
     if not project:
@@ -69,7 +59,6 @@ async def upload_project_image(
     project_id: int,
     file: UploadFile = File(...),
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     project = session.get(Project, project_id)
     if not project:

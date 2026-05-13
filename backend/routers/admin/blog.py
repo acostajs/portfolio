@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select, desc
 from database import get_session
 from models import BlogPost
-from auth import verify_admin_password
 
 router = APIRouter(prefix="/blog", tags=["admin-blog"])
 
@@ -17,7 +16,6 @@ async def get_blog_posts(session: Session = Depends(get_session)):
 async def create_blog_post(
     post: BlogPost,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     session.add(post)
     session.commit()
@@ -30,7 +28,6 @@ async def update_blog_post(
     post_id: int,
     post_data: BlogPost,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     post = session.get(BlogPost, post_id)
     if not post:
@@ -47,7 +44,6 @@ async def update_blog_post(
 async def delete_blog_post(
     post_id: int,
     session: Session = Depends(get_session),
-    admin_token: str = Depends(verify_admin_password),
 ):
     post = session.get(BlogPost, post_id)
     if not post:

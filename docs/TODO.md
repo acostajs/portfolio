@@ -2,6 +2,15 @@
 
 ## 🎯 Current Version: Post-Audit Refinements (0.2.1)
 
+- [x] **Technical Implementation**:
+  - [x] **Global Admin Security**: Apply `verify_admin_password` as a global dependency in the parent admin router to secure all admin endpoints.
+  - [x] **Unified Loading State Migration**: Remove local `isLoading` states in `Blog.tsx` and `Projects.tsx` to leverage global `Suspense` fallbacks.
+  - [x] **Admin API Consolidation**: Evaluate and remove redundant `GET` endpoints in the admin routers that duplicate public API functionality.
+
+## ✅ Archive (Completed)
+
+### Version 0.2.1: Initial Audit & Cleanup
+
 - [x] **Technical Audit & Cleanup**:
   - [x] **Unused Asset Removal**: Deleted `Typewriter.tsx` component and `hero.png` asset.
   - [x] **Dependency Cleanup**: Removed `google-cloud-storage` from backend.
@@ -9,16 +18,15 @@
   - [x] **Performance Optimization**: Refactored `MeshBackground.tsx` to use CSS animations.
 - [x] **Bug Fixes**:
   - [x] **Admin Analytics**: Added missing `refresh` translation string to prevent build failure.
-- [x] **Post-Audit Refinements**:
+- [x] **Post-Audit Refinements (Initial)**:
   - [x] **Blog Playground Optimization**: Investigate code-splitting for `@codesandbox/sandpack-react`.
   - [x] **Speech Recognition Removal**: Eliminated `useSpeech.ts` and associated UI logic to resolve mobile compatibility issues.
   - [x] **Admin Logout UX**: Add hover states, click feedback, and a toast message for the admin logout action.
 - [x] **UI/UX Refinements**:
+  - [x] **TagInput Component**: Replaced comma-separated text fields with a modern chip/tag input for managing tech stacks, skills, and chatbot triggers in the Admin CMS.
   - [x] **Unified Loading**: Replace specific skeleton loaders with a simplified generic loading state for all pages.
   - [x] **Typewriter Integration**: Re-implement the `Typewriter` component and integrate it into the chatbot for a more dynamic feel.
   - [x] **Chatbot Welcome Simplification**: Consolidate the initial chatbot welcome into a single message containing all necessary information and remove the "subwelcome" component/string.
-
-## ✅ Archive (Completed)
 
 ### Version 0.2.0: System Hardening & Final Polish
 

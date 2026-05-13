@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 import type { AboutData } from "../../types/cms";
+import TagInput from "../ui/TagInput";
 
 const AboutManager: React.FC = () => {
   const { t } = useTranslation();
@@ -13,11 +14,7 @@ const AboutManager: React.FC = () => {
 
   const fetchAbout = useCallback(async () => {
     try {
-      const response = await fetch("/api/v1/admin/about", {
-        headers: {
-          "X-Admin-Token": localStorage.getItem("admin-token") || "",
-        },
-      });
+      const response = await fetch("/api/v1/about");
       if (response.ok) {
         const json = await response.json();
         setData(json);
@@ -186,20 +183,12 @@ const AboutManager: React.FC = () => {
           <h3 className="text-sm font-bold uppercase tracking-widest text-accent">
             {t.admin.about.skills}
           </h3>
-          <textarea
-            value={data?.skills?.join(", ") || ""}
-            onChange={(e) =>
-              data &&
-              setData({
-                ...data,
-                skills: e.target.value
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter((s) => s),
-              })
+          <TagInput
+            tags={data?.skills || []}
+            onChange={(newSkills) =>
+              data && setData({ ...data, skills: newSkills })
             }
-            className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[150px]"
-            placeholder="TypeScript, React, ..."
+            placeholder="e.g. TypeScript, React, Bun"
           />
         </div>
       </form>
