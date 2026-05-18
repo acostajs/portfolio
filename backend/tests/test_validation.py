@@ -60,7 +60,7 @@ async def test_admin_chat_triggers_update_not_found(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_admin_schema_ignores_id_on_create(client: AsyncClient):
     """
-    Test that providing an 'id' in the POST body is ignored or handled 
+    Test that providing an 'id' in the POST body is ignored or handled
     by the schema (since we use ProjectCreate which excludes id).
     """
     project_data = {
@@ -105,5 +105,3 @@ async def test_admin_partial_update(client: AsyncClient):
     data = response.json()
     assert data["title"] == "Updated Title"
     assert data["description_en"] == "Initial Desc"  # Should remain unchanged
-
-

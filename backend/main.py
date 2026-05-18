@@ -40,8 +40,6 @@ async def lifespan(app: FastAPI):
 
 
 # --- App Initialization ---
-from typing import Any
-...
 app = FastAPI(title="Portfolio Backend", lifespan=lifespan)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore

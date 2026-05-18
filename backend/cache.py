@@ -21,7 +21,8 @@ def get_cached_triggers() -> Tuple[Sequence[ChatTriggerResponse], dict]:
                 # Order by Priority (DESC) then ID (ASC) to respect manual overrides
                 results = session.exec(
                     select(ChatTriggerResponse).order_by(
-                        desc(col(ChatTriggerResponse.priority)), col(ChatTriggerResponse.id)
+                        desc(col(ChatTriggerResponse.priority)),
+                        col(ChatTriggerResponse.id),
                     )
                 ).all()
                 _TRIGGER_CACHE = results
