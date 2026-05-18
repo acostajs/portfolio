@@ -29,20 +29,24 @@ else:
 
 
 def create_db_and_tables():
+    logger.info("Starting database initialization and migrations...")
     # First ensure basic tables exist
     SQLModel.metadata.create_all(engine)
 
     inspector = inspect(engine)
-    tables = inspector.get_table_names()
+    tables = [t.lower() for t in inspector.get_table_names()]
+    logger.info(f"Existing tables: {tables}")
 
     # We use engine.connect() for DDL operations to be more direct
     with engine.connect() as conn:
         # --- Migrate chatfeedback ---
         if "chatfeedback" in tables:
-            cols = [c["name"] for c in inspector.get_columns("chatfeedback")]
+            cols = [c["name"].lower() for c in inspector.get_columns("chatfeedback")]
             if "module" not in cols:
+                logger.info("Adding module column to chatfeedback")
                 conn.execute(text("ALTER TABLE chatfeedback ADD COLUMN module VARCHAR"))
             if "category" not in cols:
+                logger.info("Adding category column to chatfeedback")
                 conn.execute(
                     text("ALTER TABLE chatfeedback ADD COLUMN category VARCHAR")
                 )
@@ -50,8 +54,11 @@ def create_db_and_tables():
 
         # --- Migrate chattriggerresponse ---
         if "chattriggerresponse" in tables:
-            cols = [c["name"] for c in inspector.get_columns("chattriggerresponse")]
+            cols = [
+                c["name"].lower() for c in inspector.get_columns("chattriggerresponse")
+            ]
             if "priority" not in cols:
+                logger.info("Adding priority column to chattriggerresponse")
                 conn.execute(
                     text(
                         "ALTER TABLE chattriggerresponse ADD COLUMN priority INTEGER DEFAULT 0"
@@ -62,33 +69,40 @@ def create_db_and_tables():
         # --- Migrate livechatsession ---
         if "livechatsession" in tables:
             cols = inspector.get_columns("livechatsession")
-            session_id_col = next((c for c in cols if c["name"] == "session_id"), None)
-            if (
-                session_id_col
-                and not isinstance(
-                    session_id_col["type"], (types.String, types.Unicode)
-                )
-                and not database_url.startswith("sqlite")
-            ):
-                try:
-                    conn.execute(
-                        text(
-                            "ALTER TABLE livechatsession ALTER COLUMN session_id TYPE VARCHAR USING session_id::varchar"
-                        )
-                    )
-                    conn.commit()
+            session_id_col = next(
+                (c for c in cols if c["name"].lower() == "session_id"), None
+            )
+            if session_id_col:
+                col_type = session_id_col["type"]
+                logger.info(f"livechatsession.session_id type: {col_type}")
+                if not isinstance(
+                    col_type, (types.String, types.Unicode)
+                ) and not database_url.startswith("sqlite"):
                     logger.info(
-                        "Successfully migrated livechatsession.session_id to VARCHAR"
+                        "Attempting to migrate livechatsession.session_id to VARCHAR"
                     )
-                except Exception as e:
-                    logger.error(f"Migration error (livechatsession.session_id): {e}")
-                    conn.rollback()
+                    try:
+                        conn.execute(
+                            text(
+                                "ALTER TABLE livechatsession ALTER COLUMN session_id TYPE VARCHAR USING session_id::varchar"
+                            )
+                        )
+                        conn.commit()
+                        logger.info(
+                            "Successfully migrated livechatsession.session_id to VARCHAR"
+                        )
+                    except Exception as e:
+                        logger.error(
+                            f"Migration error (livechatsession.session_id): {e}"
+                        )
+                        conn.rollback()
 
         # --- Migrate chatmessage ---
         if "chatmessage" in tables:
             cols = inspector.get_columns("chatmessage")
-            col_names = [c["name"] for c in cols]
+            col_names = [c["name"].lower() for c in cols]
             if "session_id" not in col_names:
+                logger.info("Adding session_id column to chatmessage")
                 conn.execute(
                     text(
                         "ALTER TABLE chatmessage ADD COLUMN session_id VARCHAR DEFAULT 'legacy'"
@@ -96,10 +110,18 @@ def create_db_and_tables():
                 )
                 conn.commit()
             else:
-                session_id_col = next(c for c in cols if c["name"] == "session_id")
+                session_id_col = next(
+                    c for c in cols if c["name"].lower() == "session_id"
+                )
+                col_type = session_id_col["type"]
+                logger.info(f"chatmessage.session_id type: {col_type}")
+                # Be more aggressive: if it's not a string type, convert it
                 if not isinstance(
-                    session_id_col["type"], (types.String, types.Unicode)
+                    col_type, (types.String, types.Unicode)
                 ) and not database_url.startswith("sqlite"):
+                    logger.info(
+                        "Attempting to migrate chatmessage.session_id to VARCHAR"
+                    )
                     try:
                         conn.execute(
                             text(
