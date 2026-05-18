@@ -32,25 +32,25 @@ const Blog: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => setSelectedPost(null)}
-            className="flex items-center text-accent hover:underline mb-8 transition-all group"
+            className="flex items-center text-accent font-black uppercase tracking-widest text-xs border-2 border-accent px-4 py-2 bg-accent-bg hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-shadow mb-12 group"
           >
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             {t.blog.backToList}
           </button>
 
           <article>
-            <div className="flex items-center space-x-4 text-sm text-text opacity-70 mb-4">
-              <span className="flex items-center">
+            <div className="flex items-center space-x-6 text-[10px] font-mono font-black uppercase text-text-muted mb-6">
+              <span className="flex items-center border-b-2 border-border pb-1">
                 <Calendar className="w-3.5 h-3.5 mr-1.5" />
                 {selectedPost.date}
               </span>
-              <span className="flex items-center">
+              <span className="flex items-center border-b-2 border-border pb-1">
                 <Tag className="w-3.5 h-3.5 mr-1.5" />
                 {selectedPost.category}
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-bold text-text-header mb-8 tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-6xl font-black text-text-header mb-8 uppercase italic tracking-tighter leading-none">
               {title}
             </h1>
 
@@ -62,7 +62,9 @@ const Blog: React.FC = () => {
               />
             </div>
 
-            <SharedMarkdown content={content} className="max-w-none" />
+            <div className="border-t-4 border-border pt-12">
+              <SharedMarkdown content={content} className="max-w-none" />
+            </div>
           </article>
         </div>
       </section>
@@ -73,42 +75,42 @@ const Blog: React.FC = () => {
     <section className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 animate-fade-in bg-bg">
       <SEO title={t.nav.blog} />
       <div className="max-w-5xl mx-auto">
-        <header className="mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-text-header mb-4 tracking-tighter">
+        <header className="mb-16">
+          <h1 className="text-4xl md:text-7xl font-black text-text-header mb-4 uppercase italic tracking-tighter">
             {t.blog.title}
           </h1>
-          <div className="h-1.5 w-20 bg-accent rounded-full mb-6" />
+          <div className="h-2 w-32 bg-accent" />
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {posts.map((post, idx) => (
             <article
               key={post.slug}
               aria-labelledby={`blog-title-${idx}`}
-              className="group bg-white/5 border border-border p-8 rounded-3xl hover:border-accent transition-all duration-300 shadow-xl flex flex-col justify-between"
+              className="group bg-bg border-4 border-border p-8 rounded-none hover:-translate-y-2 hover:-translate-x-2 transition-all duration-300 shadow-shadow flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="px-3 py-1 bg-accent/10 text-accent text-[10px] font-bold uppercase tracking-widest rounded-full border border-accent/20">
+                <div className="flex items-center justify-between mb-8">
+                  <span className="px-3 py-1 bg-accent text-white text-[10px] font-black uppercase tracking-widest rounded-none border-2 border-accent shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]">
                     {post.category}
                   </span>
-                  <span className="text-[11px] text-text opacity-60 font-medium">
+                  <span className="text-[11px] text-text-muted font-mono font-bold uppercase">
                     {post.date}
                   </span>
                 </div>
                 <h2
                   id={`blog-title-${idx}`}
-                  className="text-2xl font-bold text-text-header mb-4 group-hover:text-accent transition-colors leading-snug"
+                  className="text-2xl font-black text-text-header mb-4 group-hover:text-accent transition-colors leading-tight uppercase italic tracking-tight"
                 >
                   {getLocalized(post, "title")}
                 </h2>
-                <p className="text-text opacity-80 leading-relaxed mb-6 line-clamp-3">
+                <p className="text-text font-medium leading-relaxed mb-8 line-clamp-3">
                   {getLocalized(post, "excerpt")}
                 </p>
               </div>
               <button
                 onClick={() => setSelectedPost(post)}
-                className="flex items-center text-sm font-bold text-text-header hover:text-accent transition-all group/btn"
+                className="flex items-center text-xs font-black uppercase tracking-widest text-text-header hover:text-accent transition-all group/btn border-b-2 border-accent self-start pb-1"
                 aria-label={`${t.blog.readMore}: ${getLocalized(post, "title")}`}
               >
                 {t.blog.readMore}

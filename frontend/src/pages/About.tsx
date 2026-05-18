@@ -47,14 +47,14 @@ const About: React.FC = () => {
 
         {!isLoading && (
           <section className="pt-8">
-            <h2 className="text-xl font-bold text-text-header uppercase tracking-widest mb-6 text-text-muted">
+            <h2 className="text-xl font-black text-text-header uppercase tracking-widest mb-6 border-b-4 border-accent inline-block">
               {t.about.skillsTitle}
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {data?.skills?.map((skill: string) => (
                 <span
                   key={skill}
-                  className="px-4 py-2 bg-white/5 border border-border rounded-lg text-text-header font-medium hover:border-accent hover:text-accent transition-all cursor-default"
+                  className="px-4 py-2 bg-accent-bg border-2 border-border rounded-none text-text-header font-black uppercase tracking-tight hover:border-accent hover:text-accent hover:-translate-y-1 hover:-translate-x-1 transition-all cursor-default shadow-shadow"
                 >
                   {skill}
                 </span>

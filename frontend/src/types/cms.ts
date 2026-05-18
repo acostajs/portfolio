@@ -51,10 +51,11 @@ export interface BlogPost {
   published: boolean;
 }
 
-export interface ChatbotResponse {
+export interface ChatTriggerResponse {
   id?: number;
   module: string;
   category?: string;
+  priority: number;
   triggers: string[];
   answers_en: string[];
   answers_es: string[];
@@ -83,6 +84,6 @@ export type CMSData =
   | ExperienceData
   | ProjectData
   | BlogPost
-  | ChatbotResponse
+  | ChatTriggerResponse
   | ChatMessage
   | ChatFeedback;

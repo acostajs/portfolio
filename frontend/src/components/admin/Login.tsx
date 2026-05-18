@@ -37,30 +37,30 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <div className="flex-1 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white/5 border border-border p-8 rounded-3xl shadow-2xl backdrop-blur-md">
+      <div className="w-full max-w-md bg-bg border-4 border-border p-8 rounded-none shadow-shadow">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-4">
+          <div className="w-16 h-16 bg-accent-bg border-2 border-accent rounded-none flex items-center justify-center mb-4 shadow-shadow -translate-y-2">
             <Lock className="w-8 h-8 text-accent" />
           </div>
-          <h1 className="text-2xl font-bold text-text-header">
+          <h1 className="text-3xl font-black text-text-header uppercase italic tracking-tighter">
             {t.admin.loginTitle}
           </h1>
-          <p className="text-text opacity-60 text-sm">
+          <p className="text-text-muted font-mono font-bold text-xs uppercase mt-2">
             {t.admin.loginSubtitle}
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.admin.passwordPlaceholder}
-            className="w-full px-4 py-3 bg-white/5 border border-border focus:border-accent rounded-xl outline-none text-text-header"
+            className="w-full px-4 py-4 bg-accent-bg border-4 border-border focus:border-accent rounded-none outline-none text-text-header font-bold shadow-shadow"
             autoFocus
           />
           <button
             type="submit"
-            className="w-full py-3 bg-accent text-white rounded-xl font-bold hover:brightness-110 transition-all shadow-lg shadow-accent/20"
+            className="w-full py-4 bg-accent text-white rounded-none border-4 border-border font-black uppercase tracking-widest hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-shadow"
           >
             {t.admin.loginButton}
           </button>

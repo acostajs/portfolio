@@ -62,7 +62,7 @@ const Contact: React.FC = () => {
           <p className="text-text mb-10 text-lg">{t.contact.p1}</p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
           {/* Honeypot Spam Protection */}
           <input
             type="checkbox"
@@ -71,62 +71,62 @@ const Contact: React.FC = () => {
             style={{ display: "none" }}
           ></input>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
               <label
                 htmlFor="contact-name"
-                className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1"
+                className="text-xs font-black uppercase tracking-widest text-text-header ml-1"
               >
                 {t.contact.formName}
               </label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
                 <input
                   id="contact-name"
                   type="text"
                   name="name"
                   required
-                  className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-border focus:border-accent rounded-xl outline-none transition-all text-text-header"
+                  className="w-full pl-12 pr-4 py-4 bg-accent-bg border-4 border-border focus:border-accent rounded-none outline-none transition-all text-text-header font-bold shadow-shadow"
                   placeholder="John Doe"
                 />
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <label
                 htmlFor="contact-email"
-                className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1"
+                className="text-xs font-black uppercase tracking-widest text-text-header ml-1"
               >
                 {t.contact.formEmail}
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
                 <input
                   id="contact-email"
                   type="email"
                   name="email"
                   required
-                  className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-border focus:border-accent rounded-xl outline-none transition-all text-text-header"
+                  className="w-full pl-12 pr-4 py-4 bg-accent-bg border-4 border-border focus:border-accent rounded-none outline-none transition-all text-text-header font-bold shadow-shadow"
                   placeholder="john@example.com"
                 />
               </div>
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label
               htmlFor="contact-message"
-              className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1"
+              className="text-xs font-black uppercase tracking-widest text-text-header ml-1"
             >
               {t.contact.formMessage}
             </label>
             <div className="relative">
-              <MessageSquare className="absolute left-4 top-5 w-4 h-4 text-text-muted" />
+              <MessageSquare className="absolute left-4 top-5 w-4 h-4 text-accent" />
               <textarea
                 id="contact-message"
                 name="message"
                 required
                 rows={5}
-                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-border focus:border-accent rounded-xl outline-none transition-all text-text-header resize-none"
+                className="w-full pl-12 pr-4 py-4 bg-accent-bg border-4 border-border focus:border-accent rounded-none outline-none transition-all text-text-header resize-none font-bold shadow-shadow"
                 placeholder="..."
               />
             </div>
@@ -135,12 +135,12 @@ const Contact: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-accent text-white rounded-xl font-bold hover:brightness-110 transition-all flex items-center justify-center shadow-lg shadow-accent/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-5 bg-accent text-white rounded-none border-4 border-border font-black uppercase tracking-widest hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all flex items-center justify-center shadow-shadow disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              <Loader2 className="w-6 h-6 animate-spin mr-3" />
             ) : (
-              <Send className="w-5 h-5 mr-2" />
+              <Send className="w-6 h-6 mr-3" />
             )}
             {t.contact.formSend}
           </button>

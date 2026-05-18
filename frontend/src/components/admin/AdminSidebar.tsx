@@ -34,14 +34,14 @@ const TabButton: React.FC<{
       hapticFeedback(5);
       onClick();
     }}
-    className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-xl transition-all ${
+    className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-none transition-all font-black uppercase tracking-widest text-xs border-2 ${
       active
-        ? "bg-accent text-white shadow-lg shadow-accent/20"
-        : "text-text hover:bg-white/5 hover:text-text-header"
+        ? "bg-accent text-white border-border shadow-shadow -translate-y-1 -translate-x-1"
+        : "text-text border-transparent hover:bg-accent-bg hover:border-border hover:-translate-y-1 hover:-translate-x-1"
     }`}
   >
     <Icon className="w-5 h-5" />
-    <span className="hidden md:block font-medium">{label}</span>
+    <span className="hidden md:block">{label}</span>
   </button>
 );
 
@@ -52,7 +52,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const { t } = useTranslation();
 
   return (
-    <nav className="w-16 md:w-64 flex-none border-r border-border bg-white/5 flex flex-col py-4">
+    <nav className="w-16 md:w-64 flex-none border-r-4 border-border bg-bg flex flex-col py-6 gap-2">
       <TabButton
         active={activeTab === "about"}
         onClick={() => setActiveTab("about")}

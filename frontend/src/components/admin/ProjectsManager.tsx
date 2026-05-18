@@ -123,7 +123,7 @@ const ProjectsManager: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-text-header">
+        <h2 className="text-2xl font-black uppercase italic tracking-tighter text-text-header">
           {t.admin.projects.title}
         </h2>
         <button
@@ -135,7 +135,7 @@ const ProjectsManager: React.FC = () => {
               order: items.length,
             })
           }
-          className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-xl font-bold hover:brightness-110 transition-all"
+          className="flex items-center gap-2 px-6 py-2 bg-accent text-white rounded-none border-2 border-border shadow-shadow font-black uppercase tracking-widest text-xs hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
         >
           <Plus className="w-4 h-4" /> {t.admin.common.add}
         </button>
@@ -144,11 +144,11 @@ const ProjectsManager: React.FC = () => {
       {editingItem ? (
         <form
           onSubmit={handleSave}
-          className="bg-white/5 border border-accent/30 p-8 rounded-3xl space-y-6 animate-in fade-in slide-in-from-top-4 duration-300"
+          className="bg-bg border-4 border-accent p-8 rounded-none shadow-shadow space-y-8 animate-in fade-in slide-in-from-top-4 duration-300"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
                 {t.admin.projects.projectTitle}
               </label>
               <input
@@ -157,11 +157,11 @@ const ProjectsManager: React.FC = () => {
                 onChange={(e) =>
                   setEditingItem({ ...editingItem, title: e.target.value })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
                 {t.admin.projects.order}
               </label>
               <input
@@ -173,39 +173,39 @@ const ProjectsManager: React.FC = () => {
                     order: parseInt(e.target.value),
                   })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
               {t.admin.projects.image}
             </label>
-            <div className="flex items-center gap-6 p-4 bg-white/5 border border-border rounded-2xl">
-              <div className="relative w-32 h-20 bg-white/5 rounded-lg overflow-hidden flex items-center justify-center border border-border group/preview">
+            <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-accent-bg border-2 border-border rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="relative w-48 h-32 bg-bg rounded-none overflow-hidden flex items-center justify-center border-2 border-border group/preview shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 {editingItem.image ? (
                   <>
                     <ProgressiveImage
                       src={editingItem.image}
                       alt="Preview"
-                      className="w-full h-full"
+                      className="w-full h-full object-cover"
                     />
                     <button
                       type="button"
                       onClick={() =>
                         setEditingItem({ ...editingItem, image: undefined })
                       }
-                      className="absolute top-1 right-1 p-1 bg-error text-white rounded-full opacity-0 group-hover/preview:opacity-100 transition-opacity shadow-lg"
+                      className="absolute top-2 right-2 p-1.5 bg-error text-white border border-border rounded-none opacity-0 group-hover/preview:opacity-100 transition-opacity shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </>
                 ) : (
-                  <ImageIcon className="w-8 h-8 text-text opacity-20" />
+                  <ImageIcon className="w-10 h-10 text-text opacity-20" />
                 )}
               </div>
-              <div className="flex-1 space-y-2">
+              <div className="flex-1 space-y-4">
                 <input
                   type="file"
                   accept="image/*"
@@ -222,23 +222,23 @@ const ProjectsManager: React.FC = () => {
                 />
                 <label
                   htmlFor="image-upload"
-                  className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-text-header text-sm font-bold rounded-xl cursor-pointer transition-all w-fit"
+                  className="flex items-center gap-2 px-6 py-3 bg-bg border-2 border-border text-text-header text-xs font-black uppercase tracking-widest rounded-none cursor-pointer transition-all w-fit shadow-shadow hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0"
                 >
                   <Upload className="w-4 h-4" />
                   {editingItem.image
                     ? t.admin.projects.changeImage
                     : t.admin.projects.upload}
                 </label>
-                <p className="text-[10px] text-text opacity-40">
+                <p className="text-[10px] font-mono font-bold uppercase text-text opacity-60">
                   {t.admin.projects.imageHint}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
                 {t.admin.projects.github}
               </label>
               <input
@@ -246,11 +246,11 @@ const ProjectsManager: React.FC = () => {
                 onChange={(e) =>
                   setEditingItem({ ...editingItem, github: e.target.value })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
                 {t.admin.projects.live}
               </label>
               <input
@@ -258,13 +258,13 @@ const ProjectsManager: React.FC = () => {
                 onChange={(e) =>
                   setEditingItem({ ...editingItem, link: e.target.value })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
               {t.admin.projects.description}
             </label>
             <textarea
@@ -276,12 +276,12 @@ const ProjectsManager: React.FC = () => {
                   description_en: e.target.value,
                 })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header min-h-[80px]"
+              className="w-full p-4 bg-accent-bg border-2 border-border rounded-none text-text-header font-medium min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
               {t.admin.projects.tech}
             </label>
             <TagInput
@@ -293,65 +293,65 @@ const ProjectsManager: React.FC = () => {
             />
           </div>
 
-          <div className="flex items-center gap-3 pt-4">
+          <div className="flex items-center gap-4 pt-4">
             <button
               type="submit"
-              className="flex-1 py-3 bg-accent text-white rounded-xl font-bold hover:brightness-110 shadow-lg shadow-accent/20"
+              className="flex-1 py-4 bg-accent text-white rounded-none border-2 border-border shadow-shadow font-black uppercase tracking-widest text-sm hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
             >
               {editingItem.id ? t.admin.projects.update : t.admin.projects.add}
             </button>
             <button
               type="button"
               onClick={() => setEditingItem(null)}
-              className="px-6 py-3 bg-white/5 border border-border text-text rounded-xl font-bold hover:bg-white/10"
+              className="px-8 py-4 bg-bg border-2 border-border text-text rounded-none font-black uppercase tracking-widest text-sm hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-shadow"
             >
               {t.admin.common.cancel}
             </button>
           </div>
         </form>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {items.map((item) => (
             <div
               key={item.id}
-              className="p-6 bg-white/5 border border-border rounded-2xl group hover:border-accent/30 transition-all flex flex-col gap-4"
+              className="p-6 bg-bg border-4 border-border rounded-none shadow-shadow group hover:border-accent transition-all flex flex-col gap-6"
             >
-              <div className="flex gap-4">
-                <div className="w-20 h-16 bg-white/5 rounded-lg overflow-hidden border border-border flex-shrink-0">
+              <div className="flex gap-6">
+                <div className="w-24 h-20 bg-accent-bg rounded-none overflow-hidden border-2 border-border flex-shrink-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   {item.image ? (
                     <ProgressiveImage
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center opacity-20">
-                      <ImageIcon className="w-6 h-6" />
+                      <ImageIcon className="w-8 h-8" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-text-header text-lg mb-1 truncate">
+                  <h3 className="font-black text-text-header text-xl uppercase italic tracking-tighter mb-2 truncate">
                     {item.title}
                   </h3>
-                  <p className="text-text opacity-60 text-xs line-clamp-2">
+                  <p className="text-text opacity-70 text-xs font-medium line-clamp-2 italic">
                     {item.description_en}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-end gap-2 mt-auto pt-2 border-t border-white/5">
+              <div className="flex items-center justify-end gap-3 mt-auto pt-4 border-t-2 border-border">
                 <button
                   onClick={() => setEditingItem(item)}
-                  className="p-2 text-text hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
+                  className="p-2 text-text border-2 border-transparent hover:border-border hover:bg-accent-bg hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-5 h-5" />
                 </button>
                 {item.id !== undefined && (
                   <button
                     onClick={() => handleDelete(item.id!)}
-                    className="p-2 text-text hover:text-error hover:bg-error/10 rounded-lg transition-colors"
+                    className="p-2 text-text hover:text-error border-2 border-transparent hover:border-error hover:bg-error-bg hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 )}
               </div>

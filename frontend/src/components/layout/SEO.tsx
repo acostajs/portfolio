@@ -19,7 +19,7 @@ const SEO: React.FC<SEOProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const siteTitle = title ? `${title} | Juan Acosta` : t.common.name;
+  const siteTitle = title ? `${title} | ${t.common.name}` : t.common.name;
   const siteDescription = description || t.home.welcome;
   const siteImage = image.startsWith("http")
     ? image

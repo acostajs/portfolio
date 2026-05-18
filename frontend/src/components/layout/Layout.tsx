@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import Header from "./Header";
 import Sidebar, { type PageId } from "./Sidebar";
+import { useTranslation } from "../../../lib/hooks/useTranslation";
 
 const MeshBackground = lazy(() => import("./MeshBackground"));
 const CommandPalette = lazy(() => import("./CommandPalette"));
@@ -16,6 +17,7 @@ const Layout: React.FC<LayoutProps> = ({
   activePage,
   hideSidebar = false,
 }) => {
+  const { t } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
@@ -43,9 +45,9 @@ const Layout: React.FC<LayoutProps> = ({
       </Suspense>
       <a
         href="#main-content"
-        className="absolute left-4 top-4 z-[100] px-4 py-2 bg-accent text-white rounded-lg -translate-y-[200%] focus:translate-y-0 transition-transform font-bold shadow-2xl"
+        className="absolute left-4 top-4 z-[100] px-4 py-2 bg-accent text-white rounded-none border-2 border-border -translate-y-[200%] focus:translate-y-0 transition-transform font-black uppercase tracking-widest text-xs shadow-shadow"
       >
-        Skip to content
+        {t.common.skipToContent}
       </a>
 
       <Suspense fallback={<div className="fixed inset-0 bg-bg -z-10" />}>

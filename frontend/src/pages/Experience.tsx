@@ -37,45 +37,48 @@ const Experience: React.FC = () => {
         {isLoading ? (
           <PageLoader />
         ) : (
-          <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-accent/50 before:via-border before:to-transparent">
+          <div className="relative space-y-12 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-border">
             {items.map((exp, idx) => (
               <article
                 key={idx}
                 className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
               >
                 {/* Icon */}
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border border-border bg-bg text-accent shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-transform group-hover:scale-110">
+                <div className="flex items-center justify-center w-10 h-10 rounded-none border-2 border-accent bg-bg text-accent shadow-shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-transform group-hover:-rotate-12">
                   <Briefcase className="w-5 h-5" />
                 </div>
 
                 {/* Content Card */}
-                <div className="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl bg-white/5 border border-border shadow-xl backdrop-blur-sm group-hover:border-accent/50 transition-colors">
+                <div className="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-none bg-bg border-4 border-border shadow-shadow group-hover:border-accent transition-colors">
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                     <header className="flex flex-wrap items-center justify-between w-full">
-                      <h3 className="font-bold text-text-header text-lg">
+                      <h3 className="font-black text-text-header text-xl uppercase italic tracking-tighter">
                         {exp.role}
                       </h3>
-                      <div className="flex items-center text-xs text-text-muted">
+                      <div className="flex items-center text-[10px] font-mono font-bold uppercase bg-accent-bg px-2 py-1 border border-accent/20">
                         <Calendar className="w-3.5 h-3.5 mr-1.5" />
                         {exp.period}
                       </div>
                     </header>
                   </div>
-                  <div className="text-accent font-semibold mb-4">
+                  <div className="text-accent font-black uppercase tracking-widest text-sm mb-4">
                     {exp.company}
                   </div>
-                  <ul className="space-y-2 list-disc list-inside text-sm text-text leading-relaxed">
+                  <ul className="space-y-3 list-none text-sm text-text leading-relaxed font-medium">
                     {getLocalized(exp, "description").map(
                       (item: string, i: number) => (
-                        <li key={i}>{item}</li>
+                        <li key={i} className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-accent mt-1.5 mr-3 shrink-0" />
+                          {item}
+                        </li>
                       ),
                     )}
                   </ul>
-                  <footer className="mt-4 flex flex-wrap gap-1.5">
+                  <footer className="mt-6 flex flex-wrap gap-2">
                     {exp.tech.map((techItem: string) => (
                       <span
                         key={techItem}
-                        className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-accent/10 text-accent rounded-md border border-accent/20"
+                        className="text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-accent text-white border-2 border-accent shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
                       >
                         {techItem}
                       </span>

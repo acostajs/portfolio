@@ -72,13 +72,13 @@ const AnalyticsManager: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-text-header">
+        <h2 className="text-2xl font-black uppercase italic tracking-tighter text-text-header">
           {t.admin.analytics.title}
         </h2>
         <button
           onClick={() => void fetchData()}
           disabled={isLoading}
-          className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-border rounded-xl hover:bg-white/10 transition-all text-sm font-bold text-text-header disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-accent-bg border-2 border-border rounded-none shadow-shadow hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all text-xs font-black uppercase tracking-widest text-text-header disabled:opacity-50"
         >
           <RotateCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
           {t.admin.common.refresh || "Refresh"}
@@ -86,7 +86,7 @@ const AnalyticsManager: React.FC = () => {
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <StatCard
           icon={MessageSquare}
           label={t.admin.analytics.stats.totalMessages}
@@ -110,39 +110,39 @@ const AnalyticsManager: React.FC = () => {
       {/* Weakest Modules Alert */}
       {weakestModules.length > 0 && (
         <section
-          className="bg-error/5 border border-error/20 rounded-3xl p-6 space-y-4"
+          className="bg-error-bg border-4 border-error p-6 rounded-none shadow-shadow space-y-6"
           aria-labelledby="improvement-areas-title"
         >
           <h3
             id="improvement-areas-title"
-            className="text-lg font-bold text-error flex items-center gap-2"
+            className="text-xl font-black uppercase italic tracking-tighter text-error flex items-center gap-2"
           >
-            <ThumbsDown className="w-5 h-5" aria-hidden="true" />
+            <ThumbsDown className="w-6 h-6" aria-hidden="true" />
             Areas for Improvement
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {weakestModules.slice(0, 6).map((m) => (
               <div
                 key={m.module}
-                className="bg-white/5 border border-border/50 p-4 rounded-2xl flex justify-between items-center hover:bg-white/10 transition-colors"
+                className="bg-bg border-2 border-border p-4 rounded-none flex justify-between items-center shadow-shadow hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
                 role="status"
               >
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-text opacity-50 mb-1">
+                  <p className="text-[10px] font-black font-mono uppercase tracking-widest text-text opacity-70 mb-1">
                     {m.module}
                   </p>
-                  <p className="text-xl font-bold text-text-header tabular-nums">
+                  <p className="text-2xl font-black italic tracking-tighter text-text-header tabular-nums">
                     {m.unhelpfulRatio.toFixed(0)}%
-                    <span className="text-[10px] text-text opacity-40 ml-2 font-normal uppercase tracking-wider">
+                    <span className="text-[10px] text-text opacity-60 ml-2 font-black uppercase tracking-wider">
                       negative
                     </span>
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] text-text opacity-40 uppercase font-bold tracking-widest">
+                  <p className="text-[10px] text-text opacity-60 uppercase font-black font-mono tracking-widest">
                     Count
                   </p>
-                  <p className="text-sm font-bold text-error tabular-nums">
+                  <p className="text-sm font-black text-error tabular-nums">
                     {m.unhelpful} / {m.total}
                   </p>
                 </div>
@@ -152,38 +152,38 @@ const AnalyticsManager: React.FC = () => {
         </section>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Recent Messages */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-text-header flex items-center gap-2">
-            <MessageSquare className="w-5 h-5 text-accent" />
+          <h3 className="text-xl font-black uppercase italic tracking-tighter text-text-header flex items-center gap-2">
+            <MessageSquare className="w-6 h-6 text-accent" />
             {t.admin.analytics.recentMessages}
           </h3>
-          <div className="bg-white/5 border border-border rounded-2xl overflow-hidden">
-            <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
+          <div className="bg-bg border-4 border-border rounded-none shadow-shadow overflow-hidden">
+            <div className="max-h-[500px] overflow-y-auto custom-scrollbar">
               {messages.length > 0 ? (
                 messages.map((m) => (
                   <div
                     key={m.id}
-                    className="p-4 border-b border-border last:border-0 hover:bg-white/5 transition-colors"
+                    className="p-5 border-b-2 border-border last:border-0 hover:bg-accent-bg transition-colors"
                   >
-                    <div className="flex justify-between items-start mb-1">
+                    <div className="flex justify-between items-start mb-2">
                       <span
-                        className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${m.role === "user" ? "bg-accent/10 text-accent" : "bg-white/10 text-text"}`}
+                        className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-none border border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${m.role === "user" ? "bg-accent text-white" : "bg-bg text-text"}`}
                       >
                         {m.role}
                       </span>
-                      <span className="text-[10px] text-text opacity-40">
+                      <span className="text-[10px] font-mono font-bold text-text opacity-60">
                         {new Date(m.timestamp).toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-sm text-text-header leading-relaxed">
+                    <p className="text-sm font-medium text-text-header leading-relaxed">
                       {m.content}
                     </p>
                   </div>
                 ))
               ) : (
-                <div className="p-8 text-center text-text opacity-50 italic">
+                <div className="p-12 text-center text-text opacity-60 italic font-black uppercase tracking-widest text-xs">
                   {t.admin.analytics.noData}
                 </div>
               )}
@@ -193,61 +193,65 @@ const AnalyticsManager: React.FC = () => {
 
         {/* Recent Feedback */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-text-header flex items-center gap-2">
-            <ThumbsUp className="w-5 h-5 text-accent" />
+          <h3 className="text-xl font-black uppercase italic tracking-tighter text-text-header flex items-center gap-2">
+            <ThumbsUp className="w-6 h-6 text-accent" />
             {t.admin.analytics.recentFeedback}
           </h3>
-          <div className="bg-white/5 border border-border rounded-2xl overflow-hidden">
-            <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
+          <div className="bg-bg border-4 border-border rounded-none shadow-shadow overflow-hidden">
+            <div className="max-h-[500px] overflow-y-auto custom-scrollbar">
               {feedback.length > 0 ? (
                 feedback.map((f) => (
                   <div
                     key={f.id}
-                    className="p-4 border-b border-border last:border-0 hover:bg-white/5 transition-colors"
+                    className="p-5 border-b-2 border-border last:border-0 hover:bg-accent-bg transition-colors"
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center gap-2">
-                        {f.is_helpful ? (
-                          <ThumbsUp className="w-4 h-4 text-accent" />
-                        ) : (
-                          <ThumbsDown className="w-4 h-4 text-error" />
-                        )}
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div
+                          className={`p-1 border border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${f.is_helpful ? "bg-accent" : "bg-error"}`}
+                        >
+                          {f.is_helpful ? (
+                            <ThumbsUp className="w-3 h-3 text-white" />
+                          ) : (
+                            <ThumbsDown className="w-3 h-3 text-white" />
+                          )}
+                        </div>
                         <span
-                          className={`text-xs font-bold ${f.is_helpful ? "text-accent" : "text-error"}`}
+                          className={`text-xs font-black uppercase tracking-widest ${f.is_helpful ? "text-accent" : "text-error"}`}
                         >
                           {f.is_helpful
                             ? t.admin.analytics.helpful
                             : t.admin.analytics.notHelpful}
                         </span>
                         {f.module && (
-                          <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/10 text-text ml-2">
+                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-none border border-border bg-bg text-text shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                             {f.module}
                           </span>
                         )}
                         {f.category && (
-                          <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-accent/10 text-accent ml-1">
+                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-none border border-border bg-accent text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                             {f.category}
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] text-text opacity-40">
+                      <span className="text-[10px] font-mono font-bold text-text opacity-60">
                         {new Date(f.timestamp).toLocaleString()}
                       </span>
                     </div>
-                    <div className="space-y-2">
-                      <div className="bg-white/5 p-2 rounded-lg">
-                        <p className="text-[10px] text-text opacity-40 uppercase font-bold mb-1">
+                    <div className="space-y-3">
+                      <div className="bg-accent-bg p-3 border-2 border-border rounded-none">
+                        <p className="text-[10px] text-text opacity-60 uppercase font-black font-mono mb-1">
                           User
                         </p>
-                        <p className="text-xs text-text-header">
-                          {f.user_message}
+                        <p className="text-xs font-medium text-text-header italic">
+                          "{f.user_message}"
                         </p>
                       </div>
-                      <div className="bg-accent/5 p-2 rounded-lg">
-                        <p className="text-[10px] text-accent opacity-40 uppercase font-bold mb-1">
+                      <div className="bg-bg p-3 border-2 border-border rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <p className="text-[10px] text-accent opacity-60 uppercase font-black font-mono mb-1">
                           Assistant
                         </p>
-                        <p className="text-xs text-text-header">
+                        <p className="text-xs font-medium text-text-header">
                           {f.assistant_reply}
                         </p>
                       </div>
@@ -255,7 +259,7 @@ const AnalyticsManager: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="p-8 text-center text-text opacity-50 italic">
+                <div className="p-12 text-center text-text opacity-60 italic font-black uppercase tracking-widest text-xs">
                   {t.admin.analytics.noData}
                 </div>
               )}
@@ -273,18 +277,18 @@ const StatCard: React.FC<{
   value: string;
   color: "accent" | "error";
 }> = ({ icon: Icon, label, value, color }) => (
-  <div className="p-6 bg-white/5 border border-border rounded-3xl">
-    <div className="flex items-center gap-4 mb-4">
-      <div
-        className={`w-10 h-10 rounded-xl flex items-center justify-center ${color === "accent" ? "bg-accent/10" : "bg-error/10"}`}
-      >
-        <Icon
-          className={`w-5 h-5 ${color === "accent" ? "text-accent" : "text-error"}`}
-        />
-      </div>
-      <span className="text-sm font-medium text-text opacity-60">{label}</span>
+  <div className="p-6 bg-bg border-4 border-border rounded-none shadow-shadow flex flex-col items-center text-center">
+    <div
+      className={`w-14 h-14 rounded-none border-2 border-border flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${color === "accent" ? "bg-accent" : "bg-error"}`}
+    >
+      <Icon className="w-7 h-7 text-white" />
     </div>
-    <div className="text-3xl font-bold text-text-header">{value}</div>
+    <span className="text-xs font-black font-mono uppercase tracking-widest text-text opacity-70 mb-2">
+      {label}
+    </span>
+    <div className="text-4xl font-black italic tracking-tighter text-text-header">
+      {value}
+    </div>
   </div>
 );
 

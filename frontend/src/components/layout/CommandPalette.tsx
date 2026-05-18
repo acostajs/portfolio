@@ -215,25 +215,25 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onClose }) => {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: -20 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="w-full max-w-xl bg-sidebar-bg backdrop-blur-2xl border border-border rounded-2xl shadow-2xl overflow-hidden relative flex flex-col max-h-[60vh]"
+        className="w-full max-w-xl bg-bg border-4 border-border rounded-none shadow-shadow overflow-hidden relative flex flex-col max-h-[60vh]"
       >
         {/* Search Input */}
-        <div className="flex items-center px-4 py-4 border-b border-border bg-white/5">
-          <Search className="w-5 h-5 text-text opacity-50 mr-3" />
+        <div className="flex items-center px-4 py-5 border-b-4 border-border bg-accent-bg">
+          <Search className="w-6 h-6 text-accent mr-4" />
           <input
             ref={inputRef}
             type="text"
-            placeholder="Type a command or search..."
+            placeholder="TYPE A COMMAND..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setSelectedIndex(0);
             }}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-text-header placeholder:text-text/40 text-lg"
+            className="flex-1 bg-transparent border-none outline-none text-text-header placeholder:text-text/40 text-xl font-black uppercase italic tracking-tighter"
           />
           <div className="flex items-center space-x-1">
-            <kbd className="px-2 py-1 bg-white/10 border border-border rounded text-[10px] font-mono text-text-muted">
+            <kbd className="px-2 py-1 bg-accent text-white border-2 border-border rounded-none text-[10px] font-mono font-black">
               ESC
             </kbd>
           </div>
@@ -243,8 +243,8 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onClose }) => {
         <div className="flex-1 overflow-y-auto custom-scrollbar py-2">
           {filteredCommands.length > 0 ? (
             sections.map((section) => (
-              <div key={section}>
-                <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+              <div key={section} className="mb-4 last:mb-0">
+                <div className="px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-text-header bg-border/20 mb-1">
                   {section}
                 </div>
                 {filteredCommands
@@ -257,21 +257,21 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onClose }) => {
                         key={cmd.id}
                         onMouseEnter={() => setSelectedIndex(globalIndex)}
                         onClick={() => handleSelect(cmd)}
-                        className={`w-full flex items-center px-4 py-3 transition-colors ${
+                        className={`w-full flex items-center px-6 py-4 transition-all border-l-4 ${
                           isSelected
-                            ? "bg-accent text-white"
-                            : "text-text hover:bg-white/5"
+                            ? "bg-accent text-white border-accent translate-x-1"
+                            : "text-text border-transparent hover:bg-accent-bg hover:border-accent/30"
                         }`}
                       >
                         <cmd.icon
-                          className={`w-4 h-4 mr-4 ${isSelected ? "text-white" : "opacity-60"}`}
+                          className={`w-5 h-5 mr-4 ${isSelected ? "text-white" : "text-accent"}`}
                         />
-                        <span className="flex-1 text-left font-medium">
+                        <span className="flex-1 text-left font-black uppercase tracking-tight text-sm">
                           {cmd.name}
                         </span>
                         {cmd.shortcut && (
                           <span
-                            className={`text-[10px] font-mono ${isSelected ? "text-white/70" : "text-text/40"}`}
+                            className={`text-[10px] font-mono font-bold uppercase ${isSelected ? "text-white/70" : "text-text/40"}`}
                           >
                             {cmd.shortcut}
                           </span>
@@ -282,8 +282,8 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onClose }) => {
               </div>
             ))
           ) : (
-            <div className="px-4 py-12 text-center">
-              <p className="text-text opacity-50">
+            <div className="px-4 py-16 text-center">
+              <p className="text-text-header font-black uppercase tracking-widest text-sm italic">
                 No results found for "{search}"
               </p>
             </div>
@@ -291,24 +291,24 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-border bg-white/5 flex items-center justify-between text-[10px] text-text-muted font-medium">
-          <div className="flex items-center space-x-4">
+        <div className="px-4 py-4 border-t-4 border-border bg-accent-bg flex items-center justify-between text-[10px] text-text-header font-black uppercase tracking-widest">
+          <div className="flex items-center space-x-6">
             <span className="flex items-center">
-              <kbd className="px-1.5 py-0.5 bg-white/10 border border-border rounded mr-1.5 font-mono">
+              <kbd className="px-2 py-1 bg-bg border-2 border-border rounded-none mr-2 font-mono">
                 ↑↓
               </kbd>
-              to navigate
+              NAVIGATE
             </span>
             <span className="flex items-center">
-              <kbd className="px-1.5 py-0.5 bg-white/10 border border-border rounded mr-1.5 font-mono">
+              <kbd className="px-2 py-1 bg-bg border-2 border-border rounded-none mr-2 font-mono">
                 ENTER
               </kbd>
-              to select
+              SELECT
             </span>
           </div>
-          <div className="flex items-center">
-            <Command className="w-3 h-3 mr-1" />
-            <span>K</span>
+          <div className="flex items-center bg-accent text-white px-2 py-1 border-2 border-border">
+            <Command className="w-3.5 h-3.5 mr-1.5" />
+            <span className="font-mono">K</span>
           </div>
         </div>
       </motion.div>

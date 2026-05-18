@@ -1,18 +1,22 @@
 import os
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Request
 from sqlmodel import Session
 from database import get_session
 import storage
-from models import Project
+from models import Project, ProjectCreate, ProjectUpdate
+from limiter import limiter
 
 router = APIRouter(prefix="/projects", tags=["admin-projects"])
 
 
 @router.post("", response_model=Project)
+@limiter.limit("10/minute")
 async def create_project(
-    project: Project,
+    request: Request,
+    project_data: ProjectCreate,
     session: Session = Depends(get_session),
 ):
+    project = Project.model_validate(project_data)
     session.add(project)
     session.commit()
     session.refresh(project)
@@ -20,16 +24,22 @@ async def create_project(
 
 
 @router.put("/{project_id}", response_model=Project)
+@limiter.limit("10/minute")
 async def update_project(
+    request: Request,
     project_id: int,
-    project_data: Project,
+    project_data: ProjectUpdate,
     session: Session = Depends(get_session),
 ):
     project = session.get(Project, project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-    for key, value in project_data.model_dump(exclude={"id"}).items():
+
+    # Update only provided fields
+    data = project_data.model_dump(exclude_unset=True)
+    for key, value in data.items():
         setattr(project, key, value)
+
     session.add(project)
     session.commit()
     session.refresh(project)
@@ -37,7 +47,9 @@ async def update_project(
 
 
 @router.delete("/{project_id}")
+@limiter.limit("10/minute")
 async def delete_project(
+    request: Request,
     project_id: int,
     session: Session = Depends(get_session),
 ):
@@ -55,7 +67,9 @@ async def delete_project(
 
 
 @router.post("/{project_id}/upload-image")
+@limiter.limit("10/minute")
 async def upload_project_image(
+    request: Request,
     project_id: int,
     file: UploadFile = File(...),
     session: Session = Depends(get_session),

@@ -20,8 +20,8 @@ class ChatFeedback(SQLModel, table=True):
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
-class About(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+# --- About ---
+class AboutBase(SQLModel):
     p1_en: str = Field(default="")
     p1_es: str = Field(default="")
     p1_fr: str = Field(default="")
@@ -31,8 +31,26 @@ class About(SQLModel, table=True):
     skills: List[str] = Field(default=[], sa_column=Column(JSON))
 
 
-class Experience(SQLModel, table=True):
+class AboutCreate(AboutBase):
+    pass
+
+
+class AboutUpdate(SQLModel):
+    p1_en: Optional[str] = None
+    p1_es: Optional[str] = None
+    p1_fr: Optional[str] = None
+    p2_en: Optional[str] = None
+    p2_es: Optional[str] = None
+    p2_fr: Optional[str] = None
+    skills: Optional[List[str]] = None
+
+
+class About(AboutBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+# --- Experience ---
+class ExperienceBase(SQLModel):
     company: str
     role: str
     period: str
@@ -43,8 +61,27 @@ class Experience(SQLModel, table=True):
     order: int = Field(default=0)
 
 
-class Project(SQLModel, table=True):
+class ExperienceCreate(ExperienceBase):
+    pass
+
+
+class ExperienceUpdate(SQLModel):
+    company: Optional[str] = None
+    role: Optional[str] = None
+    period: Optional[str] = None
+    description_en: Optional[List[str]] = None
+    description_es: Optional[List[str]] = None
+    description_fr: Optional[List[str]] = None
+    tech: Optional[List[str]] = None
+    order: Optional[int] = None
+
+
+class Experience(ExperienceBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+# --- Project ---
+class ProjectBase(SQLModel):
     title: str
     description_en: str = Field(default="")
     description_es: str = Field(default="")
@@ -56,8 +93,28 @@ class Project(SQLModel, table=True):
     order: int = Field(default=0)
 
 
-class BlogPost(SQLModel, table=True):
+class ProjectCreate(ProjectBase):
+    pass
+
+
+class ProjectUpdate(SQLModel):
+    title: Optional[str] = None
+    description_en: Optional[str] = None
+    description_es: Optional[str] = None
+    description_fr: Optional[str] = None
+    tech: Optional[List[str]] = None
+    link: Optional[str] = None
+    github: Optional[str] = None
+    image: Optional[str] = None
+    order: Optional[int] = None
+
+
+class Project(ProjectBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+# --- BlogPost ---
+class BlogPostBase(SQLModel):
     slug: str = Field(index=True, unique=True)
     date: str
     category: str
@@ -73,11 +130,54 @@ class BlogPost(SQLModel, table=True):
     published: bool = Field(default=True)
 
 
-class ChatTriggerResponse(SQLModel, table=True):
+class BlogPostCreate(BlogPostBase):
+    pass
+
+
+class BlogPostUpdate(SQLModel):
+    slug: Optional[str] = None
+    date: Optional[str] = None
+    category: Optional[str] = None
+    title_en: Optional[str] = None
+    title_es: Optional[str] = None
+    title_fr: Optional[str] = None
+    excerpt_en: Optional[str] = None
+    excerpt_es: Optional[str] = None
+    excerpt_fr: Optional[str] = None
+    content_en: Optional[str] = None
+    content_es: Optional[str] = None
+    content_fr: Optional[str] = None
+    published: Optional[bool] = None
+
+
+class BlogPost(BlogPostBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    module: str = Field(index=True)  # e.g., "greetings", "technical_frontend"
+
+
+# --- ChatTriggerResponse ---
+class ChatTriggerResponseBase(SQLModel):
+    module: str = Field(index=True)  # e.g., "greetings", "technical_backend"
     category: Optional[str] = None  # e.g., "React", "Vue"
+    priority: int = Field(default=0)  # Manual override control
     triggers: List[str] = Field(default=[], sa_column=Column(JSON))
     answers_en: List[str] = Field(default=[], sa_column=Column(JSON))
     answers_es: List[str] = Field(default=[], sa_column=Column(JSON))
     answers_fr: List[str] = Field(default=[], sa_column=Column(JSON))
+
+
+class ChatTriggerResponseCreate(ChatTriggerResponseBase):
+    pass
+
+
+class ChatTriggerResponseUpdate(SQLModel):
+    module: Optional[str] = None
+    category: Optional[str] = None
+    priority: Optional[int] = None
+    triggers: Optional[List[str]] = None
+    answers_en: Optional[List[str]] = None
+    answers_es: Optional[List[str]] = None
+    answers_fr: Optional[List[str]] = None
+
+
+class ChatTriggerResponse(ChatTriggerResponseBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)

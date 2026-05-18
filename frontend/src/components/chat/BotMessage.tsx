@@ -35,29 +35,30 @@ const BotMessage: React.FC<BotMessageProps> = ({
         animate={
           !isTypingComplete
             ? {
-                scale: [1, 1.05, 1],
+                translateY: [0, -4, 0],
+                translateX: [0, -4, 0],
                 borderColor: [
-                  "rgba(255,255,255,0.1)",
-                  "rgba(9,105,218,0.5)",
-                  "rgba(255,255,255,0.1)",
+                  "var(--border)",
+                  "var(--accent)",
+                  "var(--border)",
                 ],
               }
             : {}
         }
         transition={{
-          duration: 2,
+          duration: 1.5,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
-        className="w-10 h-10 rounded-full overflow-hidden border-2 border-border mr-4 mt-1 shrink-0 shadow-lg"
+        className="w-10 h-10 rounded-none overflow-hidden border-2 border-border mr-4 mt-1 shrink-0 shadow-shadow"
       >
         <ProgressiveImage
           src="/avatar.jpeg"
-          alt="Assistant"
+          alt={t.home.assistantAvatarAlt}
           className="w-full h-full grayscale"
         />
       </motion.div>
-      <div className="bg-white/5 border border-border p-6 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm w-full">
+      <div className="bg-bg border-4 border-border p-6 rounded-none shadow-shadow w-full">
         <div className="flex flex-col space-y-6">
           <div className="text-text-header font-medium leading-relaxed markdown-content min-h-[1.5em]">
             {skipTypewriter ? (
@@ -73,8 +74,8 @@ const BotMessage: React.FC<BotMessageProps> = ({
 
         {/* Feedback Buttons */}
         {isTypingComplete && (
-          <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-            <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">
+          <div className="mt-6 pt-4 border-t-2 border-border flex items-center justify-between">
+            <p className="text-[10px] text-text-muted uppercase tracking-widest font-black">
               {feedbackGiven ? t.home.feedbackSuccess : t.home.wasThisHelpful}
             </p>
             <div className="flex items-center gap-2">
@@ -82,16 +83,16 @@ const BotMessage: React.FC<BotMessageProps> = ({
                 {feedbackGiven ? (
                   <motion.div
                     key="thank-you"
-                    initial={{ opacity: 0, scale: 0.5 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="p-1.5 text-success bg-success/10 rounded-lg"
+                    className="p-1.5 text-success bg-success/10 border-2 border-success rounded-none"
                   >
                     <Check className="w-3.5 h-3.5" />
                   </motion.div>
                 ) : (
                   <motion.div
                     key="buttons"
-                    exit={{ opacity: 0, scale: 0.5 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
                     className="flex items-center gap-2"
                   >
                     <button
@@ -101,7 +102,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
                           ({ hapticFeedback }) => hapticFeedback(10),
                         );
                       }}
-                      className="p-1.5 text-text-muted hover:text-success hover:bg-success/10 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-success"
+                      className="p-1.5 text-text-muted hover:text-white hover:bg-success border-2 border-transparent hover:border-border rounded-none transition-all focus-visible:ring-2 focus-visible:ring-success"
                       title={t.home.helpful}
                       aria-label={t.home.helpful}
                     >
@@ -114,7 +115,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
                           ({ hapticFeedback }) => hapticFeedback(10),
                         );
                       }}
-                      className="p-1.5 text-text-muted hover:text-error hover:bg-error/10 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-error"
+                      className="p-1.5 text-text-muted hover:text-white hover:bg-danger border-2 border-transparent hover:border-border rounded-none transition-all focus-visible:ring-2 focus-visible:ring-danger"
                       title={t.home.notHelpful}
                       aria-label={t.home.notHelpful}
                     >
