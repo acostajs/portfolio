@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "../../lib/hooks/useTranslation";
-import { postPublic } from "../../lib/api";
-import { Send, Loader2 } from "lucide-react";
+import { postPublic, fetchPublic } from "../../lib/api";
+import { Send, Loader2, X } from "lucide-react";
 import BotMessage from "../components/chat/BotMessage";
 import { motion, AnimatePresence } from "framer-motion";
 import { hapticFeedback } from "../../lib/haptic";
+import { getSessionId } from "../../lib/session";
 import SEO from "../components/layout/SEO";
 
 interface Message {
+  id?: number;
   role: "user" | "assistant";
   content: string;
+  timestamp?: string;
   isInitial?: boolean;
   shouldAnimate?: boolean;
   module?: string;
@@ -20,6 +23,7 @@ interface Message {
 const Home: React.FC = () => {
   const { t, locale } = useTranslation();
   const navigate = useNavigate();
+  const sessionId = getSessionId();
 
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem("portfolio-chat-history");
@@ -44,6 +48,7 @@ const Home: React.FC = () => {
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLive, setIsLive] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -54,34 +59,94 @@ const Home: React.FC = () => {
     messagesRef.current = messages;
   }, [messages]);
 
+  // Polling for live chat sync
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    if (isLive) {
+      interval = setInterval(async () => {
+        try {
+          const data = await fetchPublic<{
+            messages: Message[];
+            is_active: boolean;
+          }>(`/chat/sync/${sessionId}`);
+
+          if (!data.is_active && isLive) {
+            setIsLive(false);
+          }
+
+          setMessages((prev) => {
+            const updated = [...prev];
+            let changed = false;
+
+            data.messages.forEach((dbMsg) => {
+              // Check if we already have this message by ID
+              const existingIdx = updated.findIndex((m) => m.id === dbMsg.id);
+              if (existingIdx !== -1) return;
+
+              // Check if it matches a local message without ID (to "claim" it)
+              const matchIdx = updated.findIndex(
+                (m) =>
+                  !m.id &&
+                  m.role === dbMsg.role &&
+                  m.content.trim() === dbMsg.content.trim(),
+              );
+
+              if (matchIdx !== -1) {
+                updated[matchIdx] = { ...updated[matchIdx], id: dbMsg.id };
+                changed = true;
+              } else {
+                // It's a truly new message (likely from developer)
+                updated.push({ ...dbMsg, shouldAnimate: true });
+                changed = true;
+              }
+            });
+
+            if (changed) hapticFeedback(10);
+            return changed ? updated : prev;
+          });
+        } catch (e) {
+          console.error("Sync error:", e);
+        }
+      }, 3000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isLive, sessionId]);
+
   // Unified suggestions logic
   const commandSuggestions = t.home.commands.list.filter((cmd) =>
     cmd.cmd.toLowerCase().startsWith(input.toLowerCase()),
   );
 
-  const activeSuggestions = input.startsWith("/")
-    ? commandSuggestions.map((s) => ({
-        text: s.cmd,
-        subtext: s.desc,
-        value: s.cmd,
-        isCommand: true,
-      }))
-    : !input && isFocused && !isLoading
-      ? [
-          {
-            text: t.home.newChat,
-            subtext: t.home.commands.list.find((c) => c.cmd === "/clear")?.desc,
-            value: "/clear",
-            isCommand: true,
-          },
-          ...t.home.suggestions.map((s) => ({
-            text: s,
-            subtext: undefined,
-            value: s,
-            isCommand: false,
-          })),
-        ]
-      : [];
+  const activeSuggestions = (
+    input.startsWith("/")
+      ? commandSuggestions.map((s) => ({
+          text: s.cmd,
+          subtext: s.desc,
+          value: s.cmd,
+          isCommand: true,
+        }))
+      : !input && isFocused && !isLoading
+        ? [
+            {
+              text: t.home.newChat,
+              subtext: t.home.commands.list.find((c) => c.cmd === "/clear")
+                ?.desc,
+              value: "/clear",
+              isCommand: true,
+            },
+            ...t.home.suggestions.map((s) => ({
+              text: s,
+              subtext: undefined,
+              value: s,
+              isCommand: false,
+            })),
+          ]
+        : []
+  ).filter(() => !isLive); // Disable suggestions during live chat
 
   const showSuggestions = activeSuggestions.length > 0;
 
@@ -183,6 +248,10 @@ const Home: React.FC = () => {
       return true;
     }
 
+    if (cleanCmd === "/live-chat" || cleanCmd === "/close-live-chat") {
+      return false;
+    }
+
     if (cleanCmd.startsWith("/")) {
       setMessages((prev) => [
         ...prev,
@@ -217,27 +286,37 @@ const Home: React.FC = () => {
         {
           message: string;
           language: string;
+          session_id: string;
           history: { role: string; content: string }[];
         },
-        { reply: string; module?: string; category?: string }
+        { reply: string; module?: string; category?: string; is_live: boolean }
       >("/chat", {
         message: userMessage,
         language: locale,
+        session_id: sessionId,
         history: messagesRef.current.map((m) => ({
           role: m.role,
           content: m.content,
         })),
       });
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: data.reply,
-          module: data.module,
-          category: data.category,
-        },
-      ]);
+      if (data.is_live) {
+        setIsLive(true);
+      } else {
+        setIsLive(false);
+      }
+
+      if (data.reply) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: data.reply,
+            module: data.module,
+            category: data.category,
+          },
+        ]);
+      }
     } catch (error) {
       console.error("Chat error:", error);
       setMessages((prev) => [
@@ -315,6 +394,11 @@ const Home: React.FC = () => {
                     content={msg.content}
                     isInitial={msg.isInitial}
                     skipTypewriter={!msg.shouldAnimate}
+                    onLiveChatRequest={
+                      msg.module === "fallback" && !isLive
+                        ? () => handleSend("/live-chat")
+                        : undefined
+                    }
                     onFeedback={(isHelpful) => {
                       const userMsg =
                         idx > 0 ? messages[idx - 1].content : "initial";
@@ -429,6 +513,21 @@ const Home: React.FC = () => {
             }}
             className="relative group"
           >
+            <AnimatePresence>
+              {isLive && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  onClick={() => handleSend("/close-live-chat")}
+                  className="absolute -top-12 right-0 flex items-center gap-2 px-3 py-1.5 bg-danger text-white font-black uppercase tracking-widest text-[10px] border-2 border-border shadow-shadow hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all active:translate-y-0 active:translate-x-0"
+                >
+                  <X className="w-3 h-3" />
+                  {t.home.closeLiveChat}
+                </motion.button>
+              )}
+            </AnimatePresence>
             <input
               type="text"
               value={input}
@@ -446,12 +545,16 @@ const Home: React.FC = () => {
                 setTimeout(() => setIsFocused(false), 200);
               }}
               onKeyDown={handleKeyDown}
-              placeholder={t.home.chatbotPlaceholder}
+              placeholder={
+                isLive ? t.home.liveChatPlaceholder : t.home.chatbotPlaceholder
+              }
               aria-label={t.home.chatAriaLabel}
               aria-haspopup="listbox"
               aria-owns="chat-suggestions"
               disabled={isLoading}
-              className="w-full pl-6 pr-16 py-4 md:py-6 bg-accent-bg border-4 border-border focus:border-accent focus:shadow-shadow rounded-none outline-none transition-all shadow-shadow placeholder:text-text/40 placeholder:text-xs md:placeholder:text-sm text-text-header disabled:opacity-50 font-mono font-bold"
+              className={`w-full pl-6 pr-16 py-4 md:py-6 bg-accent-bg border-4 border-border focus:border-accent focus:shadow-shadow rounded-none outline-none transition-all shadow-shadow placeholder:text-text/40 placeholder:text-xs md:placeholder:text-sm text-text-header disabled:opacity-50 font-mono font-bold ${
+                isLive ? "border-accent ring-2 ring-accent/20" : ""
+              }`}
             />
             <button
               type="submit"

@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     # Mandatory in production, defaults to something safe/useless in dev
     ADMIN_PASSWORD: str = "CHANGE_ME_IN_ENV"  # nosec
 
+    # Telegram Bridge
+    TELEGRAM_BOT_TOKEN: Optional[str] = None
+    TELEGRAM_CHAT_ID: Optional[str] = None
+    TELEGRAM_SECRET_TOKEN: Optional[str] = None
+
     # Google Drive / OAuth2 Refresh Token
     GOOGLE_PROJECT_ID: Optional[str] = None
     GOOGLE_CLIENT_ID: Optional[str] = None

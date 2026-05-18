@@ -23,7 +23,7 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Version 0.2.2: Stability & Final Polish**.
+The project is currently in **Version 0.2.3: Notifications & Connectivity**.
 
 ### Major Milestones Completed
 
@@ -40,6 +40,8 @@ The project is currently in **Version 0.2.2: Stability & Final Polish**.
 - **Version 0.1.9**: Advanced Architecture (NLU Optimization, Lazy Loading).
 - **Version 0.2.0**: System Hardening (Dependency Injection, Router Modularization).
 - **Version 0.2.1**: Post-Audit Refinements (Asset cleanup, Dependency sync).
+- **Version 0.2.2**: Stability & Final Polish (Sitemap, Rate-limiting, Validation).
+- **Version 0.2.3**: Notifications & Connectivity (Telegram Bridge, Smart Escalation).
 
 ## Building and Running
 
