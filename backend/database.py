@@ -1,6 +1,7 @@
 import logging
 from typing import Generator
 from sqlmodel import SQLModel, create_engine, Session
+from sqlalchemy import inspect, text, types
 from config import settings
 
 logger = logging.getLogger("backend")
@@ -28,93 +29,90 @@ else:
 
 
 def create_db_and_tables():
+    # First ensure basic tables exist
     SQLModel.metadata.create_all(engine)
-    # Manual migration for columns if they are missing
-    from sqlalchemy import inspect, text
 
     inspector = inspect(engine)
+    tables = inspector.get_table_names()
 
-    # Migrate chatfeedback
-    if "chatfeedback" in inspector.get_table_names():
-        columns = [c["name"] for c in inspector.get_columns("chatfeedback")]
-        if "module" not in columns:
-            with Session(engine) as session:
-                session.execute(
-                    text("ALTER TABLE chatfeedback ADD COLUMN module VARCHAR")
-                )
-                session.commit()
-        if "category" not in columns:
-            with Session(engine) as session:
-                session.execute(
+    # We use engine.connect() for DDL operations to be more direct
+    with engine.connect() as conn:
+        # --- Migrate chatfeedback ---
+        if "chatfeedback" in tables:
+            cols = [c["name"] for c in inspector.get_columns("chatfeedback")]
+            if "module" not in cols:
+                conn.execute(text("ALTER TABLE chatfeedback ADD COLUMN module VARCHAR"))
+            if "category" not in cols:
+                conn.execute(
                     text("ALTER TABLE chatfeedback ADD COLUMN category VARCHAR")
                 )
-                session.commit()
+            conn.commit()
 
-    # Migrate chattriggerresponse
-    if "chattriggerresponse" in inspector.get_table_names():
-        columns = [c["name"] for c in inspector.get_columns("chattriggerresponse")]
-        if "priority" not in columns:
-            with Session(engine) as session:
-                session.execute(
+        # --- Migrate chattriggerresponse ---
+        if "chattriggerresponse" in tables:
+            cols = [c["name"] for c in inspector.get_columns("chattriggerresponse")]
+            if "priority" not in cols:
+                conn.execute(
                     text(
                         "ALTER TABLE chattriggerresponse ADD COLUMN priority INTEGER DEFAULT 0"
                     )
                 )
-                session.commit()
+            conn.commit()
 
-    # Migrate livechatsession
-    if "livechatsession" in inspector.get_table_names():
-        columns = inspector.get_columns("livechatsession")
-        session_id_col = next((c for c in columns if c["name"] == "session_id"), None)
-        if (
-            session_id_col
-            and "INT" in str(session_id_col["type"]).upper()
-            and not database_url.startswith("sqlite")
-        ):
-            with Session(engine) as session:
+        # --- Migrate livechatsession ---
+        if "livechatsession" in tables:
+            cols = inspector.get_columns("livechatsession")
+            session_id_col = next((c for c in cols if c["name"] == "session_id"), None)
+            if (
+                session_id_col
+                and not isinstance(
+                    session_id_col["type"], (types.String, types.Unicode)
+                )
+                and not database_url.startswith("sqlite")
+            ):
                 try:
-                    session.execute(
+                    conn.execute(
                         text(
-                            "ALTER TABLE livechatsession ALTER COLUMN session_id TYPE VARCHAR"
+                            "ALTER TABLE livechatsession ALTER COLUMN session_id TYPE VARCHAR USING session_id::varchar"
                         )
                     )
-                    session.commit()
+                    conn.commit()
+                    logger.info(
+                        "Successfully migrated livechatsession.session_id to VARCHAR"
+                    )
                 except Exception as e:
                     logger.error(f"Migration error (livechatsession.session_id): {e}")
+                    conn.rollback()
 
-    # Migrate chatmessage
-    if "chatmessage" in inspector.get_table_names():
-        columns = inspector.get_columns("chatmessage")
-        column_names = [c["name"] for c in columns]
-        if "session_id" not in column_names:
-            with Session(engine) as session:
-                # Add session_id with default 'legacy'
-                session.execute(
+        # --- Migrate chatmessage ---
+        if "chatmessage" in tables:
+            cols = inspector.get_columns("chatmessage")
+            col_names = [c["name"] for c in cols]
+            if "session_id" not in col_names:
+                conn.execute(
                     text(
                         "ALTER TABLE chatmessage ADD COLUMN session_id VARCHAR DEFAULT 'legacy'"
                     )
                 )
-                session.commit()
-        else:
-            # Fix for production issue: session_id might be INTEGER in some environments
-            session_id_col = next(c for c in columns if c["name"] == "session_id")
-            # If it's an integer, we need to convert it to VARCHAR to support UUIDs
-            if "INT" in str(
-                session_id_col["type"]
-            ).upper() and not database_url.startswith("sqlite"):
-                with Session(engine) as session:
+                conn.commit()
+            else:
+                session_id_col = next(c for c in cols if c["name"] == "session_id")
+                if not isinstance(
+                    session_id_col["type"], (types.String, types.Unicode)
+                ) and not database_url.startswith("sqlite"):
                     try:
-                        session.execute(
+                        conn.execute(
                             text(
-                                "ALTER TABLE chatmessage ALTER COLUMN session_id TYPE VARCHAR"
+                                "ALTER TABLE chatmessage ALTER COLUMN session_id TYPE VARCHAR USING session_id::varchar"
                             )
                         )
-                        session.commit()
+                        conn.commit()
                         logger.info(
-                            "Successfully converted chatmessage.session_id to VARCHAR"
+                            "Successfully migrated chatmessage.session_id to VARCHAR"
                         )
                     except Exception as e:
                         logger.error(f"Migration error (chatmessage.session_id): {e}")
+                        conn.rollback()
 
 
 def get_session() -> Generator[Session, None, None]:
