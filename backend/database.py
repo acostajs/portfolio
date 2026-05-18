@@ -99,9 +99,9 @@ def create_db_and_tables():
             # Fix for production issue: session_id might be INTEGER in some environments
             session_id_col = next(c for c in columns if c["name"] == "session_id")
             # If it's an integer, we need to convert it to VARCHAR to support UUIDs
-            if "INT" in str(session_id_col["type"]).upper() and not database_url.startswith(
-                "sqlite"
-            ):
+            if "INT" in str(
+                session_id_col["type"]
+            ).upper() and not database_url.startswith("sqlite"):
                 with Session(engine) as session:
                     try:
                         session.execute(
