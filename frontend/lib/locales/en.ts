@@ -37,6 +37,9 @@ export const en = {
     notHelpful: "Not Helpful",
     wasThisHelpful: "Was this helpful?",
     feedbackSuccess: "Thank you for your feedback!",
+    liveChatPlaceholder: "Chatting live with Juan...",
+    escalateToLiveChat: "Talk to the developer directly",
+    closeLiveChat: "Leave Live Chat",
     features: [],
     suggestions: [
       "What are your core technical skills?",
@@ -71,6 +74,8 @@ export const en = {
         { cmd: "/projects", desc: "Go to Projects page." },
         { cmd: "/blog", desc: "Go to Blog page." },
         { cmd: "/contact", desc: "Go to Contact page." },
+        { cmd: "/live-chat", desc: "Chat in real-time with the developer." },
+        { cmd: "/close-live-chat", desc: "Return to AI assistant mode." },
       ],
     },
   },

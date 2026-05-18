@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-05-18
+
+### Added
+
+- **Telegram Chat Bridge**: Real-time bidirectional communication between visitors and the developer via the Telegram Bot API.
+- **Smart Escalation**: Intelligent UI flow that proactively offers a "Talk to developer" button when the AI provides a fallback response.
+- **Live Chat UI**: Seamless transition mode with dynamic placeholders, an inline exit button, and suppressed AI suggestions for a clean typing experience.
+- **Webhook Security**: Implemented Secret Token verification for the Telegram Webhook to prevent unauthorized message injection.
+- **Session Management**: Native `crypto.randomUUID()` based session tracking for consistent visitor identification across reloads.
+- **Database Migrations**: Manual migration logic to safely update existing tables (e.g., adding `session_id` to `chatmessage`).
+
+### Changed
+
+- **UX Refinement**: Optimized the chat interface to hide irrelevant AI suggestions during active live sessions.
+- **Robust Sync**: Refactored frontend synchronization to use ID-based message merging, eliminating duplication and handling initial state mismatches.
+- **Testing Expansion**: Added a comprehensive test suite for the Telegram bridge, covering lifecycle, security, and real-time syncing.
+
 ## [0.2.2] - 2026-05-18
 
 ### Added

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Check, MessageSquare } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 
@@ -12,12 +12,14 @@ interface BotMessageProps {
   isInitial?: boolean;
   skipTypewriter?: boolean;
   onFeedback?: (isHelpful: boolean) => void;
+  onLiveChatRequest?: () => void;
 }
 
 const BotMessage: React.FC<BotMessageProps> = ({
   content,
   skipTypewriter,
   onFeedback,
+  onLiveChatRequest,
 }) => {
   const { t } = useTranslation();
   const [feedbackGiven, setFeedbackGiven] = useState(false);
@@ -72,12 +74,23 @@ const BotMessage: React.FC<BotMessageProps> = ({
           </div>
         </div>
 
-        {/* Feedback Buttons */}
+        {/* Feedback & Actions */}
         {isTypingComplete && (
-          <div className="mt-6 pt-4 border-t-2 border-border flex items-center justify-between">
-            <p className="text-[10px] text-text-muted uppercase tracking-widest font-black">
-              {feedbackGiven ? t.home.feedbackSuccess : t.home.wasThisHelpful}
-            </p>
+          <div className="mt-6 pt-4 border-t-2 border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex flex-col gap-3 w-full sm:w-auto">
+              {onLiveChatRequest && (
+                <button
+                  onClick={onLiveChatRequest}
+                  className="flex items-center gap-2 px-4 py-2 bg-accent text-white font-black uppercase tracking-widest text-[10px] border-2 border-border shadow-shadow hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all active:translate-y-0 active:translate-x-0"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  {t.home.escalateToLiveChat}
+                </button>
+              )}
+              <p className="text-[10px] text-text-muted uppercase tracking-widest font-black">
+                {feedbackGiven ? t.home.feedbackSuccess : t.home.wasThisHelpful}
+              </p>
+            </div>
             <div className="flex items-center gap-2">
               <AnimatePresence mode="wait">
                 {feedbackGiven ? (

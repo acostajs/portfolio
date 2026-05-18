@@ -59,6 +59,19 @@ def create_db_and_tables():
                 )
                 session.commit()
 
+    # Migrate chatmessage
+    if "chatmessage" in inspector.get_table_names():
+        columns = [c["name"] for c in inspector.get_columns("chatmessage")]
+        if "session_id" not in columns:
+            with Session(engine) as session:
+                # Add session_id with default 'legacy'
+                session.execute(
+                    text(
+                        "ALTER TABLE chatmessage ADD COLUMN session_id VARCHAR DEFAULT 'legacy'"
+                    )
+                )
+                session.commit()
+
 
 def get_session() -> Generator[Session, None, None]:
     with Session(engine) as session:

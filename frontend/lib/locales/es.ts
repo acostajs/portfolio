@@ -40,6 +40,9 @@ export const es: TranslationType = {
     notHelpful: "No es útil",
     wasThisHelpful: "¿Fue útil?",
     feedbackSuccess: "¡Gracias por tus comentarios!",
+    liveChatPlaceholder: "Chateando en vivo con Juan...",
+    escalateToLiveChat: "Hablar con el desarrollador directamente",
+    closeLiveChat: "Salir del chat en vivo",
     features: [],
     suggestions: [
       "¿Cuáles son tus habilidades técnicas principales?",
@@ -74,6 +77,11 @@ export const es: TranslationType = {
         { cmd: "/projects", desc: "Ir a la página de Proyectos." },
         { cmd: "/blog", desc: "Ir a la página de Blog." },
         { cmd: "/contact", desc: "Ir a la página de Contacto." },
+        {
+          cmd: "/live-chat",
+          desc: "Chatea en tiempo real con el desarrollador.",
+        },
+        { cmd: "/close-live-chat", desc: "Volver al modo de asistente de IA." },
       ],
     },
   },
