@@ -14,6 +14,10 @@ from database import create_db_and_tables
 from seed import seed
 from cache import get_cached_triggers
 
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
+from limiter import limiter
+
 # Import Routers
 from routers import public, chat
 from routers.admin.router import router as admin_router
@@ -37,6 +41,8 @@ async def lifespan(app: FastAPI):
 
 # --- App Initialization ---
 app = FastAPI(title="Portfolio Backend", lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore
 
 # --- Middleware ---
 app.add_middleware(

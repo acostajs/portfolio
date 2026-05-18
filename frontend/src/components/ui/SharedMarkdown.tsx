@@ -66,7 +66,7 @@ const SharedMarkdown: React.FC<SharedMarkdownProps> = ({
                   <SyntaxHighlighter
                     language={match[1]}
                     PreTag="div"
-                    className="rounded-xl border border-white/5 !bg-white/5"
+                    className="rounded-none border-4 border-border !bg-bg shadow-shadow my-6"
                   >
                     {String(children).replace(/\n$/, "")}
                   </SyntaxHighlighter>
@@ -76,7 +76,7 @@ const SharedMarkdown: React.FC<SharedMarkdownProps> = ({
 
             return (
               <code
-                className={`${className} px-1.5 py-0.5 rounded bg-white/10 text-accent-light font-mono text-sm`}
+                className={`${className} px-1.5 py-0.5 rounded-none bg-accent-bg text-accent font-mono text-sm border border-accent/20`}
                 {...props}
               >
                 {children}
@@ -85,31 +85,38 @@ const SharedMarkdown: React.FC<SharedMarkdownProps> = ({
           },
           // Customizing other elements for a consistent look
           h1: ({ children }) => (
-            <h1 className="text-2xl font-bold text-text-header mt-8 mb-4">
+            <h1 className="text-2xl font-black text-text-header mt-10 mb-6 uppercase italic tracking-tighter border-b-4 border-accent inline-block">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-xl font-bold text-text-header mt-6 mb-3">
+            <h2 className="text-xl font-black text-text-header mt-8 mb-4 uppercase italic tracking-tight">
               {children}
             </h2>
           ),
           p: ({ children }) => (
-            <p className="text-text leading-relaxed mb-4">{children}</p>
+            <p className="text-text leading-relaxed mb-6 font-medium">
+              {children}
+            </p>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc list-inside space-y-2 mb-4 text-text">
+            <ul className="list-none space-y-3 mb-6 text-text font-medium">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside space-y-2 mb-4 text-text">
+            <ol className="list-decimal list-inside space-y-3 mb-6 text-text font-medium">
               {children}
             </ol>
           ),
-          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+          li: ({ children }) => (
+            <li className="flex items-start">
+              <span className="w-1.5 h-1.5 bg-accent mt-2 mr-3 shrink-0" />
+              <span className="leading-relaxed">{children}</span>
+            </li>
+          ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-accent bg-accent/5 px-6 py-4 italic rounded-r-xl my-6">
+            <blockquote className="border-l-8 border-accent bg-accent-bg px-8 py-6 italic rounded-none my-8 shadow-shadow">
               {children}
             </blockquote>
           ),
@@ -118,7 +125,7 @@ const SharedMarkdown: React.FC<SharedMarkdownProps> = ({
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:underline font-medium"
+              className="text-accent font-black uppercase tracking-widest text-xs hover:underline decoration-2 underline-offset-4"
             >
               {children}
             </a>

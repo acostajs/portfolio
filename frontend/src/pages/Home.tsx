@@ -244,7 +244,7 @@ const Home: React.FC = () => {
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I encountered an error. Please try again later.",
+          content: t.home.errorRetry,
           shouldAnimate: true,
         },
       ]);
@@ -328,8 +328,8 @@ const Home: React.FC = () => {
                     }}
                   />
                 ) : (
-                  <div className="bg-accent text-white p-4 rounded-2xl rounded-tr-none shadow-lg max-w-2xl border border-white/10">
-                    <p className="leading-relaxed">{msg.content}</p>
+                  <div className="bg-accent text-white p-4 rounded-none border-2 border-accent shadow-shadow max-w-2xl -translate-y-1 -translate-x-1">
+                    <p className="leading-relaxed font-bold">{msg.content}</p>
                   </div>
                 )}
               </motion.div>
@@ -342,10 +342,10 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="bg-white/5 border border-border p-4 rounded-2xl rounded-tl-none shadow-xl backdrop-blur-sm flex items-center space-x-2">
+              <div className="bg-accent-bg border-2 border-accent p-4 rounded-none shadow-shadow flex items-center space-x-2">
                 <Loader2 className="w-4 h-4 animate-spin text-accent" />
-                <span className="text-sm text-text opacity-70">
-                  Thinking...
+                <span className="text-sm text-text-header font-black uppercase tracking-widest">
+                  {t.home.thinking}
                 </span>
               </div>
             </motion.div>
@@ -357,7 +357,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Chat Input Area - Anchored at the bottom */}
-      <div className="flex-none p-4 pt-0 pb-[calc(1rem+env(safe-area-inset-bottom))] md:p-8 md:pt-0 bg-bg/80 backdrop-blur-sm border-t border-border/50 md:border-none md:bg-transparent">
+      <div className="flex-none p-4 pt-0 pb-[calc(1rem+env(safe-area-inset-bottom))] md:p-8 md:pt-0 bg-bg border-t-4 border-border md:border-none md:bg-transparent">
         <div className="max-w-5xl mx-auto relative">
           <AnimatePresence>
             {showSuggestions && (
@@ -365,40 +365,48 @@ const Home: React.FC = () => {
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                className="absolute bottom-full left-0 w-full mb-4 bg-bg border border-border rounded-2xl shadow-2xl overflow-hidden z-50"
+                className="absolute bottom-full left-0 w-full mb-4 bg-bg border-4 border-border rounded-none shadow-shadow overflow-hidden z-50"
               >
-                <div className="px-4 py-2 border-b border-border bg-white/5">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    {input.startsWith("/") ? "Commands" : "Suggestions"}
+                <div className="px-4 py-2 border-b-4 border-border bg-accent-bg">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-text-header">
+                    {input.startsWith("/")
+                      ? t.home.terminalCommands
+                      : t.home.suggestedQueries}
                   </span>
                 </div>
-                <ul className="py-2 max-h-60 overflow-y-auto custom-scrollbar">
+                <ul
+                  className="py-2 max-h-60 overflow-y-auto custom-scrollbar"
+                  role="listbox"
+                  id="chat-suggestions"
+                >
                   {activeSuggestions.map((suggestion, idx) => (
                     <li
                       key={suggestion.value}
+                      role="option"
+                      aria-selected={idx === suggestionIndex}
                       onMouseEnter={() => setSuggestionIndex(idx)}
                       onClick={() => {
                         handleSend(suggestion.value);
                       }}
-                      className={`px-6 py-3 cursor-pointer transition-colors flex items-center justify-between group ${
+                      className={`px-6 py-3 cursor-pointer transition-colors flex items-center justify-between group border-y-2 border-transparent ${
                         idx === suggestionIndex
-                          ? "bg-accent text-white"
-                          : "text-text hover:bg-white/5"
+                          ? "bg-accent text-white border-accent"
+                          : "text-text hover:bg-accent-bg hover:border-accent/10"
                       }`}
                     >
                       <div className="flex items-center">
                         {suggestion.isCommand && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent mr-3 group-hover:bg-white transition-colors" />
+                          <span className="w-2 h-2 bg-accent mr-3 group-hover:bg-white transition-colors" />
                         )}
                         <span
-                          className={`font-medium ${suggestion.isCommand ? "font-mono" : ""}`}
+                          className={`font-black uppercase tracking-tight ${suggestion.isCommand ? "font-mono" : ""}`}
                         >
                           {suggestion.text}
                         </span>
                       </div>
                       {suggestion.subtext && (
                         <span
-                          className={`text-xs ${
+                          className={`text-[10px] font-mono uppercase ${
                             idx === suggestionIndex
                               ? "text-white/80"
                               : "text-text/60"
@@ -439,15 +447,17 @@ const Home: React.FC = () => {
               }}
               onKeyDown={handleKeyDown}
               placeholder={t.home.chatbotPlaceholder}
-              aria-label="Chat message"
+              aria-label={t.home.chatAriaLabel}
+              aria-haspopup="listbox"
+              aria-owns="chat-suggestions"
               disabled={isLoading}
-              className="w-full pl-6 pr-14 py-4 md:py-5 bg-white/5 border border-border focus:border-accent rounded-2xl outline-none transition-all shadow-2xl backdrop-blur-md placeholder:text-text/40 placeholder:text-xs md:placeholder:text-base text-text-header disabled:opacity-50"
+              className="w-full pl-6 pr-16 py-4 md:py-6 bg-accent-bg border-4 border-border focus:border-accent focus:shadow-shadow rounded-none outline-none transition-all shadow-shadow placeholder:text-text/40 placeholder:text-xs md:placeholder:text-sm text-text-header disabled:opacity-50 font-mono font-bold"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              aria-label="Send message"
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-white/10 text-text hover:text-white hover:bg-accent rounded-xl transition-all shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label={t.home.sendAriaLabel}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-accent text-white border-2 border-border hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0 active:translate-x-0 rounded-none transition-all shadow-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "../../../lib/hooks/useTranslation";
 
 interface ProgressiveImageProps {
   src: string;
@@ -12,6 +13,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   alt,
   className,
 }) => {
+  const { t } = useTranslation();
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [prevSrc, setPrevSrc] = useState(src);
@@ -42,7 +44,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
           >
             {hasError ? (
               <span className="text-[10px] text-text opacity-40 uppercase font-bold">
-                Error Loading
+                {t.common.errorLoading}
               </span>
             ) : (
               <div className="w-full h-full bg-white/5 animate-pulse" />

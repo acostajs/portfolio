@@ -75,8 +75,11 @@ async def upload_file(file: UploadFile, folder: str = "projects") -> str:
                 supportsAllDrives=True,
                 body={"type": "anyone", "role": "reader"},
             ).execute()
-        except Exception:
-            pass
+        except Exception as e:
+            import logging
+
+            logger = logging.getLogger("backend")
+            logger.warning(f"Could not set public permissions on file {file_id}: {e}")
 
     except Exception as e:
         import logging

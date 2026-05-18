@@ -26,21 +26,38 @@ else:
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
-    # Manual migration for chatfeedback columns if they are missing
+    # Manual migration for columns if they are missing
     from sqlalchemy import inspect, text
 
     inspector = inspect(engine)
-    columns = [c["name"] for c in inspector.get_columns("chatfeedback")]
-    if "module" not in columns:
-        with Session(engine) as session:
-            session.execute(text("ALTER TABLE chatfeedback ADD COLUMN module VARCHAR"))
-            session.commit()
-    if "category" not in columns:
-        with Session(engine) as session:
-            session.execute(
-                text("ALTER TABLE chatfeedback ADD COLUMN category VARCHAR")
-            )
-            session.commit()
+
+    # Migrate chatfeedback
+    if "chatfeedback" in inspector.get_table_names():
+        columns = [c["name"] for c in inspector.get_columns("chatfeedback")]
+        if "module" not in columns:
+            with Session(engine) as session:
+                session.execute(
+                    text("ALTER TABLE chatfeedback ADD COLUMN module VARCHAR")
+                )
+                session.commit()
+        if "category" not in columns:
+            with Session(engine) as session:
+                session.execute(
+                    text("ALTER TABLE chatfeedback ADD COLUMN category VARCHAR")
+                )
+                session.commit()
+
+    # Migrate chattriggerresponse
+    if "chattriggerresponse" in inspector.get_table_names():
+        columns = [c["name"] for c in inspector.get_columns("chattriggerresponse")]
+        if "priority" not in columns:
+            with Session(engine) as session:
+                session.execute(
+                    text(
+                        "ALTER TABLE chattriggerresponse ADD COLUMN priority INTEGER DEFAULT 0"
+                    )
+                )
+                session.commit()
 
 
 def get_session() -> Generator[Session, None, None]:

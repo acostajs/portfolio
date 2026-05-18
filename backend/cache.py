@@ -1,6 +1,6 @@
 import logging
 from typing import Optional, Tuple, Sequence
-from sqlmodel import Session, select, col
+from sqlmodel import Session, select, col, desc
 from database import engine
 from models import ChatTriggerResponse
 
@@ -18,9 +18,12 @@ def get_cached_triggers() -> Tuple[Sequence[ChatTriggerResponse], dict]:
         logger.info("Populating ChatTrigger cache...")
         try:
             with Session(engine) as session:
-                # Order by ID to respect database-defined priority
+                # Order by Priority (DESC) then ID (ASC) to respect manual overrides
                 results = session.exec(
-                    select(ChatTriggerResponse).order_by(col(ChatTriggerResponse.id))
+                    select(ChatTriggerResponse).order_by(
+                        desc(col(ChatTriggerResponse.priority)),
+                        col(ChatTriggerResponse.id),
+                    )
                 ).all()
                 _TRIGGER_CACHE = results
                 _FLAT_TRIGGER_MAP = {}

@@ -3,14 +3,16 @@ import { Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { hapticFeedback } from "../../../lib/haptic";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
-import type { ChatbotResponse } from "../../types/cms";
+import type { ChatTriggerResponse } from "../../types/cms";
 import TagInput from "../ui/TagInput";
 
 const ChatbotManager: React.FC = () => {
   const { t } = useTranslation();
-  const [items, setItems] = useState<ChatbotResponse[]>([]);
+  const [items, setItems] = useState<ChatTriggerResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState<ChatbotResponse | null>(null);
+  const [editingItem, setEditingItem] = useState<ChatTriggerResponse | null>(
+    null,
+  );
 
   const fetchItems = useCallback(async () => {
     try {
@@ -87,7 +89,7 @@ const ChatbotManager: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-text-header">
+        <h2 className="text-2xl font-black uppercase italic tracking-tighter text-text-header">
           {t.admin.chatbot.title}
         </h2>
         <button
@@ -98,9 +100,10 @@ const ChatbotManager: React.FC = () => {
               answers_en: [],
               answers_es: [],
               answers_fr: [],
+              priority: 0,
             })
           }
-          className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-xl font-bold hover:brightness-110 transition-all"
+          className="flex items-center gap-2 px-6 py-2 bg-accent text-white rounded-none border-2 border-border shadow-shadow font-black uppercase tracking-widest text-xs hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
         >
           <Plus className="w-4 h-4" /> {t.admin.chatbot.newTrigger}
         </button>
@@ -109,11 +112,11 @@ const ChatbotManager: React.FC = () => {
       {editingItem ? (
         <form
           onSubmit={handleSave}
-          className="bg-white/5 border border-accent/30 p-8 rounded-3xl space-y-6 animate-in fade-in slide-in-from-top-4 duration-300"
+          className="bg-bg border-4 border-accent p-8 rounded-none shadow-shadow space-y-8 animate-in fade-in slide-in-from-top-4 duration-300"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
                 {t.admin.chatbot.module}
               </label>
               <input
@@ -122,12 +125,12 @@ const ChatbotManager: React.FC = () => {
                 onChange={(e) =>
                   setEditingItem({ ...editingItem, module: e.target.value })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
                 placeholder="greetings, about, ..."
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
                 {t.admin.chatbot.category}
               </label>
               <input
@@ -135,13 +138,29 @@ const ChatbotManager: React.FC = () => {
                 onChange={(e) =>
                   setEditingItem({ ...editingItem, category: e.target.value })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header"
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
+                {t.admin.chatbot.priority}
+              </label>
+              <input
+                type="number"
+                value={editingItem.priority}
+                onChange={(e) =>
+                  setEditingItem({
+                    ...editingItem,
+                    priority: parseInt(e.target.value) || 0,
+                  })
+                }
+                className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-text-header font-bold focus:outline-none focus:border-accent transition-all"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70 tracking-widest">
               {t.admin.chatbot.triggers}
             </label>
             <TagInput
@@ -153,9 +172,9 @@ const ChatbotManager: React.FC = () => {
             />
           </div>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-6">
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest text-accent">
+              <label className="text-[10px] font-mono font-bold uppercase text-accent tracking-widest">
                 {t.admin.chatbot.answersEn}
               </label>
               <textarea
@@ -167,11 +186,11 @@ const ChatbotManager: React.FC = () => {
                     answers_en: e.target.value.split("\n").filter((l) => l),
                   })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header min-h-[80px] text-sm"
+                className="w-full p-4 bg-accent-bg border-2 border-border rounded-none text-text-header font-medium min-h-[100px] text-sm focus:outline-none focus:border-accent transition-all"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest text-accent">
+              <label className="text-[10px] font-mono font-bold uppercase text-accent tracking-widest">
                 {t.admin.chatbot.answersEs}
               </label>
               <textarea
@@ -183,11 +202,11 @@ const ChatbotManager: React.FC = () => {
                     answers_es: e.target.value.split("\n").filter((l) => l),
                   })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header min-h-[80px] text-sm"
+                className="w-full p-4 bg-accent-bg border-2 border-border rounded-none text-text-header font-medium min-h-[100px] text-sm focus:outline-none focus:border-accent transition-all"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs text-text opacity-50 uppercase font-bold tracking-widest text-accent">
+              <label className="text-[10px] font-mono font-bold uppercase text-accent tracking-widest">
                 {t.admin.chatbot.answersFr}
               </label>
               <textarea
@@ -199,63 +218,68 @@ const ChatbotManager: React.FC = () => {
                     answers_fr: e.target.value.split("\n").filter((l) => l),
                   })
                 }
-                className="w-full p-3 bg-white/5 border border-border rounded-xl text-text-header min-h-[80px] text-sm"
+                className="w-full p-4 bg-accent-bg border-2 border-border rounded-none text-text-header font-medium min-h-[100px] text-sm focus:outline-none focus:border-accent transition-all"
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-4">
+          <div className="flex items-center gap-4 pt-4">
             <button
               type="submit"
-              className="flex-1 py-3 bg-accent text-white rounded-xl font-bold hover:brightness-110 shadow-lg shadow-accent/20"
+              className="flex-1 py-4 bg-accent text-white rounded-none border-2 border-border shadow-shadow font-black uppercase tracking-widest text-sm hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
             >
               {editingItem.id ? t.admin.chatbot.update : t.admin.chatbot.create}
             </button>
             <button
               type="button"
               onClick={() => setEditingItem(null)}
-              className="px-6 py-3 bg-white/5 border border-border text-text rounded-xl font-bold hover:bg-white/10"
+              className="px-8 py-4 bg-bg border-2 border-border text-text rounded-none font-black uppercase tracking-widest text-sm hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-shadow"
             >
               {t.admin.common.cancel}
             </button>
           </div>
         </form>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-6">
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-6 bg-white/5 border border-border rounded-2xl group hover:border-accent/30 transition-all"
+              className="flex items-center justify-between p-6 bg-bg border-4 border-border rounded-none shadow-shadow group hover:border-accent transition-all"
             >
               <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <h3 className="font-bold text-text-header text-lg">
+                <div className="flex items-center gap-4 mb-2">
+                  <h3 className="font-black text-text-header text-xl uppercase italic tracking-tighter">
                     {item.module}
                   </h3>
                   {item.category && (
-                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-[10px] uppercase font-bold rounded border border-accent/20">
+                    <span className="px-2 py-0.5 bg-accent text-white text-[10px] uppercase font-black border border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                       {item.category}
                     </span>
                   )}
+                  {item.priority > 0 && (
+                    <span className="px-2 py-0.5 bg-success text-white text-[10px] uppercase font-black border border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      P{item.priority}
+                    </span>
+                  )}
                 </div>
-                <p className="text-text opacity-50 text-xs mt-1">
+                <p className="text-text opacity-70 text-[10px] font-mono font-bold uppercase tracking-widest">
                   Triggers: {item.triggers.slice(0, 5).join(", ")}
                   {item.triggers.length > 5 ? "..." : ""}
                 </p>
               </div>
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => setEditingItem(item)}
-                  className="p-2 text-text hover:text-accent hover:bg-accent/10 rounded-lg"
+                  className="p-2 text-text border-2 border-transparent hover:border-border hover:bg-accent-bg hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-5 h-5" />
                 </button>
                 {item.id !== undefined && (
                   <button
                     onClick={() => handleDelete(item.id!)}
-                    className="p-2 text-text hover:text-error hover:bg-error/10 rounded-lg"
+                    className="p-2 text-text hover:text-error border-2 border-transparent hover:border-error hover:bg-error-bg hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 )}
               </div>

@@ -14,7 +14,6 @@ import {
   Copy,
   Check,
 } from "lucide-react";
-import ProgressiveImage from "../chat/ProgressiveImage";
 import { hapticFeedback } from "../../../lib/haptic";
 
 export type PageId =
@@ -107,59 +106,52 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
       />
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-sidebar-bg backdrop-blur-xl border-r border-border transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-50 ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-sidebar-bg border-r-4 border-border transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full overflow-y-auto custom-scrollbar pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-          {/* Top Profile Section */}
-          <div className="p-5 flex flex-col items-center">
-            <div className="relative mb-3">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white/10 shadow-lg">
-                <ProgressiveImage
-                  src="/avatar.jpeg"
-                  alt={t.common.name}
-                  className="w-full h-full grayscale brightness-110"
-                />
-              </div>
-            </div>
+          {/* Top Profile Section - Matches Header Height (96px + 4px border = 100px) */}
+          <div className="h-[100px] flex flex-col justify-center px-6 border-b-4 border-border shrink-0">
+            <h2 className="text-2xl font-black text-text-header tracking-tighter uppercase leading-none">
+              {t.common.name}
+            </h2>
+            <p className="text-[12px] text-accent mt-2 leading-tight font-mono font-bold uppercase">
+              {t.common.role}
+            </p>
+          </div>
 
+          {/* Action Section */}
+          <div className="p-6 pb-2">
             <a
               href={t.common.resumePath}
               download
-              className="flex items-center justify-center w-full py-2 px-4 bg-success text-white rounded-full font-bold text-xs hover:brightness-110 transition-all shadow-md mb-4 group"
+              className="flex items-center justify-center py-2.5 px-6 bg-transparent text-accent rounded-none border-4 border-accent font-black uppercase tracking-widest text-[10px] hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-shadow mb-6 group"
             >
-              <Download className="w-3.5 h-3.5 mr-2 group-hover:animate-bounce" />
+              <Download className="w-4 h-4 mr-2 group-hover:animate-bounce" />
               {t.common.downloadResume}
             </a>
-
-            <div className="text-center">
-              <h2 className="text-xl font-bold text-text-header tracking-tight">
-                {t.common.name}
-              </h2>
-              <p className="text-[13px] text-text-muted mt-1 leading-snug max-w-[180px] mx-auto">
-                {t.common.role}
-              </p>
-            </div>
           </div>
 
           {/* Navigation */}
           <nav className="px-3 mb-4">
-            <ul className="space-y-0.5">
+            <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => handleLinkClick(link.path)}
-                    className={`flex items-center w-full px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                    className={`flex items-center w-full px-4 py-2.5 rounded-none border-2 transition-all duration-200 group ${
                       activePage === link.id
-                        ? "bg-accent text-white shadow-md shadow-accent/20"
-                        : "text-text hover:bg-white/5 hover:text-text-header"
+                        ? "bg-accent text-white border-accent shadow-shadow -translate-y-1 -translate-x-1"
+                        : "text-text border-transparent hover:bg-accent-bg hover:border-accent"
                     }`}
                   >
                     <link.icon
                       className={`w-4.5 h-4.5 mr-3 transition-transform group-hover:scale-110 ${activePage === link.id ? "text-white" : "text-text-muted"}`}
                     />
-                    <span className="font-semibold text-sm">{link.name}</span>
+                    <span className="font-bold text-sm uppercase tracking-tight">
+                      {link.name}
+                    </span>
                   </button>
                 </li>
               ))}
@@ -167,7 +159,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
           </nav>
 
           <div className="px-6 mb-4">
-            <div className="h-px bg-border w-full opacity-50" />
+            <div className="h-1 bg-border w-full" />
           </div>
 
           {/* Bottom Contact Section */}
@@ -178,7 +170,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
               const Content = (
                 <>
                   <info.icon className="w-3.5 h-3.5 mr-3 text-text-muted group-hover:text-accent transition-all shrink-0" />
-                  <span className="truncate">{info.text}</span>
+                  <span className="truncate font-mono text-[12px]">
+                    {info.text}
+                  </span>
                 </>
               );
 
@@ -195,7 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
                           ? "noopener noreferrer"
                           : undefined
                       }
-                      className="flex items-center text-[13px] text-text hover:text-text-header transition-colors flex-1 truncate"
+                      className="flex items-center text-[13px] text-text hover:text-accent transition-colors flex-1 truncate"
                     >
                       {Content}
                     </a>
@@ -208,10 +202,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
                   {isEmail && (
                     <button
                       onClick={() => copyToClipboard(info.text)}
-                      className={`ml-2 p-1.5 rounded-md transition-all ${
+                      className={`ml-2 p-1.5 rounded-none border border-transparent transition-all ${
                         copiedEmail
-                          ? "text-success bg-success/10"
-                          : "text-text opacity-0 group-hover:opacity-100 hover:bg-white/5"
+                          ? "text-success bg-success/10 border-success"
+                          : "text-text opacity-0 group-hover:opacity-100 hover:bg-accent-bg hover:border-accent"
                       }`}
                       aria-label="Copy email"
                       title="Copy email"
@@ -230,10 +224,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
 
           {/* Availability Status */}
           <div className="px-5 pb-6 mt-auto">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted mb-2 ml-1">
+            <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2 ml-1">
               {t.common.availabilityTitle}
             </p>
-            <div className="p-3 bg-white/5 border border-border rounded-xl text-[11px] text-text-header leading-tight">
+            <div className="p-3 bg-accent-bg border-2 border-accent rounded-none text-[11px] text-text-header leading-tight font-bold shadow-shadow">
               {t.common.availability}
             </div>
           </div>

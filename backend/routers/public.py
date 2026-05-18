@@ -1,17 +1,37 @@
 import logging
 from typing import List, Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlmodel import Session, select, desc, col
 from database import get_session
 from models import About, Experience, Project, BlogPost
 
-# Re-import these from main if we don't move them elsewhere, but they are needed for Chat
-# For now, I'll keep them in main or move them to a shared utils if they grow.
-# Actually, they are in main.py. I'll need to import them.
-
 logger = logging.getLogger("backend")
 
 router = APIRouter(prefix="/api/v1", tags=["public"])
+
+
+@router.get("/sitemap.xml")
+async def sitemap(session: Session = Depends(get_session)):
+    base_url = "https://acostajs.vercel.app"
+    static_paths = ["", "/about", "/experience", "/projects", "/contact", "/blog"]
+
+    # Fetch blog posts
+    posts = session.exec(select(BlogPost).where(BlogPost.published)).all()
+
+    # Construct XML
+    xml_content = '<?xml version="1.0" encoding="UTF-8"?>'
+    xml_content += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+
+    for path in static_paths:
+        xml_content += (
+            f"<url><loc>{base_url}{path}</loc><changefreq>weekly</changefreq></url>"
+        )
+
+    for post in posts:
+        xml_content += f"<url><loc>{base_url}/blog/{post.slug}</loc><changefreq>monthly</changefreq></url>"
+
+    xml_content += "</urlset>"
+    return Response(content=xml_content, media_type="application/xml")
 
 
 @router.get("/about", response_model=Optional[About])

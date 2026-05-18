@@ -66,13 +66,13 @@ const AboutManager: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-text-header">
+        <h2 className="text-2xl font-black uppercase italic tracking-tighter text-text-header">
           {t.admin.about.title}
         </h2>
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="flex items-center gap-2 px-6 py-2 bg-accent text-white rounded-xl font-bold hover:brightness-110 disabled:opacity-50 transition-all shadow-lg shadow-accent/20"
+          className="flex items-center gap-2 px-6 py-2 bg-accent text-white rounded-none border-2 border-border shadow-shadow font-black uppercase tracking-widest text-xs hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all disabled:opacity-50"
         >
           {isSaving ? (
             t.admin.common.saving
@@ -84,14 +84,14 @@ const AboutManager: React.FC = () => {
         </button>
       </div>
 
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* EN */}
-        <div className="space-y-4 bg-white/5 border border-border p-6 rounded-2xl">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-accent">
+        <div className="space-y-4 bg-bg border-4 border-border p-6 rounded-none shadow-shadow">
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-accent">
             {t.admin.about.en}
           </h3>
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70">
               {t.admin.about.p1}
             </label>
             <textarea
@@ -99,11 +99,11 @@ const AboutManager: React.FC = () => {
               onChange={(e) =>
                 data && setData({ ...data, p1_en: e.target.value })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[100px]"
+              className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-sm text-text-header min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70">
               {t.admin.about.p2}
             </label>
             <textarea
@@ -111,18 +111,18 @@ const AboutManager: React.FC = () => {
               onChange={(e) =>
                 data && setData({ ...data, p2_en: e.target.value })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[100px]"
+              className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-sm text-text-header min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
         </div>
 
         {/* ES */}
-        <div className="space-y-4 bg-white/5 border border-border p-6 rounded-2xl">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-accent">
+        <div className="space-y-4 bg-bg border-4 border-border p-6 rounded-none shadow-shadow">
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-accent">
             {t.admin.about.es}
           </h3>
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70">
               {t.admin.about.p1}
             </label>
             <textarea
@@ -130,11 +130,11 @@ const AboutManager: React.FC = () => {
               onChange={(e) =>
                 data && setData({ ...data, p1_es: e.target.value })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[100px]"
+              className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-sm text-text-header min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70">
               {t.admin.about.p2}
             </label>
             <textarea
@@ -142,18 +142,18 @@ const AboutManager: React.FC = () => {
               onChange={(e) =>
                 data && setData({ ...data, p2_es: e.target.value })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[100px]"
+              className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-sm text-text-header min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
         </div>
 
         {/* FR */}
-        <div className="space-y-4 bg-white/5 border border-border p-6 rounded-2xl">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-accent">
+        <div className="space-y-4 bg-bg border-4 border-border p-6 rounded-none shadow-shadow">
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-accent">
             {t.admin.about.fr}
           </h3>
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70">
               {t.admin.about.p1}
             </label>
             <textarea
@@ -161,11 +161,11 @@ const AboutManager: React.FC = () => {
               onChange={(e) =>
                 data && setData({ ...data, p1_fr: e.target.value })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[100px]"
+              className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-sm text-text-header min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-text opacity-50">
+            <label className="text-[10px] font-mono font-bold uppercase text-text opacity-70">
               {t.admin.about.p2}
             </label>
             <textarea
@@ -173,14 +173,14 @@ const AboutManager: React.FC = () => {
               onChange={(e) =>
                 data && setData({ ...data, p2_fr: e.target.value })
               }
-              className="w-full p-3 bg-white/5 border border-border rounded-lg text-sm text-text-header min-h-[100px]"
+              className="w-full p-3 bg-accent-bg border-2 border-border rounded-none text-sm text-text-header min-h-[100px] focus:outline-none focus:border-accent transition-all"
             />
           </div>
         </div>
 
         {/* Skills */}
-        <div className="space-y-4 bg-white/5 border border-border p-6 rounded-2xl">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-accent">
+        <div className="space-y-4 bg-bg border-4 border-border p-6 rounded-none shadow-shadow">
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-accent">
             {t.admin.about.skills}
           </h3>
           <TagInput

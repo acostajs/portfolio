@@ -92,3 +92,25 @@ async def test_get_blog(client: AsyncClient, db_session: Session):
     data = response.json()
     assert len(data) == 1
     assert data[0]["title_en"] == "Post 1"
+
+
+@pytest.mark.asyncio
+async def test_sitemap(client: AsyncClient, db_session: Session):
+    # Add a blog post
+    post = BlogPost(
+        title_en="Sitemap Post",
+        slug="sitemap-post",
+        date="2026-05-18",
+        category="Tech",
+        published=True,
+    )
+    db_session.add(post)
+    db_session.commit()
+
+    response = await client.get("/api/v1/sitemap.xml")
+    assert response.status_code == 200
+    assert "application/xml" in response.headers["content-type"]
+
+    xml_content = response.text
+    assert "https://acostajs.vercel.app/blog/sitemap-post" in xml_content
+    assert "https://acostajs.vercel.app/about" in xml_content

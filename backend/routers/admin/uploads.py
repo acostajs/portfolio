@@ -1,12 +1,15 @@
 import os
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Request
 import storage
+from limiter import limiter
 
 router = APIRouter(prefix="/upload", tags=["admin-uploads"])
 
 
 @router.post("")
+@limiter.limit("10/minute")
 async def upload_general_image(
+    request: Request,
     file: UploadFile = File(...),
 ):
     """

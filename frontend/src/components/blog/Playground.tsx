@@ -47,7 +47,7 @@ const Playground: React.FC<PlaygroundProps> = ({
   return (
     <div
       ref={containerRef}
-      className="my-8 rounded-2xl overflow-hidden border border-border shadow-2xl bg-white/5 backdrop-blur-sm animate-fade-in min-h-[450px]"
+      className="my-12 rounded-none overflow-hidden border-4 border-border shadow-shadow bg-bg animate-fade-in min-h-[450px]"
     >
       {isVisible ? (
         <Sandpack

@@ -11,14 +11,14 @@ class Settings(BaseSettings):
     DATABASE_URL: Optional[str] = None
     ENVIRONMENT: str = "development"
     # Mandatory in production, defaults to something safe/useless in dev
-    ADMIN_PASSWORD: str = "CHANGE_ME_IN_ENV"
+    ADMIN_PASSWORD: str = "CHANGE_ME_IN_ENV"  # nosec
 
     # Google Drive / OAuth2 Refresh Token
     GOOGLE_PROJECT_ID: Optional[str] = None
     GOOGLE_CLIENT_ID: Optional[str] = None
     GOOGLE_CLIENT_SECRET: Optional[str] = None
     GOOGLE_REFRESH_TOKEN: Optional[str] = None
-    GOOGLE_TOKEN_URI: str = "https://oauth2.googleapis.com/token"
+    GOOGLE_TOKEN_URI: str = "https://oauth2.googleapis.com/token"  # nosec
     GOOGLE_DRIVE_FOLDER_ID: str = (
         "17B-O-56_YJ0Xf2X8B79532rO4C_l0S6U"  # Default fallback or provided by user
     )

@@ -111,8 +111,8 @@ def find_trigger_match(
                 matches.append(item)
 
     if matches:
-        # Return the one with the lowest ID (highest priority)
-        return min(matches, key=lambda x: x.id)
+        # Return the one with the highest priority (lowest id as tie-breaker)
+        return min(matches, key=lambda x: (-x.priority, x.id))
 
     # --- Tier 2: Fuzzy Matching Fallback ---
     for item in cached_triggers:
@@ -156,12 +156,12 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
         category = matched_item.category
         answers = getattr(matched_item, f"answers_{lang}")
         if answers:
-            reply = random.choice(answers)
+            reply = random.choice(answers)  # nosec
 
     # If no trigger matched, use fallback
     if not reply:
         logger.info("No trigger matched, using fallback")
-        reply = random.choice(fallback.data["answers"][lang])
+        reply = random.choice(fallback.data["answers"][lang])  # nosec
         module = "fallback"
 
     # Save user message to history in background

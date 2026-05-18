@@ -23,7 +23,7 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Version 0.2.1: Post-Audit Refinements**.
+The project is currently in **Version 0.2.2: Stability & Final Polish**.
 
 ### Major Milestones Completed
 

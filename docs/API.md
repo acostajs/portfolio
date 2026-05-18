@@ -74,6 +74,7 @@ The following modules are managed via `/api/v1/admin/`:
 - `projects`: GET, POST, PUT (/{id}), DELETE (/{id}), POST (/{id}/upload-image)
 - `blog`: GET, POST, PUT (/{id}), DELETE (/{id})
 - `chat-triggers`: GET, POST, PUT (/{id}), DELETE (/{id})
+  - **Models**: Include `priority` (integer) for manual override control.
 - `analytics/messages`: GET
 - `analytics/feedback`: GET
 
