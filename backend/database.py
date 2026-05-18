@@ -1,6 +1,9 @@
+import logging
 from typing import Generator
 from sqlmodel import SQLModel, create_engine, Session
 from config import settings
+
+logger = logging.getLogger("backend")
 
 # Default to SQLite for local development if no DATABASE_URL is provided
 sqlite_url = "sqlite:///./database.db"
@@ -59,10 +62,31 @@ def create_db_and_tables():
                 )
                 session.commit()
 
+    # Migrate livechatsession
+    if "livechatsession" in inspector.get_table_names():
+        columns = inspector.get_columns("livechatsession")
+        session_id_col = next((c for c in columns if c["name"] == "session_id"), None)
+        if (
+            session_id_col
+            and "INT" in str(session_id_col["type"]).upper()
+            and not database_url.startswith("sqlite")
+        ):
+            with Session(engine) as session:
+                try:
+                    session.execute(
+                        text(
+                            "ALTER TABLE livechatsession ALTER COLUMN session_id TYPE VARCHAR"
+                        )
+                    )
+                    session.commit()
+                except Exception as e:
+                    logger.error(f"Migration error (livechatsession.session_id): {e}")
+
     # Migrate chatmessage
     if "chatmessage" in inspector.get_table_names():
-        columns = [c["name"] for c in inspector.get_columns("chatmessage")]
-        if "session_id" not in columns:
+        columns = inspector.get_columns("chatmessage")
+        column_names = [c["name"] for c in columns]
+        if "session_id" not in column_names:
             with Session(engine) as session:
                 # Add session_id with default 'legacy'
                 session.execute(
@@ -71,6 +95,26 @@ def create_db_and_tables():
                     )
                 )
                 session.commit()
+        else:
+            # Fix for production issue: session_id might be INTEGER in some environments
+            session_id_col = next(c for c in columns if c["name"] == "session_id")
+            # If it's an integer, we need to convert it to VARCHAR to support UUIDs
+            if "INT" in str(
+                session_id_col["type"]
+            ).upper() and not database_url.startswith("sqlite"):
+                with Session(engine) as session:
+                    try:
+                        session.execute(
+                            text(
+                                "ALTER TABLE chatmessage ALTER COLUMN session_id TYPE VARCHAR"
+                            )
+                        )
+                        session.commit()
+                        logger.info(
+                            "Successfully converted chatmessage.session_id to VARCHAR"
+                        )
+                    except Exception as e:
+                        logger.error(f"Migration error (chatmessage.session_id): {e}")
 
 
 def get_session() -> Generator[Session, None, None]:
