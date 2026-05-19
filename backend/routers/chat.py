@@ -324,6 +324,7 @@ async def chat(
         background_tasks.add_task(
             save_chat_interaction, "user", user_message, session_id
         )
+
         # We don't return a reply here yet, as the developer will reply later
         # But we must return something to the frontend
         return ChatResponse(reply="", module="live_chat", is_live=True)
@@ -410,13 +411,34 @@ async def telegram_webhook(
     if not text:
         return {"status": "no text"}
 
-    # Find the most recently updated active session
-    stmt = (
-        select(LiveChatSession)
-        .where(LiveChatSession.is_active)
-        .order_by(desc(LiveChatSession.updated_at))
-    )
-    active_session = db.exec(stmt).first()
+    # Attempt to parse session_id from the replied-to message for precise routing
+    session_id = None
+    reply_to = msg.get("reply_to_message")
+    if reply_to and reply_to.get("text"):
+        # Relayed messages look like: "💬 *Message from <session_id>*:\n..."
+        # Extract ID using regex
+        import re
+
+        match = re.search(r"Message from ([\w-]+)", reply_to["text"])
+        if match:
+            session_id = match.group(1)
+            logger.info(f"Parsed session_id {session_id} from Telegram reply")
+
+    active_session = None
+    if session_id:
+        stmt = select(LiveChatSession).where(
+            LiveChatSession.session_id == session_id, LiveChatSession.is_active
+        )
+        active_session = db.exec(stmt).first()
+
+    if not active_session:
+        # Fallback: Find the most recently updated active session
+        stmt = (
+            select(LiveChatSession)
+            .where(LiveChatSession.is_active)
+            .order_by(desc(LiveChatSession.updated_at))
+        )
+        active_session = db.exec(stmt).first()
 
     if not active_session:
         logger.warning("Telegram message received but no active live session found")
