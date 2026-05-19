@@ -14,6 +14,7 @@ dependencies = [
     "psycopg2-binary>=2.9.10",
     "pydantic-settings>=2.14.0",
     "python-multipart>=0.0.27",
+    "psutil>=6.0.0",
     "rapidfuzz>=3.14.5",
     "requests>=2.33.1",
     "slowapi>=0.1.9",

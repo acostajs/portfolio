@@ -15,6 +15,7 @@ class LiveChatSession(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     session_id: str = Field(index=True, unique=True)
     is_active: bool = Field(default=True)
+    session_metadata: Optional[dict] = Field(default={}, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -26,6 +27,17 @@ class ChatFeedback(SQLModel, table=True):
     is_helpful: bool
     module: Optional[str] = None
     category: Optional[str] = None
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class VisitorLog(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    path: str = Field(index=True)
+    method: str
+    locale: str = Field(default="en")
+    user_agent: Optional[str] = None
+    referrer: Optional[str] = None
+    ip_hash: str = Field(index=True)  # SHA-256 hash of the IP for privacy
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 

@@ -112,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activePage }) => {
       >
         <div className="flex flex-col h-full overflow-y-auto custom-scrollbar pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
           {/* Top Profile Section - Matches Header Height (96px + 4px border = 100px) */}
-          <div className="h-[100px] flex flex-col justify-center px-6 border-b-4 border-border shrink-0">
+          <div className="h-25 flex flex-col justify-center px-6 border-b-4 border-border shrink-0">
             <h2 className="text-2xl font-black text-text-header tracking-tighter uppercase leading-none">
               {t.common.name}
             </h2>
