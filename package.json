@@ -22,18 +22,18 @@
   },
   "lint-staged": {
     "frontend/**/*.{ts,tsx}": [
-      "cd frontend && bun run lint",
-      "cd frontend && bun tsc --noEmit",
+      "bun --cwd frontend run lint",
+      "bun --cwd frontend tsc --noEmit",
       "prettier --write"
     ],
     "frontend/**/*.{js,jsx}": [
-      "cd frontend && bun run lint",
+      "bun --cwd frontend run lint",
       "prettier --write"
     ],
     "backend/**/*.py": [
-      "cd backend && uv run ruff check --fix",
-      "cd backend && uv run ruff format",
-      "cd backend && uv run pyright"
+      "uv run --directory backend ruff check --fix",
+      "uv run --directory backend ruff format",
+      "uv run --directory backend pyright"
     ],
     "**/*.{json,md,css}": [
       "prettier --write"

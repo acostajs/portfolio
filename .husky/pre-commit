@@ -1,14 +1,20 @@
+#!/usr/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Exit immediately if any command fails
+set -e
+
 echo "🔍 Running pre-commit validation (Formatting & Type-checks)..."
 
 # 1. Run lint-staged to handle auto-formatting and surgical checks on staged files
-# This will run ruff (fix/format) for backend and prettier/eslint for frontend
+# If lint-staged fails (linter errors), the commit halts immediately due to 'set -e'
 bunx lint-staged
 
-# 2. Run full project type-checking to ensure no regressions
-# This is mandatory and the commit will fail if these do not pass
+# 2. Run full project type-checking to ensure no cross-file regressions
 echo "✅ Type-checking Frontend..."
-(cd frontend && bun tsc --noEmit)
+bun --cwd frontend tsc --noEmit
+
 echo "✅ Type-checking Backend..."
-(cd backend && uv run pyright)
+uv run --directory backend pyright
 
 echo "🚀 All checks passed. Proceeding with commit."
