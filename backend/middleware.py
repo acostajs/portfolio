@@ -1,6 +1,7 @@
 import hashlib
 import logging
-from typing import Optional
+import asyncio
+from typing import Optional, Any
 from fastapi import Request
 from sqlmodel import Session
 from database import engine
@@ -10,31 +11,43 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 logger = logging.getLogger("backend")
 
+# Singleton queue for background tasks
+background_task_queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue()
 
-def log_visitor(
-    path: str,
-    method: str,
-    locale: str,
-    user_agent: Optional[str],
-    referrer: Optional[str],
-    ip_hash: str,
-):
-    """Background task to save visitor logs."""
+
+async def visitor_log_worker():
+    """Consumes visitor logs from the queue and saves them to the database."""
+    logger.info("Visitor log worker started.")
+    while True:
+        try:
+            log_data = await background_task_queue.get()
+            if log_data is None:  # Sentinel value to stop worker
+                break
+
+            await asyncio.to_thread(save_log_to_db, log_data)
+            background_task_queue.task_done()
+        except Exception as e:
+            logger.error(f"Worker error: {e}")
+            await asyncio.sleep(1)
+
+
+def save_log_to_db(data: dict[str, Any]):
+    """Sync function to save log entry using a new session."""
     try:
         with Session(engine) as session:
             log_entry = VisitorLog(
-                path=path,
-                method=method,
-                locale=locale,
-                user_agent=user_agent,
-                referrer=referrer,
-                ip_hash=ip_hash,
+                path=data["path"],
+                method=data["method"],
+                locale=data["locale"],
+                user_agent=data["user_agent"],
+                referrer=data["referrer"],
+                ip_hash=data["ip_hash"],
             )
             session.add(log_entry)
             session.commit()
-            logger.debug(f"Visitor logged: {path} ({method})")
+            logger.debug(f"Visitor logged: {data['path']} ({data['method']})")
     except Exception as e:
-        logger.error(f"Failed to log visitor: {e}")
+        logger.error(f"Database logging error: {e}")
 
 
 class VisitorTrackingMiddleware(BaseHTTPMiddleware):
@@ -82,14 +95,15 @@ class VisitorTrackingMiddleware(BaseHTTPMiddleware):
 
         # Add background task to response if it's not an internal error
         if response.status_code < 500:
-            # We'll use a direct background task via asyncio.create_task for now.
-            # In Phase 2 of V0.2.5, this will be moved to a robust in-memory task queue.
-            import asyncio
-
-            asyncio.create_task(
-                asyncio.to_thread(
-                    log_visitor, path, method, locale, user_agent, referrer, ip_hash
-                )
-            )
+            # Push to the in-memory queue instead of spawning an unmanaged task
+            log_item = {
+                "path": path,
+                "method": method,
+                "locale": locale,
+                "user_agent": user_agent,
+                "referrer": referrer,
+                "ip_hash": ip_hash,
+            }
+            background_task_queue.put_nowait(log_item)
 
         return response

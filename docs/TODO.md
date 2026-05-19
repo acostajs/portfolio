@@ -13,9 +13,9 @@
 - [x] **Real-time Engine Upgrade**:
   - [x] Transition Live Chat from 3s Polling to **Server-Sent Events (SSE)**.
   - [x] Implement a robust `ChatContext` to persist live sessions across navigation.
-- [ ] **Backend Hardening**:
-  - [ ] Implement an In-Memory Task Queue for `VisitorTrackingMiddleware` to optimize the event loop.
-  - [ ] Sanitize CORS configuration to use environment-driven origins only.
+- [x] **Backend Hardening**:
+  - [x] Implement an In-Memory Task Queue for `VisitorTrackingMiddleware` to optimize the event loop.
+  - [x] Sanitize CORS configuration to use environment-driven origins only.
 - [x] **Frontend Refactoring**:
   - [x] Decompose `Home.tsx` into modular components (`ChatWindow`, `ChatInputContainer`).
   - [x] Encapsulate live chat logic into a custom `useLiveChat` hook.

@@ -62,10 +62,13 @@ def setup_database(monkeypatch):
 
 @pytest.fixture
 async def client():
-    async with AsyncClient(
-        transport=ASGITransport(app=app), base_url="http://test"
-    ) as ac:
-        yield ac
+    # Manually trigger lifespan for AsyncClient
+    from main import lifespan
+    async with lifespan(app):
+        async with AsyncClient(
+            transport=ASGITransport(app=app), base_url="http://test"
+        ) as ac:
+            yield ac
 
 
 @pytest.fixture
