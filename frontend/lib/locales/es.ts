@@ -252,28 +252,28 @@ export const es: TranslationType = {
         diskUsage: "Carga de Almacenamiento",
       },
     },
-    cli: {
-      title: "Terminal del Portafolio",
-      welcome: "Inicializando CLI v0.2.4... Sistema Listo.",
-      helpText:
-        "Ejecuta 'help' para explorar los comandos interactivos disponibles.",
-      prompt: "DEVELOPER@PORTFOLIO:~#",
-      commands: {
-        help: "Comandos del Kernel Interactivos:",
-        ls: "Listar nodos del sistema",
-        cd: "Navegar a un nodo específico",
-        whoami: "Mostrar perfil del desarrollador",
-        clear: "Limpiar búfer de terminal",
-        exit: "Terminar sesión de CLI",
-        contactSend: "Iniciar protocolo de contacto",
-        unknown: "Estructura de comando inválida:",
-        navigating: "Enrutando al nodo",
-        redirecting: "Redirigiendo al protocolo de contacto...",
-        usageCd: "Sintaxis: cd <nombre_del_nodo>",
-        usageContact: "Sintaxis: contact --send",
-      },
-      whoamiText:
-        "Juan Acosta | Ingeniero de Software Full-Stack. Experto en arquitectura de ecosistemas web resilientes con React, TypeScript y FastAPI.",
+  },
+  cli: {
+    title: "Terminal del Portafolio",
+    welcome: "Inicializando CLI v0.2.4... Sistema Listo.",
+    helpText:
+      "Ejecuta 'help' para explorar los comandos interactivos disponibles.",
+    prompt: "DEVELOPER@PORTFOLIO:~#",
+    commands: {
+      help: "Comandos del Kernel Interactivos:",
+      ls: "Listar nodos del sistema",
+      cd: "Navegar a un nodo específico",
+      whoami: "Mostrar perfil del desarrollador",
+      clear: "Limpiar búfer de terminal",
+      exit: "Terminar sesión de CLI",
+      contactSend: "Iniciar protocolo de contacto",
+      unknown: "Estructura de comando inválida:",
+      navigating: "Enrutando al nodo",
+      redirecting: "Redirigiendo al protocolo de contacto...",
+      usageCd: "Sintaxis: cd <nombre_del_nodo>",
+      usageContact: "Sintaxis: contact --send",
     },
+    whoamiText:
+      "Juan Acosta | Ingeniero de Software Full-Stack. Experto en arquitectura de ecosistemas web resilientes con React, TypeScript y FastAPI.",
   },
 };

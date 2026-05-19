@@ -110,7 +110,7 @@ export const fr: TranslationType = {
     viewGithub: "GitHub",
   },
   blog: {
-    title: "Notes techniques",
+    title: "Technical Notes",
     readMore: "Lire la suite",
     backToList: "Retour à la liste",
   },
@@ -173,7 +173,7 @@ export const fr: TranslationType = {
       role: "Rôle",
       period: "Période",
       order: "Ordre",
-      description: "Description (EN, une par ligne)",
+      description: "Description (EN, una por línea)",
       tech: "Stack technique (séparée par des virgules)",
       add: "Ajouter une expérience",
       update: "Modifier l'expérience",
@@ -255,28 +255,28 @@ export const fr: TranslationType = {
         diskUsage: "Charge Stockage",
       },
     },
-    cli: {
-      title: "Terminal du Portfolio",
-      welcome: "Initialisation du CLI v0.2.4... Système Prêt.",
-      helpText:
-        "Exécutez 'help' pour explorer les commandes interactives disponibles.",
-      prompt: "DEVELOPER@PORTFOLIO:~#",
-      commands: {
-        help: "Commandes Noyau Interactives :",
-        ls: "Lister les nœuds du système",
-        cd: "Naviguer vers un nœud spécifique",
-        whoami: "Afficher le profil développeur",
-        clear: "Purger le tampon du terminal",
-        exit: "Terminer la session CLI",
-        contactSend: "Initier le protocole de contact",
-        unknown: "Structure de commande invalide :",
-        navigating: "Routage vers le nœud",
-        redirecting: "Redirection vers le protocole de contact...",
-        usageCd: "Syntaxe : cd <nom_du_nœud>",
-        usageContact: "Syntaxe : contact --send",
-      },
-      whoamiText:
-        "Juan Acosta | Ingénieur Logiciel Full-Stack. Expert en architecture d'écosystèmes web résilients avec React, TypeScript et FastAPI.",
+  },
+  cli: {
+    title: "Terminal du Portfolio",
+    welcome: "Initialisation du CLI v0.2.4... Système Prêt.",
+    helpText:
+      "Exécutez 'help' pour explorer les commandes interactives disponibles.",
+    prompt: "DEVELOPER@PORTFOLIO:~#",
+    commands: {
+      help: "Commandes Noyau Interactives :",
+      ls: "Lister les nœuds du système",
+      cd: "Naviguer vers un nœud spécifique",
+      whoami: "Afficher le profil développeur",
+      clear: "Purger le tampon du terminal",
+      exit: "Terminer la session CLI",
+      contactSend: "Initier le protocole de contact",
+      unknown: "Structure de commande invalide :",
+      navigating: "Routage vers le nœud",
+      redirecting: "Redirection vers le protocole de contact...",
+      usageCd: "Syntaxe : cd <nom_du_nœud>",
+      usageContact: "Syntaxe : contact --send",
     },
+    whoamiText:
+      "Juan Acosta | Ingénieur Logiciel Full-Stack. Expert en architecture d'écosystèmes web résilients avec React, TypeScript et FastAPI.",
   },
 };

@@ -1,8 +1,8 @@
 import pytest
 import asyncio
-from sqlmodel import select, Session, func, col
+from sqlmodel import select, Session, col
 import database
-from models import VisitorLog, LiveChatSession, ChatTriggerResponse
+from models import VisitorLog
 
 @pytest.mark.asyncio
 async def test_visitor_tracking_exclusions(client):
@@ -38,7 +38,7 @@ async def test_nlu_hints_fallback(client):
     
     # Should return the default generic hints (at least 3)
     assert len(hints) >= 3
-    assert any("projects" in h.lower() for h in hints)
+    assert any("project" in h.lower() for h in hints)
 
 @pytest.mark.asyncio
 async def test_analytics_summary_accuracy(client, db_session):

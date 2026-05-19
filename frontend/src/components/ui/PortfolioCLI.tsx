@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal, X, ChevronRight } from "lucide-react";
-import { hapticFeedback } from "../../lib/haptic";
-import { useTranslation } from "../../lib/hooks/useTranslation";
+import { hapticFeedback } from "../../../lib/haptic";
+import { useTranslation } from "../../../lib/hooks/useTranslation";
 
 const PortfolioCLI: React.FC = () => {
   const { t } = useTranslation();
