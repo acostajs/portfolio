@@ -15,9 +15,6 @@ async def test_health_endpoint(client: AsyncClient):
 
 @pytest.mark.asyncio
 async def test_seed_functionality(monkeypatch):
-    # Ensure tables exist on the test engine
-    SQLModel.metadata.create_all(engine)
-
     # Run seed
     seed()
 

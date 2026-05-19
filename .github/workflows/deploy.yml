@@ -38,6 +38,12 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production
 
+      - name: Run Database Migrations
+        run: |
+          export $(cat .vercel/.env.production.local | xargs)
+          cd backend
+          uv run alembic upgrade head
+
       - name: Build Project Artifacts
         run: vercel build --prod
 

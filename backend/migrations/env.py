@@ -1,5 +1,6 @@
 from logging.config import fileConfig
 
+import sqlalchemy as sa
 from alembic import context
 from sqlmodel import SQLModel, create_engine
 from models import (
@@ -77,18 +78,33 @@ def run_migrations_online() -> None:
 
     """
     # Use create_engine directly to avoid alembic.ini static URL
-    url = config.get_main_option("sqlalchemy.url")
-    if url is None:
-        raise ValueError("sqlalchemy.url not set in alembic config")
-    connectable = create_engine(url)
+    # or use provided connection (for testing)
+    connectable = config.attributes.get("connection", None)
 
-    with connectable.connect() as connection:
+    if connectable is None:
+        url = config.get_main_option("sqlalchemy.url")
+        if url is None:
+            raise ValueError("sqlalchemy.url not set in alembic config")
+        connectable = create_engine(url)
+
+    if isinstance(connectable, sa.engine.Connection):
+        # Already a connection
         context.configure(
-            connection=connection, target_metadata=target_metadata, render_as_batch=True
+            connection=connectable, target_metadata=target_metadata, render_as_batch=True
         )
-
         with context.begin_transaction():
             context.run_migrations()
+    else:
+        # It's an engine
+        with connectable.connect() as connection:
+            context.configure(
+                connection=connection,
+                target_metadata=target_metadata,
+                render_as_batch=True,
+            )
+
+            with context.begin_transaction():
+                context.run_migrations()
 
 
 if context.is_offline_mode():

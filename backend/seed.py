@@ -213,8 +213,19 @@ def upsert_chat_triggers(session: Session):
                 session.add(ChatTriggerResponse.model_validate(trigger_data))
 
 
+from sqlalchemy.exc import OperationalError
+
 def seed():
     with Session(engine) as session:
+        try:
+            # Check if tables exist by querying 'About'
+            # If tables don't exist, this will raise OperationalError
+            session.exec(select(About)).first()
+        except OperationalError:
+            print("WARNING: Database tables do not exist yet. Skipping seeding.")
+            print("Make sure to run 'alembic upgrade head'.")
+            return
+
         upsert_about(session)
         upsert_experience(session)
         upsert_projects(session)
