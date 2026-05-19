@@ -34,9 +34,13 @@ async def lifespan(app: FastAPI):
     # Security Check: Ensure sensitive settings are configured in non-dev environments
     if settings.ENVIRONMENT != "development":
         if settings.ADMIN_PASSWORD == "CHANGE_ME_IN_ENV":
-            logger.error("CRITICAL SECURITY ALERT: ADMIN_PASSWORD is set to default in production!")
+            logger.error(
+                "CRITICAL SECURITY ALERT: ADMIN_PASSWORD is set to default in production!"
+            )
         if settings.SECRET_SALT == "DEFAULT_SALT_CHANGE_ME":
-            logger.error("CRITICAL SECURITY ALERT: SECRET_SALT is set to default in production!")
+            logger.error(
+                "CRITICAL SECURITY ALERT: SECRET_SALT is set to default in production!"
+            )
 
     # Initialize database tables
     create_db_and_tables()
