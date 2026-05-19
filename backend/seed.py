@@ -1,3 +1,4 @@
+from sqlalchemy.exc import OperationalError
 from sqlmodel import Session, select
 from database import engine
 from models import About, Experience, Project, BlogPost, ChatTriggerResponse
@@ -212,8 +213,6 @@ def upsert_chat_triggers(session: Session):
             else:
                 session.add(ChatTriggerResponse.model_validate(trigger_data))
 
-
-from sqlalchemy.exc import OperationalError
 
 def seed():
     with Session(engine) as session:

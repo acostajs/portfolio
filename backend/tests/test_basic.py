@@ -1,6 +1,6 @@
 import pytest
 from httpx import AsyncClient
-from sqlmodel import Session, select, SQLModel
+from sqlmodel import Session, select
 from seed import seed
 from models import About, Experience, Project, BlogPost, ChatTriggerResponse
 from conftest import test_engine as engine
