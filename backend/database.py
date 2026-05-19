@@ -101,6 +101,24 @@ def create_db_and_tables():
         if "chatmessage" in tables:
             cols = inspector.get_columns("chatmessage")
             col_names = [c["name"].lower() for c in cols]
+
+            # Drop blocking foreign key if it exists
+            fks = inspector.get_foreign_keys("chatmessage")
+            for fk in fks:
+                if "session_id" in [c.lower() for c in fk["constrained_columns"]]:
+                    fk_name = fk["name"]
+                    logger.info(f"Dropping blocking foreign key: {fk_name}")
+                    try:
+                        conn.execute(
+                            text(
+                                f'ALTER TABLE chatmessage DROP CONSTRAINT IF EXISTS "{fk_name}"'
+                            )
+                        )
+                        conn.commit()
+                    except Exception as e:
+                        logger.error(f"Failed to drop constraint {fk_name}: {e}")
+                        conn.rollback()
+
             if "session_id" not in col_names:
                 logger.info("Adding session_id column to chatmessage")
                 conn.execute(
