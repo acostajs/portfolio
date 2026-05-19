@@ -1,45 +1,8 @@
-data = {
-    "triggers": [
-        "bio",
-        "background",
-        "who are you",
-        "tell me about yourself",
-        "who is juan",
-        "tell me about you",
-        "quién eres",
-        "quien eres",
-        "biografía",
-        "qui es-tu",
-        "biographie",
-        "perfil",
-        "profil",
-        "skills",
-        "tech stack",
-        "technologies",
-        "stack",
-        "languages",
-        "habilidades",
-        "tecnologías",
-        "lenguajes",
-        "compétences",
-        "technologies",
-        "langages",
-    ],
-    "answers": {
-        "en": [
-            "I'm a passionate Web Developer based in Montréal! I love building clean, efficient applications and solving complex problems with code. 😊",
-            "I specialize in modern web tech like **TypeScript**, **React**, **Bun**, and **Python (FastAPI)**. I'm always aiming to optimize performance and make things smooth for users!",
-            "My core stack includes **React** for the frontend and **FastAPI** for the backend. I also enjoy working with **Docker**, **SQLModel**, and **Tailwind CSS** to build robust applications.",
-        ],
-        "es": [
-            "¡Soy un apasionado desarrollador web radicado en Montreal! Me encanta crear aplicaciones limpias y eficientes, y resolver problemas complejos con código. 😊",
-            "Me especializo en tecnologías web modernas como **TypeScript**, **React**, **Bun** y **Python (FastAPI)**. ¡Mi objetivo siempre es optimizar el rendimiento y hacer que todo sea fluido para los usuarios!",
-            "Mi stack principal incluye **React** para el frontend y **FastAPI** para el backend. También disfruto trabajando con **Docker**, **SQLModel** y **Tailwind CSS**.",
-        ],
-        "fr": [
-            "Je suis un développeur Web passionné basé à Montréal ! J'adore créer des applications propres et efficaces et résoudre des problèmes complexes avec du code. 😊",
-            "Je me spécialise dans les technologies Web modernes comme **TypeScript**, **React**, **Bun** et **Python (FastAPI)**. Je cherche toujours à optimiser les performances et à rendre les choses fluides !",
-            "Mon stack principal comprend **React** pour le frontend et **FastAPI** pour le backend. J'aime aussi travailler avec **Docker**, **SQLModel** et **Tailwind CSS**.",
-        ],
-    },
-}
+import json
+from pathlib import Path
+
+# Load data from fixture
+FIXTURE_PATH = Path(__file__).parent / "fixtures" / "about.json"
+
+with open(FIXTURE_PATH, "r", encoding="utf-8") as f:
+    data = json.load(f)

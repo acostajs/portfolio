@@ -1,48 +1,8 @@
-data = {
-    "triggers": [
-        "project",
-        "projects",
-        "portfolio",
-        "portfolios",
-        "built",
-        "made",
-        "showcase",
-        "works",
-        "github",
-        "repository",
-        "repositories",
-        "proyecto",
-        "proyectos",
-        "portafolio",
-        "portafolios",
-        "hecho",
-        "trabajos",
-        "repositorio",
-        "repositorios",
-        "projet",
-        "projets",
-        "portfolio",
-        "portfolios",
-        "fait",
-        "travaux",
-        "répertoire",
-        "répertoires",
-    ],
-    "answers": {
-        "en": [
-            "One of my main projects is actually this AI-powered portfolio! I built it with React, FastAPI, and Tailwind CSS. 💻",
-            "I've developed several full-stack apps with a focus on performance and multi-language support. You can check out my GitHub to see the code!",
-            "My projects usually mix clean UI/UX with efficient backends, like this interactive chatbot and my visitor telemetry system.",
-        ],
-        "es": [
-            "¡Uno de mis proyectos principales es precisamente este portafolio impulsado por IA! Lo construí con React, FastAPI y Tailwind CSS. 💻",
-            "He desarrollado varias aplicaciones full-stack enfocadas en el rendimiento y el soporte multilingüe. ¡Puedes echar un vistazo a mi GitHub para ver el código!",
-            "Mis proyectos suelen mezclar una interfaz limpia con backends eficientes, como este chatbot interactivo y mi sistema de telemetría de visitantes.",
-        ],
-        "fr": [
-            "L'un de mes projets principaux est justement ce portfolio propulsé par l'IA ! Je l'ai construit avec React, FastAPI et Tailwind CSS. 💻",
-            "J'ai développé plusieurs applications full-stack en mettant l'accent sur la performance et le support multilingue. Vous pouvez consulter mon GitHub pour voir le code !",
-            "Mes projets mélangent généralement une interface utilisateur épurée avec des backends efficaces, comme ce chatbot interactif et mon système de télémétrie des visiteurs.",
-        ],
-    },
-}
+import json
+from pathlib import Path
+
+# Load data from fixture
+FIXTURE_PATH = Path(__file__).parent / "fixtures" / "projects.json"
+
+with open(FIXTURE_PATH, "r", encoding="utf-8") as f:
+    data = json.load(f)

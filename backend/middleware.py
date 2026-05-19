@@ -82,20 +82,8 @@ class VisitorTrackingMiddleware(BaseHTTPMiddleware):
 
         # Add background task to response if it's not an internal error
         if response.status_code < 500:
-            if hasattr(response, "background") and response.background is not None:
-                # Merge if it already exists (BaseHTTPMiddleware limitation)
-                # Actually, in BaseHTTPMiddleware, we can't easily add to BackgroundTasks
-                # because response is already generated.
-                # Instead, we'll use a direct background task if possible or just log it here.
-                # However, for true non-blocking, we'll use the FastAPI BackgroundTasks in a route
-                # OR we'll just run it in a separate thread/executor if we want to be safe.
-                pass
-
-            # Since BaseHTTPMiddleware is a bit tricky with BackgroundTasks,
-            # we'll use a simple manual fire-and-forget or just log it
-            # (In production, a proper queue would be better, but for this portfolio, this is fine).
-            # We'll import BackgroundTasks and use it if we were in a route.
-            # Here, we'll just call log_visitor directly for now or use asyncio.create_task.
+            # We'll use a direct background task via asyncio.create_task for now.
+            # In Phase 2 of V0.2.5, this will be moved to a robust in-memory task queue.
             import asyncio
 
             asyncio.create_task(

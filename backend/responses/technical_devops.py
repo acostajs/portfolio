@@ -1,72 +1,8 @@
-data = {
-    "categories": [
-        {
-            "triggers": [
-                "infrastructure",
-                "iac",
-                "terraform",
-                "cloudformation",
-                "ansible",
-            ],
-            "answers": {
-                "en": [
-                    "I'm a proponent of **Infrastructure as Code (IaC)**. While I'm very comfortable with **Docker** for containerization, I also use **Terraform** to manage cloud resources in a reproducible way. It's the best way to avoid 'snowflake' servers and ensure environment parity.",
-                ],
-                "es": [
-                    "Soy partidario de la **Infraestructura como Código (IaC)**. Aunque me siento muy cómodo con **Docker** para la contenerización, también uso **Terraform** para gestionar recursos en la nube de forma reproducible. Es la mejor manera de evitar servidores únicos (snowflake) y asegurar la paridad de entornos.",
-                ],
-                "fr": [
-                    "Je suis un partisan de l'**Infrastructure as Code (IaC)**. Bien que je sois très à l'aise avec **Docker** pour la conteneurisation, j'utilise également **Terraform** pour gérer les ressources cloud de manière reproductible. C'est le meilleur moyen d'éviter les serveurs 'snowflake' et d'assurer la parité des environnements.",
-                ],
-            },
-        },
-        {
-            "triggers": [
-                "ci/cd",
-                "pipeline",
-                "github actions",
-                "automation",
-                "deployment",
-            ],
-            "answers": {
-                "en": [
-                    "I love automating workflows with **CI/CD**. In this project, I've set up **GitHub Actions** to handle linting, testing, and deployment. Automation is key to maintaining high code quality and catching issues before they reach production.",
-                ],
-                "es": [
-                    "Me encanta automatizar flujos de trabajo con **CI/CD**. En este proyecto, he configurado **GitHub Actions** para manejar el linting, las pruebas y el despliegue. La automatización es clave para mantener una alta calidad de código y detectar problemas antes de que lleguen a producción.",
-                ],
-                "fr": [
-                    "J'adore automatiser les flux de travail avec la **CI/CD**. Dans ce projet, j'ai mis en place des **GitHub Actions** pour gérer le linting, les tests et le déploiement. L'automatisation est essentielle pour maintenir une qualité de code élevée et détecter les problèmes avant qu'ils n'atteignent la production.",
-                ],
-            },
-        },
-        {
-            "triggers": ["monitoring", "observability", "sentry", "logging", "metrics"],
-            "answers": {
-                "en": [
-                    "For observability, I rely on tools like **Sentry** for error tracking and structured logging for debugging. I believe you can't improve what you don't measure, so I always try to include basic performance metrics and health checks in my services.",
-                ],
-                "es": [
-                    "Para la observabilidad, confío en herramientas como **Sentry** para el seguimiento de errores y registros estructurados (logging) para la depuración. Creo que no se puede mejorar lo que no se mide, por lo que siempre trato de incluir métricas de rendimiento básicas y comprobaciones de salud (health checks) en mis servicios.",
-                ],
-                "fr": [
-                    "Pour l'observabilité, je m'appuie sur des outils comme **Sentry** pour le suivi des erreurs et la journalisation structurée pour le débogage. Je pense qu'on ne peut pas améliorer ce qu'on ne mesure pas, j'essaie donc toujours d'inclure des mesures de performance de base et des bilans de santé (health checks) dans mes services.",
-                ],
-            },
-        },
-        {
-            "triggers": ["docker", "container", "kubernetes", "k8s", "orchestration"],
-            "answers": {
-                "en": [
-                    "I use **Docker** daily to ensure my applications run consistently across different environments. For larger deployments, I'm familiar with **Kubernetes** concepts, though for smaller projects like this, simple container orchestration or PaaS like Vercel is often more efficient.",
-                ],
-                "es": [
-                    "Uso **Docker** a diario para asegurar que mis aplicaciones funcionen de forma consistente en diferentes entornos. Para despliegues más grandes, estoy familiarizado con los conceptos de **Kubernetes**, aunque para proyectos más pequeños como este, la orquestación simple de contenedores o PaaS como Vercel suele ser más eficiente.",
-                ],
-                "fr": [
-                    "J'utilise **Docker** quotidiennement pour m'assurer que mes applications fonctionnent de manière cohérente dans différents environnements. Pour les déploiements plus importants, je connais les concepts de **Kubernetes**, bien que pour les petits projets comme celui-ci, une simple orchestration de conteneurs ou un PaaS comme Vercel soit souvent plus efficace.",
-                ],
-            },
-        },
-    ]
-}
+import json
+from pathlib import Path
+
+# Load data from fixture
+FIXTURE_PATH = Path(__file__).parent / "fixtures" / "technical_devops.json"
+
+with open(FIXTURE_PATH, "r", encoding="utf-8") as f:
+    data = json.load(f)
