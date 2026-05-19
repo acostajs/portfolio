@@ -5,10 +5,12 @@ const API_BASE = "/api/v1";
 const promiseCache = new Map<string, Promise<unknown>>();
 
 export const useSuspenseFetch = <T>(path: string): T => {
-  if (!promiseCache.has(path)) {
-    promiseCache.set(path, fetchPublic<T>(path));
+  let promise = promiseCache.get(path);
+  if (!promise) {
+    promise = fetchPublic<T>(path);
+    promiseCache.set(path, promise);
   }
-  return use(promiseCache.get(path)! as Promise<T>);
+  return use(promise as Promise<T>);
 };
 
 export const fetchPublic = async <T>(path: string): Promise<T> => {

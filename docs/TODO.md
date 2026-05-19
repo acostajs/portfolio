@@ -16,10 +16,10 @@
 - [ ] **Backend Hardening**:
   - [ ] Implement an In-Memory Task Queue for `VisitorTrackingMiddleware` to optimize the event loop.
   - [ ] Sanitize CORS configuration to use environment-driven origins only.
-- [ ] **Frontend Refactoring**:
-  - [ ] Decompose `Home.tsx` into modular components (`ChatWindow`, `ChatInputContainer`).
-  - [ ] Encapsulate live chat logic into a custom `useLiveChat` hook.
-  - [ ] Enhance API layer type safety to eliminate `unknown` assertions in suspense cache.
+- [x] **Frontend Refactoring**:
+  - [x] Decompose `Home.tsx` into modular components (`ChatWindow`, `ChatInputContainer`).
+  - [x] Encapsulate live chat logic into a custom `useLiveChat` hook.
+  - [x] Enhance API layer type safety to eliminate `unknown` assertions in suspense cache.
 - [x] **Codebase Hygiene & Audit Resolution**:
   - [x] **Dead Code Cleanup (Frontend)**: Remove `fetchCMS` and `updateCMS` from `frontend/lib/api.ts`.
   - [x] **Middleware Optimization (Backend)**: Remove the redundant `if hasattr(response, "background")` block in `backend/middleware.py`.
