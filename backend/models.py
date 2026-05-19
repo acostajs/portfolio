@@ -1,6 +1,13 @@
 from datetime import datetime, timezone
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
+from pydantic import BaseModel
 from sqlmodel import Field, SQLModel, Column, JSON
+
+
+class SessionMetadata(BaseModel):
+    visited_pages: List[str] = []
+    last_interaction: Optional[str] = None
+    interaction_count: int = 0
 
 
 class ChatMessage(SQLModel, table=True):
@@ -15,7 +22,9 @@ class LiveChatSession(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     session_id: str = Field(index=True, unique=True)
     is_active: bool = Field(default=True)
-    session_metadata: Optional[dict] = Field(default={}, sa_column=Column(JSON))
+    session_metadata: Dict[str, Any] = Field(
+        default_factory=dict, sa_column=Column(JSON)
+    )
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

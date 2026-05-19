@@ -15,6 +15,7 @@ from models import (
     ChatFeedback,
     ChatTriggerResponse,
     LiveChatSession,
+    SessionMetadata,
 )
 from responses import fallback
 from auth import verify_admin_password
@@ -253,14 +254,16 @@ async def chat(
         session.add(chat_session)
 
     # Update Metadata
-    metadata = dict(chat_session.session_metadata or {})
-    visited_pages = set(metadata.get("visited_pages", []))
-    visited_pages.add(page_id)
-    metadata["visited_pages"] = list(visited_pages)
-    metadata["last_interaction"] = datetime.now(timezone.utc).isoformat()
-    metadata["interaction_count"] = metadata.get("interaction_count", 0) + 1
+    current_metadata = chat_session.session_metadata or {}
+    structured_metadata = SessionMetadata(**current_metadata)
 
-    chat_session.session_metadata = metadata
+    if page_id not in structured_metadata.visited_pages:
+        structured_metadata.visited_pages.append(page_id)
+
+    structured_metadata.last_interaction = datetime.now(timezone.utc).isoformat()
+    structured_metadata.interaction_count += 1
+
+    chat_session.session_metadata = structured_metadata.model_dump()
     chat_session.updated_at = datetime.now(timezone.utc)
     session.add(chat_session)
     session.commit()

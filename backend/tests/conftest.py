@@ -7,9 +7,8 @@ os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 os.environ["ADMIN_PASSWORD"] = "testpass"
 os.environ["ENVIRONMENT"] = "testing"
 
-from database import create_db_and_tables
 from main import app
-from sqlmodel import Session, create_engine
+from sqlmodel import Session, create_engine, SQLModel
 from cache import clear_trigger_cache
 from sqlalchemy.pool import StaticPool
 
@@ -37,10 +36,8 @@ def setup_database(monkeypatch):
     monkeypatch.setattr("seed.engine", test_engine)
     monkeypatch.setattr("cache.engine", test_engine)
 
-    create_db_and_tables()
+    SQLModel.metadata.create_all(test_engine)
     yield
-    from sqlmodel import SQLModel
-
     SQLModel.metadata.drop_all(test_engine)
 
 
