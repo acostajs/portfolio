@@ -1,5 +1,5 @@
 from sqlmodel import Session, select
-from database import engine, create_db_and_tables
+from database import engine
 from models import About, Experience, Project, BlogPost, ChatTriggerResponse
 import responses.about as about_resp
 import responses.experience as exp_resp
@@ -214,7 +214,6 @@ def upsert_chat_triggers(session: Session):
 
 
 def seed():
-    create_db_and_tables()
     with Session(engine) as session:
         upsert_about(session)
         upsert_experience(session)

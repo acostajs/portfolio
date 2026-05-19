@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-05-18
+
+### Added
+
+- **Alembic Migrations**: Transitioned from manual SQLAlchemy `inspect` logic to structured Alembic migrations for robust schema management.
+- **Visitor Analytics Middleware**: Implemented asynchronous tracking for IP, User-Agent, and navigation paths using `BackgroundTasks`.
+- **System Health Monitoring**: Added detailed `/health/details` endpoint providing telemetry on database latency and environment health.
+- **Admin Analytics Overhaul**: Introduced new "Activity" and "Health" tabs in the Admin dashboard for real-time system monitoring.
+- **Portfolio CLI**: Added a hidden "Command Center" (`Ctrl + \``) for keyboard-driven navigation and diagnostics.
+- **Contextual Chat Hints**: Implemented proactive, page-aware chatbot suggestions based on navigation history.
+
+### Changed
+
+- **Structured Session Metadata**: Migrated from flat dictionary metadata to a Pydantic-backed `SessionMetadata` model for consistent tracking of visitor behavior.
+- **Frontend Quality Control**: Improved type safety and resolved TypeScript path errors in locale and CLI components.
+- **Backend Hardening**: Optimized DDL operations and connection strings for production Postgres compatibility.
+
 ## [0.2.3] - 2026-05-18
 
 ### Added

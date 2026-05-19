@@ -1,9 +1,8 @@
 import pytest
 from httpx import AsyncClient
-from sqlmodel import Session, select
+from sqlmodel import Session, select, SQLModel
 from seed import seed
 from models import About, Experience, Project, BlogPost, ChatTriggerResponse
-from database import create_db_and_tables
 from conftest import test_engine as engine
 
 
@@ -17,7 +16,7 @@ async def test_health_endpoint(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_seed_functionality(monkeypatch):
     # Ensure tables exist on the test engine
-    create_db_and_tables()
+    SQLModel.metadata.create_all(engine)
 
     # Run seed
     seed()

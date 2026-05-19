@@ -10,7 +10,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
-from database import create_db_and_tables
 from seed import seed
 from cache import get_cached_triggers
 
@@ -42,8 +41,6 @@ async def lifespan(app: FastAPI):
                 "CRITICAL SECURITY ALERT: SECRET_SALT is set to default in production!"
             )
 
-    # Initialize database tables
-    create_db_and_tables()
     # Seed the database if empty
     seed()
     # Pre-populate trigger cache
