@@ -32,7 +32,7 @@
     ],
     "backend/**/*.py": [
       "uv run --directory backend ruff check --fix",
-      "uv run --directory backend ruff format",
+      "uv run --directory backend ruff format .",
       "uv run --directory backend pyright"
     ],
     "**/*.{json,md,css}": [

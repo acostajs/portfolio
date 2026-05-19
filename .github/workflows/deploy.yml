@@ -40,9 +40,8 @@ jobs:
 
       - name: Run Database Migrations
         run: |
-          export $(cat .vercel/.env.production.local | xargs)
           cd backend
-          uv run alembic upgrade head
+          uv run --env-file ../.vercel/.env.production.local alembic upgrade head
 
       - name: Build Project Artifacts
         run: vercel build --prod
