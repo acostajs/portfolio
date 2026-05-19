@@ -1,4 +1,4 @@
-# Multilingual Chatbot Portfolio (v0.2.2)
+# Multilingual Chatbot Portfolio (v0.2.5)
 
 An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trigger-based) chatbot assistant.
 
@@ -11,6 +11,9 @@ An interactive, multilingual (EN, ES, FR) portfolio featuring an AI-driven (trig
 
 ## Key Features
 
+- **Real-time SSE Chat Engine**: Instant message delivery and status synchronization using Server-Sent Events.
+- **Global Chat Persistence**: Persistent conversation state across page navigation via React Context.
+- **Background Task Architecture**: Optimized backend event loop using an in-memory queue for non-blocking telemetry logging.
 - **Analytics Dashboard**: Secure, password-protected dashboard to visualize visitor telemetry and chat query statistics.
 - **Lightweight CMS**: Secure Admin section to manage content, blog posts, and chatbot triggers without code changes.
 - **Progressive Web App (PWA)**: Offline availability and "Add to Home Screen" support via `vite-plugin-pwa`.

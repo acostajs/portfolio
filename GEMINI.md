@@ -42,8 +42,16 @@ The project is currently in **Version 0.2.3: Notifications & Connectivity**.
 - **Version 0.2.1**: Post-Audit Refinements (Asset cleanup, Dependency sync).
 - **Version 0.2.2**: Stability & Final Polish (Sitemap, Rate-limiting, Validation).
 - **Version 0.2.3**: Notifications & Connectivity (Telegram Bridge, Smart Escalation).
+- **Version 0.2.4**: Advanced Observability (Real-time Tracking, Health Telemetry).
+- **Version 0.2.5**: Architectural Refinement (SSE Chat, Task Queues, Modular UI).
 
 ## Building and Running
+...
+### Chat & Real-time
+
+- **SSE Stream**: Live chat synchronization uses Server-Sent Events via `/api/v1/chat/stream/{session_id}`. Avoid polling.
+- **Global State**: Use `ChatContext` for all chat-related state. Do not maintain local message history in page components.
+- **Task Queues**: Use `background_task_queue` in `backend/middleware.py` for non-critical side effects like logging to keep the event loop responsive.
 
 ### Root-Level Orchestration
 

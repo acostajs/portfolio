@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.5] - 2026-05-19
+
+### Added
+
+- **Real-time SSE Chat Engine**: Migrated from 3-second polling to Server-Sent Events (SSE) for instant message delivery and status updates.
+- **Global ChatContext**: Centralized chat state management and persistence using React Context, enabling chat continuity across page navigation.
+- **Background Task Queue**: Implemented a singleton `asyncio.Queue` and dedicated worker process for non-blocking visitor logging, optimizing the event loop.
+- **Data Decoupling**: Refactored hardcoded persona dictionaries into external JSON fixtures for improved maintainability and cleaner Python logic.
+
+### Changed
+
+- **Frontend Component Decomposition**: Refactored monolithic `Home.tsx` into modular `ChatWindow` and `ChatInputContainer` components.
+- **Hook Encapsulation**: Extracted 200+ lines of chat logic into a reusable `useLiveChat` custom hook.
+- **Security Hardening**: Sanitized CORS configuration to use strictly environment-driven `ALLOWED_ORIGINS`.
+- **API Type Safety**: Hardened the `useSuspenseFetch` promise cache and refined TypeScript interfaces project-wide.
+- **Dependency Optimization**: Pruned unused backend packages (`google-auth-oauthlib`, `requests`) to reduce cold start times and attack surface.
+
+### Fixed
+
+- **Test Suite Lifespan**: Updated testing infrastructure to manually trigger application lifespan, ensuring background workers are correctly initialized during tests.
+- **Linting & Quality**: Resolved all "explicit any" and "unused variable" warnings introduced during refactoring.
+
 ## [0.2.4] - 2026-05-18
 
 ### Added

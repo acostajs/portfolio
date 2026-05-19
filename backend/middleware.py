@@ -1,7 +1,7 @@
 import hashlib
 import logging
 import asyncio
-from typing import Optional, Any
+from typing import Any
 from fastapi import Request
 from sqlmodel import Session
 from database import engine
