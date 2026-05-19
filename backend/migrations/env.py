@@ -90,7 +90,9 @@ def run_migrations_online() -> None:
     if isinstance(connectable, sa.engine.Connection):
         # Already a connection
         context.configure(
-            connection=connectable, target_metadata=target_metadata, render_as_batch=True
+            connection=connectable,
+            target_metadata=target_metadata,
+            render_as_batch=True,
         )
         with context.begin_transaction():
             context.run_migrations()

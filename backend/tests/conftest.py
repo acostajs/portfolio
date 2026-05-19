@@ -40,14 +40,14 @@ def setup_database(monkeypatch):
 
     # Use Alembic to migrate the in-memory database
     alembic_cfg = Config("alembic.ini")
-    
+
     # We need to use the existing connection from test_engine (StaticPool)
     with test_engine.connect() as connection:
         alembic_cfg.attributes["connection"] = connection
         command.upgrade(alembic_cfg, "head")
-        
+
     yield
-    
+
     # Optional: Clean up by dropping everything or downgrading
     # For in-memory StaticPool, we should drop everything to ensure isolation between test runs if needed,
     # but since it's a fresh connection for each test run usually, it might be fine.
