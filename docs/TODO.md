@@ -10,9 +10,9 @@
 
 ## 🎯 Current Version: Version 0.2.5: Architectural Refinement & Real-time Sync
 
-- [ ] **Real-time Engine Upgrade**:
-  - [ ] Transition Live Chat from 3s Polling to **Server-Sent Events (SSE)**.
-  - [ ] Implement a robust `ChatContext` to persist live sessions across navigation.
+- [x] **Real-time Engine Upgrade**:
+  - [x] Transition Live Chat from 3s Polling to **Server-Sent Events (SSE)**.
+  - [x] Implement a robust `ChatContext` to persist live sessions across navigation.
 - [ ] **Backend Hardening**:
   - [ ] Implement an In-Memory Task Queue for `VisitorTrackingMiddleware` to optimize the event loop.
   - [ ] Sanitize CORS configuration to use environment-driven origins only.

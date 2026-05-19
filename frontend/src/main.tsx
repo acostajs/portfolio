@@ -8,6 +8,7 @@ import "./styles/globals.css";
 import App from "./App.tsx";
 import { LanguageProvider } from "../lib/context/LanguageContext";
 import { ThemeProvider } from "../lib/context/ThemeContext";
+import { ChatProvider } from "../lib/context/ChatContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -15,9 +16,11 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <ThemeProvider>
           <LanguageProvider>
-            <App />
-            <Analytics />
-            <SpeedInsights />
+            <ChatProvider>
+              <App />
+              <Analytics />
+              <SpeedInsights />
+            </ChatProvider>
           </LanguageProvider>
         </ThemeProvider>
       </BrowserRouter>

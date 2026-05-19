@@ -2,9 +2,12 @@ import logging
 import random
 import re
 import httpx
+import json
+import asyncio
 from datetime import datetime, timezone
 from typing import List, Optional
 from fastapi import APIRouter, Depends, BackgroundTasks, Request
+from fastapi.responses import StreamingResponse
 from sqlmodel import Session, select, desc
 from rapidfuzz import fuzz
 
@@ -377,6 +380,67 @@ async def sync_chat(session_id: str, db: Session = Depends(get_session)):
 
     return LiveSyncResponse(
         messages=list(reversed(results)), is_active=bool(active_session)
+    )
+
+
+@router.get("/stream/{session_id}")
+async def stream_chat(
+    request: Request, session_id: str, db: Session = Depends(get_session)
+):
+    """
+    Server-Sent Events (SSE) stream for real-time chat updates.
+    Replaces polling by pushing new messages and status changes.
+    """
+
+    async def event_generator():
+        last_msg_id = 0
+        last_status = None
+
+        while True:
+            # Check if client disconnected
+            if await request.is_disconnected():
+                logger.info(f"SSE client disconnected: {session_id}")
+                break
+
+            try:
+                # 1. Check for status changes
+                stmt_session = select(LiveChatSession).where(
+                    LiveChatSession.session_id == session_id
+                )
+                chat_session = db.exec(stmt_session).first()
+                current_status = chat_session.is_active if chat_session else False
+
+                if current_status != last_status:
+                    yield {
+                        "event": "status",
+                        "data": json.dumps({"is_active": current_status}),
+                    }
+                    last_status = current_status
+
+                # 2. Check for new messages
+                stmt_msgs = (
+                    select(ChatMessage)
+                    .where(ChatMessage.session_id == session_id)
+                    .where(ChatMessage.id > last_msg_id)
+                    .order_by(ChatMessage.id)
+                )
+                new_messages = db.exec(stmt_msgs).all()
+
+                if new_messages:
+                    for msg in new_messages:
+                        yield {"event": "message", "data": msg.model_dump_json()}
+                        last_msg_id = max(last_msg_id, msg.id)
+
+                # Wait before next check
+                await asyncio.sleep(1.5)
+            except Exception as e:
+                logger.error(f"SSE Error for {session_id}: {e}")
+                yield {"event": "error", "data": json.dumps({"detail": "Stream error"})}
+                break
+
+    return StreamingResponse(
+        (f"event: {e['event']}\ndata: {e['data']}\n\n" async for e in event_generator()),
+        media_type="text/event-stream",
     )
 
 
