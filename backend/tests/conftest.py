@@ -1,6 +1,8 @@
 import pytest
 import os
 from httpx import ASGITransport, AsyncClient
+from alembic import command
+from alembic.config import Config
 
 # Set environment variables BEFORE importing app or database
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
@@ -36,9 +38,26 @@ def setup_database(monkeypatch):
     monkeypatch.setattr("seed.engine", test_engine)
     monkeypatch.setattr("cache.engine", test_engine)
 
-    SQLModel.metadata.create_all(test_engine)
+    # Use Alembic to migrate the in-memory database
+    alembic_cfg = Config("alembic.ini")
+    
+    # We need to use the existing connection from test_engine (StaticPool)
+    with test_engine.connect() as connection:
+        alembic_cfg.attributes["connection"] = connection
+        command.upgrade(alembic_cfg, "head")
+        
     yield
-    SQLModel.metadata.drop_all(test_engine)
+    
+    # Optional: Clean up by dropping everything or downgrading
+    # For in-memory StaticPool, we should drop everything to ensure isolation between test runs if needed,
+    # but since it's a fresh connection for each test run usually, it might be fine.
+    # However, conftest engine is global. So we MUST clean up.
+    with test_engine.connect() as connection:
+        alembic_cfg.attributes["connection"] = connection
+        command.downgrade(alembic_cfg, "base")
+        # command.downgrade to 'base' leaves the alembic_version table.
+        # Alternatively, use SQLModel.metadata.drop_all(test_engine) to be thorough.
+        SQLModel.metadata.drop_all(test_engine)
 
 
 @pytest.fixture
