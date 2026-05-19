@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     # Mandatory in production, defaults to something safe/useless in dev
     ADMIN_PASSWORD: str = "CHANGE_ME_IN_ENV"  # nosec
+    SECRET_SALT: str = "DEFAULT_SALT_CHANGE_ME"  # nosec
 
     # Telegram Bridge
     TELEGRAM_BOT_TOKEN: Optional[str] = None

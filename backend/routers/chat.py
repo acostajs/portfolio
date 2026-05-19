@@ -37,6 +37,7 @@ class ChatRequest(BaseModel):
     message: str = Field(..., max_length=1000)
     language: str = Field("en", max_length=5)
     session_id: str = Field("unknown", max_length=100)
+    page_id: Optional[str] = Field("home", max_length=50)
     history: List[ChatMessageBase] = []
 
 
@@ -176,6 +177,61 @@ def find_trigger_match(
 # --- Routes ---
 
 
+@router.get("/hints", response_model=List[str])
+async def get_chat_hints(page_id: str = "home", lang: str = "en"):
+    """Returns proactive NLU hints based on the current page."""
+    lang = lang if lang in ["en", "es", "fr"] else "en"
+
+    # Map PageId to relevant modules
+    page_map = {
+        "home": ["greetings", "about", "technical_core"],
+        "about": ["about", "fun"],
+        "experience": ["experience", "hr_assessment"],
+        "projects": ["projects", "technical_backend", "technical_frontend"],
+        "blog": ["technical_core", "fun"],
+        "contact": ["contact", "thanks"],
+    }
+
+    target_modules = page_map.get(page_id, page_map["home"])
+
+    # Fetch triggers for these modules from cache
+    cached_triggers, _ = get_cached_triggers()
+
+    relevant_triggers = [t for t in cached_triggers if t.module in target_modules]
+
+    if not relevant_triggers:
+        # Fallback to some high-value generic ones for recruiters
+        return [
+            "View project architecture deep-dives"
+            if lang == "en"
+            else "Ver análisis profundo de arquitectura"
+            if lang == "es"
+            else "Voir les analyses d'architecture",
+            "Discuss a specific full-stack role"
+            if lang == "en"
+            else "Discutir una posición full-stack"
+            if lang == "es"
+            else "Discuter d'un poste full-stack",
+            "Get availability for a technical interview"
+            if lang == "en"
+            else "Ver disponibilidad para entrevista"
+            if lang == "es"
+            else "Voir la disponibilité pour entretien",
+        ]
+
+    # Pick 3 random triggers (from the list of all triggers in the relevant items)
+    all_triggers = []
+    for item in relevant_triggers:
+        # We prefer shorter triggers for chips
+        all_triggers.extend([t for t in item.triggers if len(t) < 40])
+
+    if len(all_triggers) < 3:
+        # Just return what we have
+        return all_triggers
+
+    return random.sample(all_triggers, 3)
+
+
 @router.post("", response_model=ChatResponse)
 async def chat(
     request: ChatRequest,
@@ -185,6 +241,29 @@ async def chat(
     user_message = request.message
     lang = request.language if request.language in ["en", "es", "fr"] else "en"
     session_id = request.session_id
+    page_id = request.page_id or "home"
+
+    # --- Session & Metadata Logic ---
+    # Find or create session record
+    stmt = select(LiveChatSession).where(LiveChatSession.session_id == session_id)
+    chat_session = session.exec(stmt).first()
+
+    if not chat_session:
+        chat_session = LiveChatSession(session_id=session_id, is_active=False)
+        session.add(chat_session)
+
+    # Update Metadata
+    metadata = dict(chat_session.session_metadata or {})
+    visited_pages = set(metadata.get("visited_pages", []))
+    visited_pages.add(page_id)
+    metadata["visited_pages"] = list(visited_pages)
+    metadata["last_interaction"] = datetime.now(timezone.utc).isoformat()
+    metadata["interaction_count"] = metadata.get("interaction_count", 0) + 1
+
+    chat_session.session_metadata = metadata
+    chat_session.updated_at = datetime.now(timezone.utc)
+    session.add(chat_session)
+    session.commit()
 
     reply = None
     module = None
@@ -192,19 +271,9 @@ async def chat(
 
     # Check for live chat commands
     if user_message.strip().lower() == "/live-chat":
-        # Check if session record exists
-        stmt = select(LiveChatSession).where(LiveChatSession.session_id == session_id)
-        existing = session.exec(stmt).first()
-
-        if not existing:
-            new_session = LiveChatSession(session_id=session_id, is_active=True)
-            session.add(new_session)
-            session.commit()
-            background_tasks.add_task(notify_telegram_live_chat, session_id, "started")
-        elif not existing.is_active:
-            existing.is_active = True
-            existing.updated_at = datetime.now(timezone.utc)
-            session.add(existing)
+        if not chat_session.is_active:
+            chat_session.is_active = True
+            session.add(chat_session)
             session.commit()
             background_tasks.add_task(notify_telegram_live_chat, session_id, "started")
 
@@ -223,13 +292,9 @@ async def chat(
         return ChatResponse(reply=reply, module=module, is_live=True)
 
     if user_message.strip().lower() == "/close-live-chat":
-        stmt = select(LiveChatSession).where(
-            LiveChatSession.session_id == session_id, LiveChatSession.is_active
-        )
-        existing = session.exec(stmt).first()
-        if existing:
-            existing.is_active = False
-            session.add(existing)
+        if chat_session.is_active:
+            chat_session.is_active = False
+            session.add(chat_session)
             session.commit()
             background_tasks.add_task(notify_telegram_live_chat, session_id, "closed")
 
@@ -248,12 +313,7 @@ async def chat(
         return ChatResponse(reply=reply, module=module, is_live=False)
 
     # Check if session is in live mode
-    stmt = select(LiveChatSession).where(
-        LiveChatSession.session_id == session_id, LiveChatSession.is_active
-    )
-    active_session = session.exec(stmt).first()
-
-    if active_session:
+    if chat_session.is_active:
         # Relay to Telegram
         background_tasks.add_task(
             send_telegram_message, f"💬 *Message from {session_id}*:\n{user_message}"

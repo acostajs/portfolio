@@ -20,7 +20,11 @@ interface Message {
   category?: string;
 }
 
-const Home: React.FC = () => {
+interface HomeProps {
+  previousPage?: string;
+}
+
+const Home: React.FC<HomeProps> = ({ previousPage = "home" }) => {
   const { t, locale } = useTranslation();
   const navigate = useNavigate();
   const sessionId = getSessionId();
@@ -51,6 +55,7 @@ const Home: React.FC = () => {
   const [isLive, setIsLive] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
+  const [hints, setHints] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<Message[]>([]);
 
@@ -58,6 +63,21 @@ const Home: React.FC = () => {
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
+
+  // Fetch hints on mount or when previousPage changes
+  useEffect(() => {
+    const loadHints = async () => {
+      try {
+        const data = await fetchPublic<string[]>(
+          `/chat/hints?page_id=${previousPage}&lang=${locale}`,
+        );
+        setHints(data);
+      } catch (e) {
+        console.error("Failed to fetch hints:", e);
+      }
+    };
+    loadHints();
+  }, [previousPage, locale]);
 
   // Polling for live chat sync
   useEffect(() => {
@@ -287,6 +307,7 @@ const Home: React.FC = () => {
           message: string;
           language: string;
           session_id: string;
+          page_id: string;
           history: { role: string; content: string }[];
         },
         { reply: string; module?: string; category?: string; is_live: boolean }
@@ -294,6 +315,7 @@ const Home: React.FC = () => {
         message: userMessage,
         language: locale,
         session_id: sessionId,
+        page_id: previousPage,
         history: messagesRef.current.map((m) => ({
           role: m.role,
           content: m.content,
@@ -443,6 +465,29 @@ const Home: React.FC = () => {
       {/* Chat Input Area - Anchored at the bottom */}
       <div className="flex-none p-4 pt-0 pb-[calc(1rem+env(safe-area-inset-bottom))] md:p-8 md:pt-0 bg-bg border-t-4 border-border md:border-none md:bg-transparent">
         <div className="max-w-5xl mx-auto relative">
+          {/* Contextual Hints Chips */}
+          <AnimatePresence>
+            {!showSuggestions && hints.length > 0 && !isLive && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="flex flex-wrap gap-2 mb-4"
+              >
+                {hints.map((hint, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleSend(hint)}
+                    className="px-3 py-1.5 bg-accent-bg border-2 border-border text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-accent hover:text-white hover:-translate-y-0.5 hover:-translate-x-0.5 transition-all shadow-shadow active:translate-y-0 active:translate-x-0"
+                  >
+                    {hint}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <AnimatePresence>
             {showSuggestions && (
               <motion.div

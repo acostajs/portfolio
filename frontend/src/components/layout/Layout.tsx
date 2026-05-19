@@ -5,6 +5,7 @@ import { useTranslation } from "../../../lib/hooks/useTranslation";
 
 const MeshBackground = lazy(() => import("./MeshBackground"));
 const CommandPalette = lazy(() => import("./CommandPalette"));
+const PortfolioCLI = lazy(() => import("../ui/PortfolioCLI"));
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -42,6 +43,7 @@ const Layout: React.FC<LayoutProps> = ({
         {isCommandPaletteOpen && (
           <CommandPalette onClose={() => setIsCommandPaletteOpen(false)} />
         )}
+        <PortfolioCLI />
       </Suspense>
       <a
         href="#main-content"

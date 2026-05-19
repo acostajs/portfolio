@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import Layout from "./components/layout/Layout";
@@ -19,6 +19,7 @@ const Admin = lazy(() => import("./pages/Admin"));
 function App() {
   const { locale } = useTranslation();
   const location = useLocation();
+  const [previousPage, setPreviousPage] = useState<PageId>("home");
 
   // Map pathname to PageId for Sidebar highlighting
   const getActivePage = (pathname: string): PageId => {
@@ -28,6 +29,16 @@ function App() {
 
   const activePage = getActivePage(location.pathname);
   const isHideSidebar = location.pathname.startsWith("/admin");
+
+  // Track the most recent public non-home page to provide context to the Chatbot
+  useEffect(() => {
+    if (activePage !== "home" && !location.pathname.startsWith("/admin")) {
+      // Wrap in a microtask to avoid "setState synchronously within an effect" warning
+      void Promise.resolve().then(() => {
+        setPreviousPage(activePage);
+      });
+    }
+  }, [activePage, location.pathname]);
 
   // Determine which loader to show based on the route
   const getFallback = () => {
@@ -48,14 +59,14 @@ function App() {
         >
           <Suspense fallback={getFallback()}>
             <Routes location={location}>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home previousPage={previousPage} />} />
               <Route path="/about" element={<About />} />
               <Route path="/experience" element={<Experience />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<Home />} />
+              <Route path="*" element={<Home previousPage={previousPage} />} />
             </Routes>
           </Suspense>
         </motion.div>

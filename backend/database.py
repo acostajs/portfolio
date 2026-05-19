@@ -68,9 +68,20 @@ def create_db_and_tables():
 
         # --- Migrate livechatsession ---
         if "livechatsession" in tables:
-            cols = inspector.get_columns("livechatsession")
+            cols = [c["name"].lower() for c in inspector.get_columns("livechatsession")]
+            if "session_metadata" not in cols:
+                logger.info("Adding session_metadata column to livechatsession")
+                conn.execute(
+                    text("ALTER TABLE livechatsession ADD COLUMN session_metadata JSON")
+                )
+
             session_id_col = next(
-                (c for c in cols if c["name"].lower() == "session_id"), None
+                (
+                    c
+                    for c in inspector.get_columns("livechatsession")
+                    if c["name"].lower() == "session_id"
+                ),
+                None,
             )
             if session_id_col:
                 col_type = session_id_col["type"]

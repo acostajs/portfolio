@@ -7,6 +7,7 @@ from .blog import router as blog_router
 from .chat import router as chat_router
 from .analytics import router as analytics_router
 from .uploads import router as uploads_router
+from .monitoring import router as monitoring_router
 
 router = APIRouter(
     prefix="/api/v1/admin",
@@ -27,3 +28,4 @@ router.include_router(blog_router)
 router.include_router(chat_router)
 router.include_router(analytics_router)
 router.include_router(uploads_router)
+router.include_router(monitoring_router)
