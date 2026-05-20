@@ -21,7 +21,11 @@ from limiter import limiter
 # Import Routers
 from routers import public, chat
 from routers.admin.router import router as admin_router
-from middleware import VisitorTrackingMiddleware, visitor_log_worker, background_task_queue
+import middleware
+from middleware import (
+    VisitorTrackingMiddleware,
+    visitor_log_worker,
+)
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO)
@@ -42,13 +46,18 @@ async def lifespan(app: FastAPI):
                 "CRITICAL SECURITY ALERT: SECRET_SALT is set to default in production!"
             )
 
+    # Re-initialize the background task queue for the current event loop.
+    # This is critical for tests where pytest-asyncio creates a new event loop per test,
+    # preventing event loop mismatch hangs.
+    middleware.background_task_queue = asyncio.Queue()
+
     # Start the background log worker
     worker_task = asyncio.create_task(visitor_log_worker())
 
     # Seed the database if empty (skip in tests to avoid interference)
     if settings.ENVIRONMENT != "testing":
         seed()
-    
+
     # Pre-populate trigger cache (skip in tests)
     if settings.ENVIRONMENT != "testing":
         get_cached_triggers()
@@ -56,8 +65,10 @@ async def lifespan(app: FastAPI):
     yield
 
     # Cleanup: Stop the worker
-    await background_task_queue.put(None)
+    await middleware.drain_background_task_queue()
+    await middleware.background_task_queue.put(None)
     await worker_task
+
 
 
 # --- App Initialization ---

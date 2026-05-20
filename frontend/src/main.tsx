@@ -9,20 +9,23 @@ import App from "./App.tsx";
 import { LanguageProvider } from "../lib/context/LanguageContext";
 import { ThemeProvider } from "../lib/context/ThemeContext";
 import { ChatProvider } from "../lib/context/ChatContext";
+import { ErrorBoundary } from "./components/layout/ErrorBoundary";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <HelmetProvider>
       <BrowserRouter>
-        <ThemeProvider>
-          <LanguageProvider>
-            <ChatProvider>
-              <App />
-              <Analytics />
-              <SpeedInsights />
-            </ChatProvider>
-          </LanguageProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider>
+            <LanguageProvider>
+              <ChatProvider>
+                <App />
+                <Analytics />
+                <SpeedInsights />
+              </ChatProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </ErrorBoundary>
       </BrowserRouter>
     </HelmetProvider>
   </StrictMode>,

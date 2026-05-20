@@ -23,7 +23,7 @@ This project is a multilingual interactive portfolio (English, French, Spanish) 
 
 ## Building and Running
 
-The project is currently in **Version 0.2.3: Notifications & Connectivity**.
+The project is currently in **Version 0.2.5: Architectural Refinement & Real-time Sync**.
 
 ### Major Milestones Completed
 
@@ -46,7 +46,9 @@ The project is currently in **Version 0.2.3: Notifications & Connectivity**.
 - **Version 0.2.5**: Architectural Refinement (SSE Chat, Task Queues, Modular UI).
 
 ## Building and Running
+
 ...
+
 ### Chat & Real-time
 
 - **SSE Stream**: Live chat synchronization uses Server-Sent Events via `/api/v1/chat/stream/{session_id}`. Avoid polling.

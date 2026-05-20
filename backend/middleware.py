@@ -12,7 +12,17 @@ from starlette.middleware.base import BaseHTTPMiddleware
 logger = logging.getLogger("backend")
 
 # Singleton queue for background tasks
-background_task_queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue()
+background_task_queue: asyncio.Queue[dict[str, Any] | None] = asyncio.Queue()
+
+
+async def drain_background_task_queue():
+    """Waits for all pending tasks in the background queue to be processed."""
+    if not background_task_queue.empty():
+        logger.info(
+            f"Draining background task queue: {background_task_queue.qsize()} items remaining."
+        )
+        await background_task_queue.join()
+        logger.info("Background task queue drained.")
 
 
 async def visitor_log_worker():

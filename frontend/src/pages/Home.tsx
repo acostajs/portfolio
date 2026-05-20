@@ -20,6 +20,7 @@ const Home: React.FC<HomeProps> = ({ previousPage = "home" }) => {
         isLive={chat.isLive}
         handleSend={chat.handleSend}
         handleFeedback={chat.handleFeedback}
+        onMessageComplete={chat.markMessageAnimated}
       />
       <ChatInputContainer
         input={chat.input}
@@ -29,7 +30,6 @@ const Home: React.FC<HomeProps> = ({ previousPage = "home" }) => {
         setIsFocused={chat.setIsFocused}
         suggestionIndex={chat.suggestionIndex}
         setSuggestionIndex={chat.setSuggestionIndex}
-        hints={chat.hints}
         activeSuggestions={chat.activeSuggestions}
         handleSend={chat.handleSend}
       />

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import BotMessage from "./BotMessage";
-import { Message } from "../../types/chat";
+import type { Message } from "../../types/chat";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
 
 interface ChatWindowProps {
@@ -17,6 +17,7 @@ interface ChatWindowProps {
     module?: string,
     category?: string,
   ) => void;
+  onMessageComplete?: (index: number) => void;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -25,6 +26,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   isLive,
   handleSend,
   handleFeedback,
+  onMessageComplete,
 }) => {
   const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -81,6 +83,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                       ? () => handleSend("/live-chat")
                       : undefined
                   }
+                  onComplete={() => onMessageComplete?.(idx)}
                   onFeedback={(isHelpful) => {
                     const userMsg =
                       idx > 0 ? messages[idx - 1].content : "initial";

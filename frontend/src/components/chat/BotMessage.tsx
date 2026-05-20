@@ -13,6 +13,7 @@ interface BotMessageProps {
   skipTypewriter?: boolean;
   onFeedback?: (isHelpful: boolean) => void;
   onLiveChatRequest?: () => void;
+  onComplete?: () => void;
 }
 
 const BotMessage: React.FC<BotMessageProps> = ({
@@ -20,6 +21,7 @@ const BotMessage: React.FC<BotMessageProps> = ({
   skipTypewriter,
   onFeedback,
   onLiveChatRequest,
+  onComplete,
 }) => {
   const { t } = useTranslation();
   const [feedbackGiven, setFeedbackGiven] = useState(false);
@@ -63,12 +65,15 @@ const BotMessage: React.FC<BotMessageProps> = ({
       <div className="bg-bg border-4 border-border p-6 rounded-none shadow-shadow w-full">
         <div className="flex flex-col space-y-6">
           <div className="text-text-header font-medium leading-relaxed markdown-content min-h-[1.5em]">
-            {skipTypewriter ? (
+            {skipTypewriter || isTypingComplete ? (
               <SharedMarkdown content={content} />
             ) : (
               <Typewriter
                 text={content}
-                onComplete={() => setIsTypingComplete(true)}
+                onComplete={() => {
+                  setIsTypingComplete(true);
+                  if (onComplete) onComplete();
+                }}
               />
             )}
           </div>

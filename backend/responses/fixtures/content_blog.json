@@ -1,0 +1,16 @@
+[
+    {
+        "slug": "mastering-react-19",
+        "date": "2026-05-01",
+        "category": "Frontend",
+        "title_en": "Mastering React 19 Features",
+        "title_es": "Dominando las funciones de React 19",
+        "title_fr": "Maîtriser les fonctionnalités de React 19",
+        "excerpt_en": "A deep dive into the latest features of React 19 and how they improve performance.",
+        "excerpt_es": "Una inmersión profunda en las últimas funciones de React 19 y cómo mejoran el rendimiento.",
+        "excerpt_fr": "Une plongée profonde dans les dernières fonctionnalités de React 19 et comment elles améliorent les performances.",
+        "content_en": "React 19 introduces several game-changing features like **Actions**, **Optimistic Updates**, and improved support for **Server Components**. \n\n```tsx\n// Example of a basic Action\nconst [isPending, startTransition] = useTransition();\n\nconst handleSubmit = () => {\n  startTransition(async () => {\n    await updateProfile(name);\n  });\n};\n```\nThese features simplify state management and improve the developer experience significantly.",
+        "content_es": "React 19 presenta varias funciones revolucionarias como **Actions**, **Actualizaciones optimistas** y un soporte mejorado para **Server Components**. \n\n```tsx\n// Ejemplo de una Acción básica\nconst [isPending, startTransition] = useTransition();\n\nconst handleSubmit = () => {\n  startTransition(async () => {\n    await updateProfile(name);\n  });\n};\n```\nEstas funciones simplifican la gestión del estado y mejoran significativamente la experiencia del desarrollador.",
+        "content_fr": "React 19 introduit plusieurs fonctionnalités révolutionnaires telles que les **Actions**, les **mises à jour optimistes** et un support amélioré pour les **composants serveur**. \n\n```tsx\n// Exemple d'une Action de base\nconst [isPending, startTransition] = useTransition();\n\nconst handleSubmit = () => {\n  startTransition(async () => {\n    await updateProfile(name);\n  });\n};\n```\nCes fonctionnalités simplifient la gestion de l'état et améliorent considérablement l'expérience du développeur."
+    }
+]

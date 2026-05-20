@@ -43,4 +43,11 @@ bun.lockb
 *.swo
 
 # Database
-*.db
+*.db.antigravitycli
+.gemini
+.cursor
+.idx
+.subagents
+database.db
+*.pyc
+__pycache__

@@ -64,6 +64,7 @@ def setup_database(monkeypatch):
 async def client():
     # Manually trigger lifespan for AsyncClient
     from main import lifespan
+
     async with lifespan(app):
         async with AsyncClient(
             transport=ASGITransport(app=app), base_url="http://test"

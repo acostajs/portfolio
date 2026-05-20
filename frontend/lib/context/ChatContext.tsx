@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
-import { Message, ChatResponse } from "../../src/types/chat";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
+import type { Message, ChatResponse } from "../../src/types/chat";
 import { getSessionId } from "../session";
 import { useTranslation } from "../hooks/useTranslation";
 import { postPublic } from "../api";
@@ -12,20 +19,33 @@ interface ChatContextType {
   isLive: boolean;
   sessionId: string;
   sendMessage: (content: string, pageId: string) => Promise<void>;
-  addMessage: (role: "user" | "assistant", content: string, extra?: Partial<Message>) => void;
+  addMessage: (
+    role: "user" | "assistant",
+    content: string,
+    extra?: Partial<Message>,
+  ) => void;
   resetChat: () => void;
-  sendFeedback: (isHelpful: boolean, userMsg: string, reply: string, module?: string, category?: string) => Promise<void>;
+  sendFeedback: (
+    isHelpful: boolean,
+    userMsg: string,
+    reply: string,
+    module?: string,
+    category?: string,
+  ) => Promise<void>;
   setIsLoading: (loading: boolean) => void;
+  markMessageAnimated: (index: number) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { t, locale } = useTranslation();
   const sessionId = getSessionId();
 
   const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = localStorage.getItem("portfolio-chat-history");
+    const saved = sessionStorage.getItem("portfolio-chat-history");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -48,9 +68,22 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLive, setIsLive] = useState(false);
   const messagesRef = useRef<Message[]>(messages);
 
+  const saveTimerRef = useRef<number | null>(null);
+
   useEffect(() => {
     messagesRef.current = messages;
-    localStorage.setItem("portfolio-chat-history", JSON.stringify(messages));
+
+    // Debounce localStorage persistence
+    if (saveTimerRef.current) {
+      window.clearTimeout(saveTimerRef.current);
+    }
+    saveTimerRef.current = window.setTimeout(() => {
+      sessionStorage.setItem("portfolio-chat-history", JSON.stringify(messages));
+    }, 1000);
+
+    return () => {
+      if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
+    };
   }, [messages]);
 
   // SSE Stream listener
@@ -60,7 +93,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     eventSource.addEventListener("message", (e) => {
       try {
         const dbMsg = JSON.parse(e.data) as Message;
-        
+
         setMessages((prev) => {
           const updated = [...prev];
           const existingIdx = updated.findIndex((m) => m.id === dbMsg.id);
@@ -70,7 +103,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
             (m) =>
               !m.id &&
               m.role === dbMsg.role &&
-              m.content.trim() === dbMsg.content.trim()
+              m.content.trim() === dbMsg.content.trim(),
           );
 
           if (matchIdx !== -1) {
@@ -105,62 +138,83 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [sessionId]);
 
-  const sendMessage = useCallback(async (content: string, pageId: string) => {
-    setMessages((prev) => [...prev, { role: "user", content }]);
-    setIsLoading(true);
+  const sendMessage = useCallback(
+    async (content: string, pageId: string) => {
+      setMessages((prev) => [...prev, { role: "user", content }]);
+      setIsLoading(true);
 
-    try {
-      const data = await postPublic<
-        {
-          message: string;
-          language: string;
-          session_id: string;
-          page_id: string;
-          history: { role: string; content: string }[];
-        },
-        ChatResponse
-      >("/chat", {
-        message: content,
-        language: locale,
-        session_id: sessionId,
-        page_id: pageId,
-        history: messagesRef.current.map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
-      });
+      try {
+        const data = await postPublic<
+          {
+            message: string;
+            language: string;
+            session_id: string;
+            page_id: string;
+            history: { role: string; content: string }[];
+          },
+          ChatResponse
+        >("/chat", {
+          message: content,
+          language: locale,
+          session_id: sessionId,
+          page_id: pageId,
+          history: messagesRef.current.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        });
 
-      setIsLive(data.is_live);
+        setIsLive(data.is_live);
+        
+        if (data.reply) {
+          setMessages((prev) => {
+            // Check if SSE already added this message to avoid duplicates
+            const exists = prev.some(
+              (m) =>
+                m.role === "assistant" &&
+                m.content.trim() === data.reply.trim(),
+            );
+            if (exists) return prev;
 
-      if (data.reply) {
+            return [
+              ...prev,
+              {
+                role: "assistant",
+                content: data.reply,
+                module: data.module,
+                category: data.category,
+                shouldAnimate: true,
+              },
+            ];
+          });
+        }
+      } catch (error) {
+        console.error("Chat error:", error);
         setMessages((prev) => [
           ...prev,
           {
             role: "assistant",
-            content: data.reply,
-            module: data.module,
-            category: data.category,
+            content: t.home.errorRetry,
+            shouldAnimate: true,
           },
         ]);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Chat error:", error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: t.home.errorRetry,
-          shouldAnimate: true,
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [locale, sessionId, t.home.errorRetry]);
+    },
+    [locale, sessionId, t.home.errorRetry],
+  );
 
-  const addMessage = useCallback((role: "user" | "assistant", content: string, extra: Partial<Message> = {}) => {
-    setMessages((prev) => [...prev, { role, content, ...extra }]);
-  }, []);
+  const addMessage = useCallback(
+    (
+      role: "user" | "assistant",
+      content: string,
+      extra: Partial<Message> = {},
+    ) => {
+      setMessages((prev) => [...prev, { role, content, ...extra }]);
+    },
+    [],
+  );
 
   const resetChat = useCallback(() => {
     hapticFeedback(25);
@@ -172,21 +226,39 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         shouldAnimate: true,
       },
     ]);
-    localStorage.removeItem("portfolio-chat-history");
+    sessionStorage.removeItem("portfolio-chat-history");
   }, [t.home.welcome]);
 
-  const sendFeedback = useCallback(async (isHelpful: boolean, userMsg: string, reply: string, module?: string, category?: string) => {
-    try {
-      await postPublic("/chat/feedback", {
-        user_message: userMsg,
-        assistant_reply: reply,
-        is_helpful: isHelpful,
-        module,
-        category,
-      });
-    } catch (error) {
-      console.error("Feedback error:", error);
-    }
+  const sendFeedback = useCallback(
+    async (
+      isHelpful: boolean,
+      userMsg: string,
+      reply: string,
+      module?: string,
+      category?: string,
+    ) => {
+      try {
+        await postPublic("/chat/feedback", {
+          user_message: userMsg,
+          assistant_reply: reply,
+          is_helpful: isHelpful,
+          module,
+          category,
+        });
+      } catch (error) {
+        console.error("Feedback error:", error);
+      }
+    },
+    [],
+  );
+
+  const markMessageAnimated = useCallback((index: number) => {
+    setMessages((prev) => {
+      if (!prev[index] || !prev[index].shouldAnimate) return prev;
+      const updated = [...prev];
+      updated[index] = { ...updated[index], shouldAnimate: false };
+      return updated;
+    });
   }, []);
 
   return (
@@ -202,6 +274,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         resetChat,
         sendFeedback,
         setIsLoading,
+        markMessageAnimated,
       }}
     >
       {children}

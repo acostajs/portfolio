@@ -1,0 +1,11 @@
+[
+    {
+        "title": "AI Portfolio",
+        "description_en": "A multilingual interactive portfolio with an AI chatbot assistant.",
+        "description_es": "Un portafolio interactivo multilingüe con un asistente de chatbot de IA.",
+        "description_fr": "Un portfolio interactif multilingue avec un assistant chatbot IA.",
+        "tech": ["React", "FastAPI", "Tailwind CSS", "Bun"],
+        "github": "https://github.com/juan/portfolio",
+        "order": 1
+    }
+]

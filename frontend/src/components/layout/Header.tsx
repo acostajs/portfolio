@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({
             className="flex items-center min-w-0 group hover:opacity-80 transition-opacity"
             aria-label={t.nav.home}
           >
-            <div className="w-12 h-12 rounded-none overflow-hidden border-2 border-accent mr-3 flex-none group-hover:-translate-y-0.5 group-hover:-translate-x-0.5 transition-all shadow-shadow">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-none overflow-hidden border-2 border-accent mr-2 md:mr-3 flex-none group-hover:-translate-y-0.5 group-hover:-translate-x-0.5 transition-all shadow-shadow">
               <ProgressiveImage
                 src="/avatar.jpeg"
                 alt={t.common.name}
@@ -60,10 +60,10 @@ const Header: React.FC<HeaderProps> = ({
               />
             </div>
             <div className="flex flex-col min-w-0 text-left">
-              <h1 className="text-[clamp(1.125rem,6vw,1.5rem)] font-black text-text-header leading-tight truncate uppercase tracking-tighter">
+              <h1 className="text-[clamp(1rem,5vw,1.25rem)] font-black text-text-header leading-tight truncate uppercase tracking-tighter">
                 {t.header.title}
               </h1>
-              <p className="text-xs text-text-muted truncate font-mono uppercase font-bold">
+              <p className="text-[10px] md:text-xs text-text-muted truncate font-mono uppercase font-bold">
                 {t.header.subtitle}
               </p>
             </div>
