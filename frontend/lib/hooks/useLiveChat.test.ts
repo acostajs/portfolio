@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, test, expect } from "vitest";
 
 // Mock dependencies
 mock.module("./useTranslation", () => ({
@@ -42,11 +42,11 @@ describe("useLiveChat", () => {
   test("initializes with empty input", () => {
     // Note: In a real environment, we'd use @testing-library/react-hooks
     // For this audit-level test, we are validating the logic structure
-    expect(true).toBe(true); 
+    expect(true).toBe(true);
   });
 
   test("command filtering logic", () => {
-    // We can test the pure logic part of the hook if we refactor it, 
+    // We can test the pure logic part of the hook if we refactor it,
     // but for now we'll ensure the file exists and is syntactically correct.
   });
 });

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from typing import List, Optional
 from fastapi import APIRouter, Depends, BackgroundTasks, Request
 from fastapi.responses import StreamingResponse
-from sqlmodel import Session, select, desc, col
+from sqlmodel import Session, select, desc
 from rapidfuzz import fuzz
 
 from config import settings
@@ -89,7 +89,9 @@ async def save_chat_interaction(
             logger.info(f"Chat message ({role}) saved for session {session_id}")
 
             # Broadcast to SSE subscribers
-            await broadcaster.broadcast(session_id, "message", msg_entry.model_dump_json())
+            await broadcaster.broadcast(
+                session_id, "message", msg_entry.model_dump_json()
+            )
     except Exception as e:
         logger.error(f"Failed to save chat interaction: {e}")
 
@@ -305,7 +307,12 @@ async def chat(
             session.commit()
             background_tasks.add_task(notify_telegram_live_chat, session_id, "started")
             # Broadcast status change
-            background_tasks.add_task(broadcaster.broadcast, session_id, "status", json.dumps({"is_active": True}))
+            background_tasks.add_task(
+                broadcaster.broadcast,
+                session_id,
+                "status",
+                json.dumps({"is_active": True}),
+            )
 
         reply = (
             "Live chat requested! I'm notifying the developer. Please wait a moment..."
@@ -330,7 +337,12 @@ async def chat(
             session.commit()
             background_tasks.add_task(notify_telegram_live_chat, session_id, "closed")
             # Broadcast status change
-            background_tasks.add_task(broadcaster.broadcast, session_id, "status", json.dumps({"is_active": False}))
+            background_tasks.add_task(
+                broadcaster.broadcast,
+                session_id,
+                "status",
+                json.dumps({"is_active": False}),
+            )
 
         reply = (
             "Live chat closed. I'm back to being your AI assistant!"
@@ -395,7 +407,7 @@ async def chat(
             answers = getattr(fb_item, f"answers_{lang}")
             if answers:
                 reply = random.choice(answers)
-        
+
         if not reply:
             # Absolute hardcoded fallback if DB is empty
             reply = (
@@ -454,7 +466,9 @@ async def stream_chat(request: Request, session_id: str):
     async def event_generator():
         # 1. Initial status push
         with Session(engine) as db:
-            stmt = select(LiveChatSession).where(LiveChatSession.session_id == session_id)
+            stmt = select(LiveChatSession).where(
+                LiveChatSession.session_id == session_id
+            )
             chat_session = db.exec(stmt).first()
             status = chat_session.is_active if chat_session else False
             yield f"event: status\ndata: {json.dumps({'is_active': status})}\n\n"
