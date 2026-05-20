@@ -70,7 +70,6 @@ async def lifespan(app: FastAPI):
     await worker_task
 
 
-
 # --- App Initialization ---
 app = FastAPI(title="Portfolio Backend", lifespan=lifespan)
 app.state.limiter = limiter
