@@ -9,7 +9,7 @@ interface TypewriterProps {
 
 const Typewriter: React.FC<TypewriterProps> = ({
   text,
-  delay = 15,
+  delay = 10,
   onComplete,
   className = "",
 }) => {

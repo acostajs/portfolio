@@ -1,7 +1,9 @@
 import React, { useState, useEffect, Suspense, lazy } from "react";
+import { Link } from "react-router-dom";
 import Header from "./Header";
 import Sidebar, { type PageId } from "./Sidebar";
 import { useTranslation } from "../../../lib/hooks/useTranslation";
+import { ArrowLeft } from "lucide-react";
 
 const MeshBackground = lazy(() => import("./MeshBackground"));
 const CommandPalette = lazy(() => import("./CommandPalette"));
@@ -71,6 +73,17 @@ const Layout: React.FC<LayoutProps> = ({
           id="main-content"
           className="flex-1 overflow-hidden flex flex-col"
         >
+          {activePage !== "home" && (
+            <div className="flex-none px-4 md:px-8 pt-4 md:pt-6">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent-bg border-2 border-border text-text-header font-black uppercase tracking-widest text-[10px] hover:bg-accent hover:text-white transition-colors shadow-shadow active:scale-95"
+              >
+                <ArrowLeft className="w-3 h-3" />
+                {t.nav.home}
+              </Link>
+            </div>
+          )}
           {children}
         </main>
       </div>

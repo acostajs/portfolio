@@ -186,3 +186,51 @@ async def test_sync_endpoint(client: AsyncClient, db_session: Session):
     assert data["messages"][0]["content"] == "Hi"
     assert data["messages"][1]["content"] == "Hello"
     assert data["is_active"] is False  # No live session yet
+
+
+@pytest.mark.asyncio
+async def test_telegram_webhook_precise_routing(
+    client: AsyncClient, db_session: Session
+):
+    """
+    Test that the webhook routes to the correct session based on the quoted message,
+    even if it's not the most recently active one.
+    """
+    # 1. Start Session A
+    session_a = "session_a"
+    await client.post(
+        "/api/v1/chat", json={"message": "/live-chat", "session_id": session_a}
+    )
+
+    # 2. Start Session B (becomes the 'most recent')
+    session_b = "session_b"
+    await client.post(
+        "/api/v1/chat", json={"message": "/live-chat", "session_id": session_b}
+    )
+
+    # 3. Developer replies to Session A's message
+    webhook_payload = {
+        "message": {
+            "text": "Reply to A",
+            "reply_to_message": {"text": f"💬 *Message from {session_a}*:\nhello"},
+        }
+    }
+    response = await client.post("/api/v1/chat/telegram-webhook", json=webhook_payload)
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"
+
+    # Wait for background task
+    await asyncio.sleep(0.1)
+
+    # 4. Verify Session A received the message
+    response = await client.get(f"/api/v1/chat/sync/{session_a}")
+    data = response.json()
+    assert any(
+        m["content"] == "Reply to A" and m["role"] == "assistant"
+        for m in data["messages"]
+    )
+
+    # 5. Verify Session B did NOT receive the message
+    response = await client.get(f"/api/v1/chat/sync/{session_b}")
+    data = response.json()
+    assert not any(m["content"] == "Reply to A" for m in data["messages"])

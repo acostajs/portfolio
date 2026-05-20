@@ -1,0 +1,18 @@
+{
+    "p1_en": "I'm a passionate Web Developer based in Montréal, dedicated to building clean, efficient, and user-centric web applications.",
+    "p1_es": "Soy un apasionado Desarrollador Web con sede en Montréal, dedicado a construir aplicaciones web limpias, eficientes y centradas en el usuario.",
+    "p1_fr": "Je suis un développeur web passionné basé à Montréal, dédié à la création d' applications web propres, efficaces et centrées sur l'utilisateur.",
+    "p2_en": "My journey in tech is driven by a curiosity for solving complex problems and a desire to create digital experiences that make a difference.",
+    "p2_es": "Mi viaje en la tecnología está impulsado por la curiosidad de resolver problemas complejos y el deseo de crear experiencias digitales que marquen la diferencia.",
+    "p2_fr": "Mon parcours dans la technologie est guidé par une curiosité pour la résolution de problèmes complexes et un désir de créer des expériences numériques qui font la différence.",
+    "skills": [
+        "TypeScript",
+        "React",
+        "Bun",
+        "Tailwind CSS",
+        "FastAPI",
+        "Python",
+        "PostgreSQL",
+        "Docker"
+    ]
+}

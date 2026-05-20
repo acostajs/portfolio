@@ -29,9 +29,41 @@ Interacts with the portfolio assistant. Responses are determined by a trigger-ba
 
 ```json
 {
-  "reply": "I've built several interesting projects using React and FastAPI..."
+  "reply": "I've built several interesting projects using React and FastAPI...",
+  "module": "projects",
+  "category": "React",
+  "is_live": false
 }
 ```
+
+### SSE Real-time Stream
+
+`GET /api/v1/chat/stream/{session_id}`
+
+Server-Sent Events (SSE) stream for real-time updates. Replaces polling.
+
+**Events**:
+- `message`: A new chat message (role, content, etc.).
+- `status`: Update on live chat status (`{"is_active": true/false}`).
+- `keep-alive`: Periodic heartbeat.
+
+### Sync Session
+
+`GET /api/v1/chat/sync/{session_id}`
+
+Retrieves the recent history and status for a session. Useful for initial page load or re-connection.
+
+### Get Chat Hints
+
+`GET /api/v1/chat/hints?page_id={page_id}&lang={lang}`
+
+Returns 3 contextually relevant triggers for the current page to display as suggestion chips.
+
+### Submit Feedback
+
+`POST /api/v1/chat/feedback`
+
+Logs user feedback on an assistant's response.
 
 ### Get Chat History
 
@@ -111,6 +143,14 @@ Returns a simple JSON welcome message.
 `GET /health`
 
 Used for monitoring the service status.
+
+## Telegram Bridge (Internal)
+
+### Telegram Webhook
+
+`POST /api/v1/chat/telegram-webhook`
+
+Handles incoming messages from the developer via Telegram. Uses internal message ID mapping to route replies to the correct session.
 
 ## Contact (External Integration)
 

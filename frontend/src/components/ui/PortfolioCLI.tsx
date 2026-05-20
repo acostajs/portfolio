@@ -150,7 +150,7 @@ const PortfolioCLI: React.FC = () => {
               <div className="flex items-center gap-3">
                 <Terminal className="w-5 h-5 text-accent" />
                 <span className="text-xs font-black uppercase tracking-widest text-text-header">
-                  {t.cli.title} v0.2.4
+                  {t.cli.title} v0.2.5
                 </span>
               </div>
               <button

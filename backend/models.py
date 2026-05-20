@@ -15,6 +15,8 @@ class ChatMessage(SQLModel, table=True):
     session_id: str = Field(index=True, default="legacy")
     role: str  # "user" or "assistant"
     content: str
+    module: Optional[str] = None
+    category: Optional[str] = None
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -211,3 +213,10 @@ class ChatTriggerResponseUpdate(SQLModel):
 
 class ChatTriggerResponse(ChatTriggerResponseBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class TelegramMessageMap(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    telegram_message_id: int = Field(index=True, unique=True)
+    session_id: str = Field(index=True)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

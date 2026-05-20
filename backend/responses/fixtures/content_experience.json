@@ -1,0 +1,24 @@
+[
+    {
+        "company": "Freelance",
+        "role": "Full-Stack Developer",
+        "period": "2023 - Present",
+        "description_en": [
+            "Building high-performance web applications using React and FastAPI.",
+            "Optimizing frontend performance with Bun and Vite.",
+            "Implementing AI-driven features and chatbots."
+        ],
+        "description_es": [
+            "Construyendo aplicaciones web de alto rendimiento utilizando React y FastAPI.",
+            "Optimizando el rendimiento del frontend con Bun y Vite.",
+            "Implementando funciones impulsadas por IA y chatbots."
+        ],
+        "description_fr": [
+            "Construction d'applications web performantes avec React et FastAPI.",
+            "Optimisation des performances frontend avec Bun et Vite.",
+            "Mise en œuvre de fonctionnalités pilotées par l'IA et de chatbots."
+        ],
+        "tech": ["React", "FastAPI", "Bun", "OpenAI"],
+        "order": 1
+    }
+]

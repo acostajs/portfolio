@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     )
 
     FRONTEND_URL: str = "http://localhost:5173"
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
     DATABASE_URL: Optional[str] = None
     ENVIRONMENT: str = "development"
     # Mandatory in production, defaults to something safe/useless in dev

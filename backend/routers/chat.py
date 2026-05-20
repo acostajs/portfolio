@@ -2,9 +2,12 @@ import logging
 import random
 import re
 import httpx
+import json
+import asyncio
 from datetime import datetime, timezone
 from typing import List, Optional
 from fastapi import APIRouter, Depends, BackgroundTasks, Request
+from fastapi.responses import StreamingResponse
 from sqlmodel import Session, select, desc
 from rapidfuzz import fuzz
 
@@ -16,8 +19,9 @@ from models import (
     ChatTriggerResponse,
     LiveChatSession,
     SessionMetadata,
+    TelegramMessageMap,
 )
-from responses import fallback
+from broadcaster import broadcaster
 from auth import verify_admin_password
 from cache import get_cached_triggers
 from pydantic import BaseModel, Field
@@ -63,21 +67,40 @@ class FeedbackRequest(BaseModel):
 
 
 # --- Background Tasks ---
-def save_chat_interaction(role: str, content: str, session_id: str = "unknown"):
+async def save_chat_interaction(
+    role: str,
+    content: str,
+    session_id: str = "unknown",
+    module: Optional[str] = None,
+    category: Optional[str] = None,
+):
     try:
         with Session(engine) as session:
-            msg_entry = ChatMessage(role=role, content=content, session_id=session_id)
+            msg_entry = ChatMessage(
+                role=role,
+                content=content,
+                session_id=session_id,
+                module=module,
+                category=category,
+            )
             session.add(msg_entry)
             session.commit()
+            session.refresh(msg_entry)
             logger.info(f"Chat message ({role}) saved for session {session_id}")
+
+            # Broadcast to SSE subscribers
+            await broadcaster.broadcast(
+                session_id, "message", msg_entry.model_dump_json()
+            )
     except Exception as e:
         logger.error(f"Failed to save chat interaction: {e}")
 
 
-async def send_telegram_message(text: str):
+async def send_telegram_message(text: str) -> Optional[int]:
+    """Sends a message to Telegram and returns the message_id."""
     if not settings.TELEGRAM_BOT_TOKEN or not settings.TELEGRAM_CHAT_ID:
         logger.warning("Telegram credentials not configured, skipping relay")
-        return
+        return None
 
     url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
@@ -90,9 +113,13 @@ async def send_telegram_message(text: str):
         async with httpx.AsyncClient() as client:
             resp = await client.post(url, json=payload, timeout=10.0)
             resp.raise_for_status()
-            logger.info("Message relayed to Telegram")
+            data = resp.json()
+            message_id = data.get("result", {}).get("message_id")
+            logger.info(f"Message relayed to Telegram, ID: {message_id}")
+            return message_id
     except Exception as e:
         logger.error(f"Failed to send Telegram message: {e}")
+        return None
 
 
 async def notify_telegram_live_chat(session_id: str, status: str = "started"):
@@ -279,6 +306,13 @@ async def chat(
             session.add(chat_session)
             session.commit()
             background_tasks.add_task(notify_telegram_live_chat, session_id, "started")
+            # Broadcast status change
+            background_tasks.add_task(
+                broadcaster.broadcast,
+                session_id,
+                "status",
+                json.dumps({"is_active": True}),
+            )
 
         reply = (
             "Live chat requested! I'm notifying the developer. Please wait a moment..."
@@ -291,7 +325,9 @@ async def chat(
         background_tasks.add_task(
             save_chat_interaction, "user", user_message, session_id
         )
-        background_tasks.add_task(save_chat_interaction, "assistant", reply, session_id)
+        background_tasks.add_task(
+            save_chat_interaction, "assistant", reply, session_id, module=module
+        )
         return ChatResponse(reply=reply, module=module, is_live=True)
 
     if user_message.strip().lower() == "/close-live-chat":
@@ -300,6 +336,13 @@ async def chat(
             session.add(chat_session)
             session.commit()
             background_tasks.add_task(notify_telegram_live_chat, session_id, "closed")
+            # Broadcast status change
+            background_tasks.add_task(
+                broadcaster.broadcast,
+                session_id,
+                "status",
+                json.dumps({"is_active": False}),
+            )
 
         reply = (
             "Live chat closed. I'm back to being your AI assistant!"
@@ -312,20 +355,30 @@ async def chat(
         background_tasks.add_task(
             save_chat_interaction, "user", user_message, session_id
         )
-        background_tasks.add_task(save_chat_interaction, "assistant", reply, session_id)
+        background_tasks.add_task(
+            save_chat_interaction, "assistant", reply, session_id, module=module
+        )
         return ChatResponse(reply=reply, module=module, is_live=False)
 
     # Check if session is in live mode
     if chat_session.is_active:
-        # Relay to Telegram
-        background_tasks.add_task(
-            send_telegram_message, f"💬 *Message from {session_id}*:\n{user_message}"
+        # Relay to Telegram and save mapping
+        tg_msg_id = await send_telegram_message(
+            f"💬 *Message from {session_id}*:\n{user_message}"
         )
+        if tg_msg_id:
+            with Session(engine) as db_session:
+                mapping = TelegramMessageMap(
+                    telegram_message_id=tg_msg_id, session_id=session_id
+                )
+                db_session.add(mapping)
+                db_session.commit()
+
         background_tasks.add_task(
             save_chat_interaction, "user", user_message, session_id
         )
+
         # We don't return a reply here yet, as the developer will reply later
-        # But we must return something to the frontend
         return ChatResponse(reply="", module="live_chat", is_live=True)
 
     # --- Regular AI Persona Logic ---
@@ -345,14 +398,38 @@ async def chat(
 
     # If no trigger matched, use fallback
     if not reply:
-        logger.info("No trigger matched, using fallback")
-        reply = random.choice(fallback.data["answers"][lang])  # nosec
+        logger.info("No trigger matched, using fallback from database")
+        stmt_fb = select(ChatTriggerResponse).where(
+            ChatTriggerResponse.module == "fallback"
+        )
+        fb_item = session.exec(stmt_fb).first()
+        if fb_item:
+            answers = getattr(fb_item, f"answers_{lang}")
+            if answers:
+                reply = random.choice(answers)
+
+        if not reply:
+            # Absolute hardcoded fallback if DB is empty
+            reply = (
+                "I'm not sure how to answer that. Could you try rephrasing?"
+                if lang == "en"
+                else "¿Podrías reformular la pregunta? No estoy seguro de cómo responder."
+                if lang == "es"
+                else "Pourriez-vous reformuler ? Je ne sais pas comment répondre."
+            )
         module = "fallback"
 
     # Save user message to history in background
     background_tasks.add_task(save_chat_interaction, "user", user_message, session_id)
     # Save assistant reply to history in background
-    background_tasks.add_task(save_chat_interaction, "assistant", reply, session_id)
+    background_tasks.add_task(
+        save_chat_interaction,
+        "assistant",
+        reply,
+        session_id,
+        module=module,
+        category=category,
+    )
 
     return ChatResponse(reply=reply, module=module, category=category, is_live=False)
 
@@ -377,6 +454,44 @@ async def sync_chat(session_id: str, db: Session = Depends(get_session)):
     return LiveSyncResponse(
         messages=list(reversed(results)), is_active=bool(active_session)
     )
+
+
+@router.get("/stream/{session_id}")
+async def stream_chat(request: Request, session_id: str):
+    """
+    Server-Sent Events (SSE) stream for real-time chat updates.
+    Uses Broadcaster for push-based updates.
+    """
+
+    async def event_generator():
+        # 1. Initial status push
+        with Session(engine) as db:
+            stmt = select(LiveChatSession).where(
+                LiveChatSession.session_id == session_id
+            )
+            chat_session = db.exec(stmt).first()
+            status = chat_session.is_active if chat_session else False
+            yield f"event: status\ndata: {json.dumps({'is_active': status})}\n\n"
+
+        # 2. Subscribe to new events
+        queue = broadcaster.subscribe(session_id)
+        try:
+            while True:
+                if await request.is_disconnected():
+                    break
+
+                try:
+                    # Wait for next event from broadcaster
+                    event = await asyncio.wait_for(queue.get(), timeout=30.0)
+                    yield f"event: {event['event']}\ndata: {event['data']}\n\n"
+                    queue.task_done()
+                except asyncio.TimeoutError:
+                    # Keep-alive comment
+                    yield ": keep-alive\n\n"
+        finally:
+            broadcaster.unsubscribe(session_id, queue)
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 
 @router.post("/telegram-webhook")
@@ -410,13 +525,44 @@ async def telegram_webhook(
     if not text:
         return {"status": "no text"}
 
-    # Find the most recently updated active session
-    stmt = (
-        select(LiveChatSession)
-        .where(LiveChatSession.is_active)
-        .order_by(desc(LiveChatSession.updated_at))
-    )
-    active_session = db.exec(stmt).first()
+    # Attempt to parse session_id from mapping or reply_to_message
+    session_id = None
+    reply_to = msg.get("reply_to_message")
+
+    if reply_to:
+        tg_reply_id = reply_to.get("message_id")
+        if tg_reply_id:
+            # Look up in mapping table
+            stmt_map = select(TelegramMessageMap).where(
+                TelegramMessageMap.telegram_message_id == tg_reply_id
+            )
+            mapping = db.exec(stmt_map).first()
+            if mapping:
+                session_id = mapping.session_id
+                logger.info(f"Resolved session_id {session_id} via mapping table")
+
+        if not session_id and reply_to.get("text"):
+            # Fallback to regex for older messages or if mapping failed
+            match = re.search(r"Message from ([\w-]+)", reply_to["text"])
+            if match:
+                session_id = match.group(1)
+                logger.info(f"Parsed session_id {session_id} from Telegram reply text")
+
+    active_session = None
+    if session_id:
+        stmt = select(LiveChatSession).where(
+            LiveChatSession.session_id == session_id, LiveChatSession.is_active
+        )
+        active_session = db.exec(stmt).first()
+
+    if not active_session:
+        # Fallback: Find the most recently updated active session
+        stmt = (
+            select(LiveChatSession)
+            .where(LiveChatSession.is_active)
+            .order_by(desc(LiveChatSession.updated_at))
+        )
+        active_session = db.exec(stmt).first()
 
     if not active_session:
         logger.warning("Telegram message received but no active live session found")

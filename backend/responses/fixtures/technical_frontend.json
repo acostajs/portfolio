@@ -1,0 +1,98 @@
+{
+  "categories": [
+    {
+      "triggers": [
+        "state management",
+        "redux",
+        "zustand",
+        "context api",
+        "store",
+        "manejo de estado",
+        "gestion d'état"
+      ],
+      "answers": {
+        "en": [
+          "For state management in React, I usually start with **Context API** for global UI state. If things get more complex, I'm a big fan of **Zustand** for its simplicity and performance. I've also used **Redux Toolkit** on larger enterprise-level projects where strict patterns are needed."
+        ],
+        "es": [
+          "Para el manejo de estado en React, suelo empezar con **Context API** para el estado global de la interfaz. Si las cosas se complican, soy fan de **Zustand** por su simplicidad y rendimiento. También he usado **Redux Toolkit** en proyectos empresariales más grandes donde se necesitan patrones estrictos."
+        ],
+        "fr": [
+          "Pour la gestion d'état dans React, je commence généralement par l'**API Context** pour l'état global de l'interface. Si les choses deviennent plus complexes, je suis un grand fan de **Zustand** pour sa simplicité et ses performances. J'ai également utilisé **Redux Toolkit** sur des projets d'entreprise plus importants où des modèles stricts sont nécessaires."
+        ]
+      }
+    },
+    {
+      "triggers": [
+        "accessibility",
+        "a11y",
+        "wcag",
+        "screen reader",
+        "aria",
+        "accesibilidad",
+        "lector de pantalla",
+        "accessibilité",
+        "lecteur d'écran"
+      ],
+      "answers": {
+        "en": [
+          "I take accessibility seriously, aiming for **WCAG 2.2** compliance. I focus on semantic HTML, proper ARIA labels, and ensuring everything is keyboard-navigable. In this portfolio, for instance, I've audited the color contrast and focus rings to ensure a good experience for everyone."
+        ],
+        "es": [
+          "Me tomo muy en serio la accesibilidad, buscando cumplir con **WCAG 2.2**. Me enfoco en HTML semántico, etiquetas ARIA adecuadas y asegurar que todo sea navegable por teclado. En este portafolio, por ejemplo, he auditado el contraste de colores y los anillos de enfoque para asegurar una buena experiencia para todos."
+        ],
+        "fr": [
+          "Je prends l'accessibilité au sérieux, en visant la conformité **WCAG 2.2**. Je me concentre sur le HTML sémantique, les étiquettes ARIA appropriées et je m'assure que tout est navigable au clavier. Dans ce portfolio, par exemple, j'ai audité le contraste des couleurs et les anneaux de mise au point pour garantir une bonne expérience pour tous."
+        ]
+      }
+    },
+    {
+      "triggers": [
+        "rendering",
+        "ssr",
+        "ssg",
+        "nextjs",
+        "hydration",
+        "isr",
+        "renderizado",
+        "rendu"
+      ],
+      "answers": {
+        "en": [
+          "I enjoy working with different rendering patterns. **SSG** (Static Site Generation) is great for performance-heavy pages like blogs, while **SSR** (Server-Side Rendering) is my go-to for dynamic content that needs SEO. I also keep an eye on **Incremental Static Regeneration (ISR)** to keep static pages fresh without full rebuilds."
+        ],
+        "es": [
+          "Disfruto trabajando con diferentes patrones de renderizado. **SSG** (Static Site Generation) es excelente para páginas con mucho contenido estático como blogs, mientras que **SSR** (Server-Side Rendering) es mi elección para contenido dinámico que necesita SEO. También vigilo la **Regeneración Estática Incremental (ISR)** para mantener frescas las páginas estáticas sin reconstrucciones completas."
+        ],
+        "fr": [
+          "J'aime travailler avec différents modèles de rendu. Le **SSG** (Static Site Generation) est idéal pour les pages gourmandes en performances comme les blogs, tandis que le **SSR** (Server-Side Rendering) est mon choix pour le contenu dynamique qui nécessite du SEO. Je garde également un œil sur la **Régénération Statique Incrémentale (ISR)** pour garder les pages statiques fraîches sans reconstructions complètes."
+        ]
+      }
+    },
+    {
+      "triggers": [
+        "css architecture",
+        "tailwind",
+        "sass",
+        "bem",
+        "css modules",
+        "styling",
+        "arquitectura css",
+        "estilos",
+        "architecture css",
+        "style"
+      ],
+      "answers": {
+        "en": [
+          "My CSS architecture preference has shifted towards **Tailwind CSS** for its speed and maintainability. However, I still appreciate **CSS Modules** for scoped styling in smaller projects, and I've used **BEM** (Block Element Modifier) extensively in the past to keep large SASS codebases organized."
+        ],
+        "es": [
+          "Mi preferencia de arquitectura CSS ha cambiado hacia **Tailwind CSS** por su velocidad y mantenibilidad. Sin embargo, sigo apreciando los **CSS Modules** para estilos con alcance definido en proyectos pequeños, y he usado **BEM** (Block Element Modifier) extensamente en el pasado para mantener organizadas grandes bases de código SASS."
+        ],
+        "fr": [
+          "Ma préférence en matière d'architecture CSS s'est tournée vers **Tailwind CSS** pour sa rapidité et sa maintenabilité. Cependant, j'apprécie toujours les **Modules CSS** pour le style scopé dans les petits projets, et j'ai utilisé **BEM** (Block Element Modifier) de manière intensive par le passé pour garder les bases de code SASS volumineuses organisées."
+        ]
+      }
+    }
+  ]
+}

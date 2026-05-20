@@ -1,6 +1,6 @@
 [project]
 name = "backend"
-version = "0.2.3"
+version = "0.2.5"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -10,14 +10,12 @@ dependencies = [
     "fastapi>=0.136.1",
     "google-api-python-client>=2.196.0",
     "google-auth-httplib2>=0.4.0",
-    "google-auth-oauthlib>=1.4.0",
     "httpx>=0.28.0",
     "psycopg2-binary>=2.9.10",
     "pydantic-settings>=2.14.0",
     "python-multipart>=0.0.27",
     "psutil>=6.0.0",
     "rapidfuzz>=3.14.5",
-    "requests>=2.33.1",
     "slowapi>=0.1.9",
     "sqlmodel>=0.0.38",
     "uvicorn>=0.46.0",
